@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kr.ac.postech.jelee.poddk" >
+    package="kr.ac.postech.jelee.poddk">
 
     <application
         android:allowBackup="true"
@@ -8,14 +8,29 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".MainActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".Postechian_main" />
+        <activity android:name=".Student_main" />
+        <activity android:name=".View_teacher" />
+        <activity android:name=".View_student" />
+        <activity android:name=".Add_teacher" />
+        <activity android:name=".Add_student" />
+        <activity android:name="com.example.choij.a4_29_application.FindUserActivity" />
+        <activity android:name="com.example.choij.a4_29_application.LoginActivity" />
+        <activity android:name="com.example.choij.a4_29_application.RegisterActivity" />
+        <activity android:name="com.example.choij.a4_29_application.RegisterPostechActivity" />
+        <activity android:name="com.example.choij.a4_29_application.RegisterStudentActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Profile"></activity>
     </application>
 
 </manifest>
