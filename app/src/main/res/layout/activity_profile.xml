@@ -1,16 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="kr.ac.postech.jelee.poddk.Profile">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
 
-    <Button
-        android:id="@+id/button"
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/setting"
+        android:layout_marginLeft="26dp"
+        android:layout_marginStart="26dp"
+        android:adjustViewBounds="false"
+        android:src="@drawable/profile" />
+
+    <ImageView
+        android:id="@+id/setting"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/setting" />
+
+    <TextView
+        android:id="@+id/name_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile입니다"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="135dp" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_toRightOf="@+id/profile_image"
+        android:textStyle="bold"
+        android:text="이름 :"
+        android:layout_alignTop="@+id/profile_image"
+        android:layout_margin="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_toRightOf="@+id/profile_image"
+        android:textStyle="bold"
+        android:text="가능시간 :"
+        android:layout_alignTop="@+id/name_info"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:backgroundTint="#FFFFFF"
+        android:id="@+id/developerInfoButton"
+        android:text="개발자 정보"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"/>
+    <Button
+        android:text="공지사항"
+        android:backgroundTint="#FFFFFF"
+        android:id="@+id/notificationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/developerInfoButton"/>
+    <Button
+        android:text="관리"
+        android:backgroundTint="#FFFFFF"
+        android:id="@+id/managementButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/notificationButton"/>
+    <Button
+        android:text="우편함"
+        android:backgroundTint="#FFFFFF"
+        android:id="@+id/mailboxButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/managementButton"/>
+</RelativeLayout>
