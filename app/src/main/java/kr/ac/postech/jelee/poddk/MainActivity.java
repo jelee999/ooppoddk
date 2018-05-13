@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+
             //Returning the current tabs
             switch (position) {
                 case 0:

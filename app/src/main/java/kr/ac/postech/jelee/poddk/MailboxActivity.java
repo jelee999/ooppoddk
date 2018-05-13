@@ -1,14 +1,13 @@
 package kr.ac.postech.jelee.poddk;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-public class Add_teacher extends AppCompatActivity {
+public class MailboxActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_teacher);
+        setContentView(R.layout.activity_mailbox);
     }
-
 }
