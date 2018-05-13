@@ -14,13 +14,16 @@ import android.widget.Toast;
 import android.widget.Button;
 
 
-public class Postechian_main extends Fragment {
+public class Postechian_main extends Fragment implements View.OnClickListener {
 
-    private FloatingActionButton addStudent;
+    FloatingActionButton addStudentButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.postechian_main, container, false);
+
+        addStudentButton = (FloatingActionButton)rootView.findViewById(R.id.addStudent);
+        addStudentButton.setOnClickListener(this);
 
         return rootView;
     }
@@ -28,10 +31,10 @@ public class Postechian_main extends Fragment {
 
 
     //+ 버튼 클릭했을 때
-    public void onaddStudentClicked(View view){
-        switch (view.getId()) {
-            case R.id.button:
-               // startActivity(new Intent(this, Add_student.class));
+    public void onClick(View view){
+        if(view == addStudentButton){
+            Intent intent = new Intent(getActivity(), Add_student.class);
+            startActivity(intent);
         }
     }
 
