@@ -23,14 +23,6 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
         addButton.setOnClickListener(this);
     }
 
-    /*
-    @Override
-    protected  void onApplyThemeResource(Resources.Theme theme, int resid, boolean first)
-    {
-        super.onApplyThemeResource(theme, resid, first);
-        theme.applyStyle(android.R.style.Theme_Panel, true);
-    }*/
-
     // 버튼 클릭했을 때
     public void onClick(View view){
         if(view == cancelButton){
@@ -41,6 +33,5 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
             finish();
         }
     }
-
 
 }

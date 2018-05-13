@@ -13,8 +13,15 @@
         <activity android:name=".Student_main" />
         <activity android:name=".View_teacher" />
         <activity android:name=".View_student" />
-        <activity android:name=".Add_teacher" />
-        <activity android:name=".Add_student" />
+        <activity
+            android:name=".Add_teacher"
+            android:label="선생님 등록하기"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity
+            android:name=".Add_student"
+            android:label="학생 등록하기"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+        />
         <activity android:name="com.example.choij.a4_29_application.FindUserActivity" />
         <activity android:name="com.example.choij.a4_29_application.LoginActivity" />
         <activity android:name="com.example.choij.a4_29_application.RegisterActivity" />
