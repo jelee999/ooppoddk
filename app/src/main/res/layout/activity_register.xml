@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="kr.ac.postech.jelee.poddk.RegisterActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -69,4 +70,5 @@
             android:layout_marginTop="10dp"
             android:id="@+id/nonpostechButton"/>
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
