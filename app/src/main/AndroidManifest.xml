@@ -15,11 +15,22 @@
         <activity android:name=".View_student" />
         <activity android:name=".Add_teacher" />
         <activity android:name=".Add_student" />
-        <activity android:name="com.example.choij.a4_29_application.FindUserActivity" />
-        <activity android:name="com.example.choij.a4_29_application.LoginActivity" />
-        <activity android:name="com.example.choij.a4_29_application.RegisterActivity" />
-        <activity android:name="com.example.choij.a4_29_application.RegisterPostechActivity" />
-        <activity android:name="com.example.choij.a4_29_application.RegisterStudentActivity" />
+        <activity android:name=".FindUserActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterPostechActivity" />
+        <activity android:name=".RegisterStudentActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:label="PODDK"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

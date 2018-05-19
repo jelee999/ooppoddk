@@ -1,9 +1,10 @@
-package com.example.choij.a4_29_application
+package kr.ac.postech.jelee.poddk
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_login.*
+import kr.ac.postech.jelee.poddk.R.id.registerButton
 
 class LoginActivity : AppCompatActivity() {
 

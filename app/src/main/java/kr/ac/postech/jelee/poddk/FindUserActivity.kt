@@ -1,4 +1,4 @@
-package com.example.choij.a4_29_application
+package kr.ac.postech.jelee.poddk
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
