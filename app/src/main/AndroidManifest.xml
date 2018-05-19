@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.ac.postech.jelee.poddk">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,6 +17,22 @@
         <activity android:name=".Student_main" />
         <activity android:name=".View_teacher" />
         <activity android:name=".View_student" />
+        <activity android:name=".FindUserActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterPostechActivity" />
+        <activity android:name=".RegisterStudentActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:label="PODDK"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Add_teacher"
             android:label="선생님 등록하기"
@@ -23,17 +41,6 @@
             android:name=".Add_student"
             android:label="학생 등록하기"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".FindUserActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".RegisterPostechActivity" />
-        <activity android:name=".RegisterStudentActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

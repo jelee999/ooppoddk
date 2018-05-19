@@ -4,6 +4,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import kotlinx.android.synthetic.main.activity_register_postech.*
+import org.json.JSONException
+import org.json.JSONObject
 
 class RegisterPostechActivity : AppCompatActivity() {
 
@@ -35,5 +45,62 @@ class RegisterPostechActivity : AppCompatActivity() {
         val questionSpinner = findViewById<Spinner>(R.id.user_pw_question)
         val questionAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, questions)
         questionSpinner.adapter=questionAdapter
+
+
+
+
+
+        fun check_blank() : Boolean{
+            return(user_name!=null&&user_id!=null&&user_pw!=null&&user_pw_check!=null&&user_birthday_year!=null&&user_birthday_month!=null&&user_birthday_date!=null&&user_major!=null&&user_pw_question!=null&&user_pw_answer!=null)
+        }
+
+
+        if(check_blank()){
+                if(user_pw==user_pw_check){
+                    val stringRequest = object : StringRequest(Request.Method.POST, "ftp://141.223.163.207/php/main.html",
+                            Response.Listener<String>{response ->
+                                try {
+                                    val obj = JSONObject(response)
+                                    Toast.makeText(applicationContext, obj.getString("message"), Toast.LENGTH_LONG).show()
+                                } catch (e:JSONException){
+                                    e.printStackTrace()
+                                }
+
+                    },
+                    object : Response.ErrorListener{
+                        override fun onErrorResponse(error: VolleyError) {
+                            Toast.makeText(applicationContext, error.message, Toast.LENGTH_LONG).show()
+                        }
+                    }){
+                        @Throws(AuthFailureError::class)
+                        override fun getParams(): Map<String, String> {
+                            val params = HashMap<String, String>()
+                            params.put("user_name", user_name.toString())
+                            params.put("user_id", user_id.toString())
+                            params.put("user_pw", user_pw.toString())
+                            params.put("user_pw_check", user_pw_check.toString())
+                            params.put("user_birthday_year", user_birthday_year.toString())
+                            params.put("user_birthday_month", user_birthday_month.toString())
+                            params.put("user_birthday_date", user_birthday_date.toString())
+                            params.put("user_major", user_major.toString())
+                            params.put("user_pw_question", user_pw_question.toString())
+                            params.put("user_pw_answer", user_pw_answer.toString())
+                            return params
+                        }
+                    }
+
+                    VolleySingleton.instance?.addToRequestQueue(stringRequest)
+
+
+                }
+                else
+                    Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+            }
+        else
+            Toast.makeText(this, "입력되지 않은 항목이 있습니다", Toast.LENGTH_SHORT).show()
+
     }
-}
+
+
+    }
+
