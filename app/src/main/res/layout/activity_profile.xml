@@ -58,7 +58,7 @@
     <Button
         android:text="공지사항"
         android:backgroundTint="#FFFFFF"
-        android:id="@+id/notificationButton"
+        android:id="@+id/NoticeBoardButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/developerInfoButton"/>
@@ -68,7 +68,7 @@
         android:id="@+id/managementButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/notificationButton"/>
+        android:layout_above="@+id/NoticeBoardButton"/>
     <Button
         android:text="우편함"
         android:backgroundTint="#FFFFFF"

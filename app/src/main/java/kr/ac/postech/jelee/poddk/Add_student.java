@@ -36,6 +36,4 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-
-
 }
