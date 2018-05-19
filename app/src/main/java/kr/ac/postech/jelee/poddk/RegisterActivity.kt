@@ -1,10 +1,12 @@
-package com.example.choij.a4_29_application
+package kr.ac.postech.jelee.poddk
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_register.*
 import kr.ac.postech.jelee.poddk.R
+import kr.ac.postech.jelee.poddk.R.id.nonpostechButton
+import kr.ac.postech.jelee.poddk.R.id.postechButton
 
 class RegisterActivity : AppCompatActivity() {
 
