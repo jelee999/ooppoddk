@@ -31,8 +31,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Profile" />
-        <activity android:name=".mailbox"/>
-        <activity android:name=".MailboxActivity" />
+        <activity android:name=".MailboxActivity" android:theme="@style/Mailbox" />
+        <activity android:name=".NoticeBoardActivity" />
+        <activity android:name=".ManagementActivity" />
+        <activity android:name=".DeveloperInfoActivity"></activity>
     </application>
-
 </manifest>
