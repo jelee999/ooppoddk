@@ -15,8 +15,6 @@
         <activity android:name=".Student_main" />
         <activity android:name=".View_teacher" />
         <activity android:name=".View_student" />
-        <activity android:name=".Add_teacher" />
-        <activity android:name=".Add_student" />
         <activity android:name=".FindUserActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
@@ -34,6 +32,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Add_teacher"
+            android:label="선생님 등록하기"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity
+            android:name=".Add_student"
+            android:label="학생 등록하기"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+        />
+        <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
@@ -43,7 +50,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Profile"></activity>
+        <activity android:name=".Profile" />
+        <activity android:name=".MailboxActivity" />
     </application>
 
 </manifest>
