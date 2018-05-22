@@ -101,10 +101,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="과목선택" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="과목선택" />
+
+                    <Button
+                        android:id="@+id/addsubjectbutton"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:padding="1dp"
+                        android:text="+" />
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -113,7 +128,7 @@
                     android:orientation="horizontal">
 
                     <RadioGroup
-                        android:id="@+id/Subject"
+                        android:id="@+id/SubjectGroup"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
