@@ -6,134 +6,17 @@
     android:layout_height="match_parent"
     tools:context="kr.ac.postech.jelee.poddk.Postechian_main">
 
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <ListView
+            android:id="@+id/studentListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
 
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:clickable="true"
-                android:padding="5dp">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:maxHeight="80dp"
-                    android:maxWidth="80dp"
-                    android:padding="5dp"
-                    app:srcCompat="@mipmap/ic_launcher" />
-
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/student_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="이름: "
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/student_age"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_row="1"
-                        android:text="나이: "
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/student_sex"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_row="1"
-                        android:text="성별: "
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/student_subject"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_row="3"
-                        android:text="과목: "
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/student_introduction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_row="4"
-                        android:text="소개: "
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/student_name_data"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_row="0"
-                        android:text="ex)학생"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/student_age_data"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_row="1"
-                        android:text="ex)고2"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/student_sex_data"
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_row="1"
-                        android:text="ex)여"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/student_subject_data"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_row="3"
-                        android:text="ex)수학"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/student_introduction_data"
-                        android:layout_width="190dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_columnSpan="3"
-                        android:layout_row="4"
-                        android:text="ex)안녕하세요"
-                        android:textSize="16dp" />
-                </GridLayout>
-
-            </GridLayout>
-        </LinearLayout>
-    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addStudent"
@@ -143,7 +26,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:layout_marginTop="468dp"
         android:clickable="true"
-        android:onClick="onaddStudentClicked"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -10,25 +10,47 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class Postechian_main extends Fragment implements View.OnClickListener {
+
+public class Postechian_main extends Fragment implements View.OnClickListener{
 
     FloatingActionButton addStudentButton;
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.postechian_main, container, false);
 
-        addStudentButton = (FloatingActionButton)rootView.findViewById(R.id.addStudent);
-        addStudentButton.setOnClickListener(this);
+    public Postechian_main() {
 
-        return rootView;
     }
 
+    //FloatingActionButton addStudentButton;
 
+    private ListView studentListView;
+    private StudentListAdapter adapter;
+    private List<Student> studentList;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.postechian_main, container, false);
+
+
+        studentListView = (ListView) view.findViewById(R.id.studentListView);
+        studentList = new ArrayList<Student>();
+        studentList.add(new Student("jelee1", R.drawable.profile, "김포항", 21, "여", "수학"));
+        studentList.add(new Student("jelee2", R.drawable.profile, "김포항", 21, "여", "수학"));
+
+        adapter = new StudentListAdapter(getContext(), studentList);
+        studentListView.setAdapter(adapter);
+
+        addStudentButton = (FloatingActionButton)view.findViewById(R.id.addStudent);
+        addStudentButton.setOnClickListener(this);
+
+        return view;
+    }
 
     //+ 버튼 클릭했을 때
     public void onClick(View view){
@@ -37,6 +59,4 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
             startActivity(intent);
         }
     }
-
-
 }

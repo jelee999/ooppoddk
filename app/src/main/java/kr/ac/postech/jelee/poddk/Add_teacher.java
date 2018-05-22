@@ -43,8 +43,6 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
         final ArrayAdapter majorAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, majorList);
         final Spinner majorSubjectSpinner = (Spinner)findViewById(R.id.majorSubject);
 
-        //Spinner minorSubjectSpinner;
-
         final ArrayAdapter linguisticAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, linguisticList);
         final ArrayAdapter mathAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mathList);
         final ArrayAdapter physicsAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, physicsList);

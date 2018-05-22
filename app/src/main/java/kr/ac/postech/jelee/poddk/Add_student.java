@@ -86,7 +86,6 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         majorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //선택된 아이템 팝업 Toast.makeText(Add_student.this, "선택된 아이템: "+majorSubjectSpinner.getItemAtPosition(i),Toast.LENGTH_SHORT).show();
 
                 //세부과목 스피너 설정
                 if(majorSubjectSpinner.getSelectedItemPosition() == 0){ //'선택사항없음'
