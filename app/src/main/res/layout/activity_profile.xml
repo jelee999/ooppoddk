@@ -16,35 +16,39 @@
         android:adjustViewBounds="false"
         android:src="@drawable/profile" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/setting"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_settings_black_24dp" />
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_settings"
+        android:background = "#FAFAFA"/>
 
     <TextView
         android:id="@+id/name_info"
+        android:textSize="20dp"
+        android:text="이름 :"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/profile_image"
-        android:layout_margin="20dp"
-        android:layout_toRightOf="@+id/profile_image"
-        android:text="이름 :"
-        android:textStyle="bold" />
+        android:layout_below="@id/profile_image"
+        android:paddingLeft="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
 
     <TextView
+        android:id="@+id/possible_time"
+        android:text="가능시간 :"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/name_info"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_toRightOf="@+id/profile_image"
-        android:text="가능시간 :"
-        android:textStyle="bold" />
+        android:layout_alignLeft="@id/name_info"
+        android:layout_below="@id/name_info"
+        android:paddingLeft="20dp"/>
 
     <Button
         android:id="@+id/developerInfoButton"
@@ -81,6 +85,7 @@
         android:text="우편함" />
 
     <RelativeLayout
+        android:visibility="invisible"
         android:id="@+id/settingLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -156,23 +161,26 @@
             android:text="무음" />
 
         <RadioGroup
+            android:id="@+id/settingGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/vibrationText"
             android:layout_alignTop="@id/vibrationSetting"
             android:layout_alignBottom="@id/muteSetting">
             <RadioButton
-                android:id="@+id/vibrationCheckBox"
+                android:id="@+id/vibrationRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true" />
 
             <RadioButton
+                android:id="@+id/soundRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false" />
 
             <RadioButton
+                android:id="@+id/muteRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false" />
