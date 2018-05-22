@@ -2,12 +2,14 @@ package kr.ac.postech.jelee.poddk
 
 import android.app.Activity
 import android.content.Intent
+
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -55,9 +57,14 @@ class LoginActivity : AppCompatActivity() {
 
 
 
+
         registerButton.setOnClickListener {
-            val nextIntent = Intent(this,RegisterActivity::class.java)
+            val nextIntent = Intent(this, RegisterActivity::class.java)
             startActivity(nextIntent)
         }
+
+
+
+
     }
 }

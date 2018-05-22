@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:id="@+id/OneMail">
+
+    <ImageView
+        android:id="@+id/mailProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/profile"
+        android:layout_marginRight="3dp"/>
+
+
+    <TextView
+        android:id="@+id/mailTitle"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text = "제목"
+        android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/mailProfile"/>
+
+
+    <TextView
+        android:id="@+id/mailContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mailTitle"
+        android:layout_below="@+id/mailTitle"
+        android:text="내용"
+        android:lines="2"
+        android:ellipsize="end"
+        android:textSize="14dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/mailDate"
+        android:textSize="14dp"
+        android:layout_marginRight="3dp"
+        android:text="2018-05-19"
+        android:layout_alignTop="@id/mailTitle"/>
+
+
+</RelativeLayout>

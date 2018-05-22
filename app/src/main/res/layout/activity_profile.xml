@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -16,64 +16,176 @@
         android:adjustViewBounds="false"
         android:src="@drawable/profile" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/setting"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/setting" />
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_settings"
+        android:background = "#FAFAFA"/>
 
     <TextView
         android:id="@+id/name_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/profile_image"
-        android:textStyle="bold"
+        android:textSize="20dp"
         android:text="이름 :"
-        android:layout_alignTop="@+id/profile_image"
-        android:layout_margin="20dp"/>
-    <TextView
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/profile_image"
+        android:paddingLeft="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
 
-        android:layout_toRightOf="@+id/profile_image"
-        android:textStyle="bold"
+    <TextView
+        android:id="@+id/possible_time"
         android:text="가능시간 :"
-        android:layout_alignTop="@+id/name_info"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"/>
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/name_info"
+        android:layout_below="@id/name_info"
+        android:paddingLeft="20dp"/>
 
     <Button
-        android:backgroundTint="#FFFFFF"
         android:id="@+id/developerInfoButton"
-        android:text="개발자 정보"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="개발자 정보" />
+
+    <Button
+        android:id="@+id/NoticeBoardButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"/>
-    <Button
-        android:text="공지사항"
+        android:layout_above="@+id/developerInfoButton"
         android:backgroundTint="#FFFFFF"
-        android:id="@+id/notificationButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/developerInfoButton"/>
+        android:text="공지사항" />
+
     <Button
-        android:text="관리"
-        android:backgroundTint="#FFFFFF"
         android:id="@+id/managementButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/notificationButton"/>
-    <Button
-        android:text="우편함"
+        android:layout_above="@+id/NoticeBoardButton"
         android:backgroundTint="#FFFFFF"
+        android:text="관리" />
+
+    <Button
         android:id="@+id/mailboxButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/managementButton"/>
+        android:layout_above="@+id/managementButton"
+        android:backgroundTint="#FFFFFF"
+        android:text="우편함" />
+
+    <RelativeLayout
+        android:visibility="invisible"
+        android:id="@+id/settingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/setting"
+        android:background="@drawable/border_rounded">
+
+        <ImageView
+            android:id="@+id/vibrationSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="3dp"
+            android:paddingTop="3dp"
+            android:src="@drawable/ic_vibration_black_24dp" />
+
+        <TextView
+            android:id="@+id/vibrationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/vibrationSetting"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/vibrationSetting"
+            android:paddingTop="5dp"
+            android:text="진동" />
+
+
+        <ImageView
+            android:id="@+id/soundSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/vibrationSetting"
+            android:layout_below="@id/vibrationSetting"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="3dp"
+            android:layout_marginTop="4dp"
+            android:paddingTop="3dp"
+            android:src="@drawable/ic_volume" />
+
+        <TextView
+            android:id="@+id/soundText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/soundSetting"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/soundSetting"
+            android:paddingTop="5dp"
+            android:text="소리" />
+
+
+        <ImageView
+            android:id="@+id/muteSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/vibrationSetting"
+            android:layout_below="@id/soundSetting"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="3dp"
+            android:paddingTop="3dp"
+            android:src="@drawable/ic_volume_mute_black_24dp" />
+
+        <TextView
+            android:id="@+id/muteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/muteSetting"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/muteSetting"
+            android:paddingTop="5dp"
+            android:text="무음" />
+
+        <RadioGroup
+            android:id="@+id/settingGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/vibrationText"
+            android:layout_alignTop="@id/vibrationSetting"
+            android:layout_alignBottom="@id/muteSetting">
+            <RadioButton
+                android:id="@+id/vibrationRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/soundRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/muteRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </RadioGroup>
+    </RelativeLayout>
+
 </RelativeLayout>

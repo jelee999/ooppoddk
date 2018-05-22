@@ -9,7 +9,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -20,24 +21,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:layout_width="26dp"
-                    android:layout_height="100dp"
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/imageView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_above="@+id/button3"
                         android:layout_weight="1"
                         app:srcCompat="@mipmap/ic_launcher" />
-                </RelativeLayout>
+                </FrameLayout>
 
                 <GridLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_weight="4">
 
                     <TextView
                         android:id="@+id/name"
@@ -46,14 +48,6 @@
                         android:text="이름: "
                         android:textSize="18dp" />
 
-                    <TextView
-                        android:id="@+id/department"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_row="1"
-                        android:text="소속: "
-                        android:textSize="18dp" />
 
                     <TextView
                         android:id="@+id/age"
@@ -81,13 +75,6 @@
                         android:layout_row="0"
                         android:text="ex)김똘똘" />
 
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_row="1"
-                        android:text="ex)포항고등학교" />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -113,6 +100,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="과목선택" />
+
+                    <Button
+                        android:id="@+id/addsubjectbutton"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:padding="1dp"
+                        android:text="+" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/SubjectList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/SubjectGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/majorSubject"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3" />
+
+                        <Spinner
+                            android:id="@+id/minorSubject"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2" />
+
+                    </RadioGroup>
+                    <LinearLayout
+                        android:id="@+id/dynamicArea"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
