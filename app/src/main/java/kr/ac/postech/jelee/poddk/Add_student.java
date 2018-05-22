@@ -1,8 +1,10 @@
 package kr.ac.postech.jelee.poddk;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -40,13 +42,16 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
     Button cancelButton;
     Button addButton;
 
+    //SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+    //String ID = saved.getString("inputID","0"); //사용자 ID
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_teacher);
         this.setFinishOnTouchOutside(false);
 
-        ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorList)));
+        ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorSubjectList)));
         ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.linguisticList)));
         ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mathList)));
         ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.physicsList)));
@@ -122,7 +127,6 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
                     Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
-
                     minorSubjectSpinner.setAdapter(materialAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학

@@ -1,6 +1,6 @@
 
 <resources>
-    <string-array name="majorList">
+    <string-array name="majorSubjectList">
         <item>선택사항없음</item>
         <item>언어</item>
         <item>수학</item>
