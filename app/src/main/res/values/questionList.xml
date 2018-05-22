@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="questionList">
+        <item>다른 이메일 주소는?</item>
+        <item>나의 보물 1호는?</item>
+        <item>나의 출신 고등학교는?</item>
+        <item>나의 출신 고향은?</item>
+        <item>나의 이상형은?</item>
+        <item>어머니 성함은?</item>
+        <item>아버지 성함은?</item>
+        <item>내가 가장 좋아하는 색깔은?</item>
+    </string-array>
+</resources>

@@ -1,10 +1,11 @@
 package kr.ac.postech.jelee.poddk
 
-import android.os.Bundle
+
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.os.Bundle
+import android.view.View
+import android.widget.*
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
@@ -21,86 +22,188 @@ class RegisterPostechActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_postech)
 
-        val years= arrayOf("1980",	"1981",	"1982",	"1983",	"1984",	"1985",	"1986",	"1987",	"1988",	"1989",	"1990",	"1991",	"1992",	"1993",	"1994",	"1995",	"1996",	"1997",	"1998",	"1999",	"2000",	"2001",	"2002",	"2003",	"2004",	"2005",	"2006",	"2007",	"2008",	"2009",	"2010",	"2011",	"2012",	"2013",	"2014",	"2015",	"2016",	"2017",	"2018")
-        val yearSpinner = findViewById<Spinner>(R.id.user_birthday_year)
-        val yearAdapter = ArrayAdapter<Any>(this, R.layout.support_simple_spinner_dropdown_item, years)
-        yearSpinner.adapter=yearAdapter
 
-        val months=arrayOf("1",	"2","3","4","5","6","7","8","9","10","11","12")
-        val monthSpinner = findViewById<Spinner>(R.id.user_birthday_month)
-        val monthAdapter = ArrayAdapter<Any>(this, android.R.layout.simple_spinner_dropdown_item, months)
-        monthSpinner.adapter=monthAdapter
-
-        val dates= arrayOf("1",	"2",	"3",	"4",	"5",	"6",	"7",	"8",	"9",	"10",	"11",	"12",	"13",	"14",	"15",	"16",	"17",	"18",	"19",	"20",	"21",	"22",	"23",	"24",	"25",	"26",	"27",	"28",	"29",	"30",	"31")
-        val dateSpinner = findViewById<Spinner>(R.id.user_birthday_date)
-        val dateAdapter = ArrayAdapter<Any>(this, android.R.layout.simple_spinner_dropdown_item, dates)
-        dateSpinner.adapter=dateAdapter
-
-        val majors=arrayOf("수학과","물리학과","화학과","생명과학과","신소재공학과","기계공학과","산업경영공학과","전자전기공학과","컴퓨터공학과","화학공학과","창의아이티융합공학과")
-        val majorSpinner = findViewById<Spinner>(R.id.user_major)
-        val majorAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, majors)
-        majorSpinner.adapter=majorAdapter
-
-        val questions=arrayOf("다른 이메일 주소는?","나의 보물 1호는?","나의 출신 고등학교는?","나의 출신 고향은?","나의 이상형은?","어머니 성함은?","아버지 성함은?","내가 가장 좋아하는 색깔은?")
-        val questionSpinner = findViewById<Spinner>(R.id.user_pw_question)
-        val questionAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, questions)
-        questionSpinner.adapter=questionAdapter
+        var name :String?=null
+        var id :String?=null
+        var pw :String?=null
+        var pw_check :String?=null
+        var birth_year :String?=null
+        var birth_month :String?=null
+        var birth_day :String?=null
+        var major :String?=null
+        var gender :String?=null
+        var pw_question :String?=null
+        var pw_answer :String?=null
+        var email: String?=null
+        var phonenum :String?=null
 
 
 
 
 
-        fun check_blank() : Boolean{
-            return(user_name!=null&&user_id!=null&&user_pw!=null&&user_pw_check!=null&&user_birthday_year!=null&&user_birthday_month!=null&&user_birthday_date!=null&&user_major!=null&&user_pw_question!=null&&user_pw_answer!=null)
-        }
+        val yearSpinner = findViewById(R.id.user_birthday_year) as Spinner
+        yearSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.yearsList))
+
+        val monthSpinner = findViewById(R.id.user_birthday_month) as Spinner
+        monthSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.monthList))
+
+        val dateSpinner = findViewById(R.id.user_birthday_date) as Spinner
+        dateSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.dateList))
+
+        val majorSpinner = findViewById(R.id.user_major) as Spinner
+        majorSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.majorList))
+
+        val questionSpinner = findViewById(R.id.user_pw_question) as Spinner
+        questionSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.questionList))
 
 
-        if(check_blank()){
-                if(user_pw==user_pw_check){
-                    val stringRequest = object : StringRequest(Request.Method.POST, "ftp://141.223.163.207/php/main.html",
-                            Response.Listener<String>{response ->
+
+        fun checkblank(): Boolean {
+            return (!name.isNullOrBlank()&&!id.isNullOrBlank()&&!pw.isNullOrBlank()&&!pw_check.isNullOrBlank()&&!pw_answer.isNullOrBlank())
+    }
+
+
+        fun create(){
+            name = user_name.text.toString()
+            id=user_id.text.toString()
+            pw=user_pw.text.toString()
+            pw_check=user_pw_check.text.toString()
+            birth_year=yearSpinner.selectedItem.toString()
+            birth_month = monthSpinner.selectedItem.toString()
+            birth_day = dateSpinner.selectedItem.toString()
+            major = majorSpinner.selectedItem.toString()
+            pw_question = questionSpinner.selectedItem.toString()
+            pw_answer=user_pw_answer.text.toString()
+            phonenum=user_phone.text.toString()
+            email=user_email.text.toString()
+
+            if(!user_woman.isChecked.not())
+                gender="woman"
+            else
+                gender="man"
+
+            if (checkblank()) {
+                if (pw==pw_check) {
+                    val stringRequest = object : StringRequest(Request.Method.POST, "ftp://141.223.163.207/var/www/podduk_checksignup.php",
+                            Response.Listener<String> { response ->
                                 try {
                                     val obj = JSONObject(response)
                                     Toast.makeText(applicationContext, obj.getString("message"), Toast.LENGTH_LONG).show()
-                                } catch (e:JSONException){
+                                } catch (e: JSONException) {
                                     e.printStackTrace()
                                 }
 
-                    },
-                    object : Response.ErrorListener{
-                        override fun onErrorResponse(error: VolleyError) {
-                            Toast.makeText(applicationContext, error.message, Toast.LENGTH_LONG).show()
-                        }
-                    }){
+                            },
+                            object : Response.ErrorListener {
+                                override fun onErrorResponse(error: VolleyError) {
+                                    Toast.makeText(applicationContext, error.message, Toast.LENGTH_LONG).show()
+                                }
+                            }) {
                         @Throws(AuthFailureError::class)
                         override fun getParams(): Map<String, String> {
                             val params = HashMap<String, String>()
-                            params.put("user_name", user_name.toString())
-                            params.put("user_id", user_id.toString())
-                            params.put("user_pw", user_pw.toString())
-                            params.put("user_pw_check", user_pw_check.toString())
-                            params.put("user_birthday_year", user_birthday_year.toString())
-                            params.put("user_birthday_month", user_birthday_month.toString())
-                            params.put("user_birthday_date", user_birthday_date.toString())
-                            params.put("user_major", user_major.toString())
-                            params.put("user_pw_question", user_pw_question.toString())
-                            params.put("user_pw_answer", user_pw_answer.toString())
+                            params.put("name", name.toString())
+                            params.put("id", id.toString())
+                            params.put("pw", pw.toString())
+                            params.put("pw_check", pw_check.toString())
+                            params.put("birth_year", birth_year.toString())
+                            params.put("birth_month", birth_month.toString())
+                            params.put("birth_day", birth_day.toString())
+                            params.put("major", major.toString())
+                            params.put("gender", gender.toString())
+                            params.put("pw_question", pw_question.toString())
+                            params.put("pw_answer", pw_answer.toString())
+                            params.put("phonenum", phonenum.toString())
+                            params.put("email", email.toString())
                             return params
                         }
                     }
 
                     VolleySingleton.instance?.addToRequestQueue(stringRequest)
 
+                    Toast.makeText(this, "회원가입이 완료되었습니다", Toast.LENGTH_LONG ).show()
 
-                }
-                else
+                    val nextIntent = Intent(this,LoginActivity::class.java)
+                    startActivity(nextIntent)
+
+
+                } else
                     Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+            } else
+                Toast.makeText(this, "입력되지 않은 항목이 있습니다", Toast.LENGTH_SHORT).show()
+
+        }
+
+
+        fun id_check(user_id : String, action : String) : Boolean{
+            var ret = false
+            if(action == "stop") {
+                if (!ret)
+                    Toast.makeText(this, "사용가능한 ID입니다.", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "이미 사용중인 ID입니다.", Toast.LENGTH_SHORT).show()
             }
-        else
-            Toast.makeText(this, "입력되지 않은 항목이 있습니다", Toast.LENGTH_SHORT).show()
+            if(action == "go"){
+                if (!ret)
+                    create()
+                else
+                    Toast.makeText(this, "ID 중복확인이 필요합니다", Toast.LENGTH_SHORT).show()
+            }
+            /*var url : String = "ftp://141.223.163.207/var/www/podduk_checksignup.php"
+            url = url+"?user_id="+user_id
+            var ret = false
 
+
+            val stringRequest = StringRequest(Request.Method.GET, url,
+                    Response.Listener<String> { response ->
+                        try {
+                            val obj = JSONObject(response)
+
+
+                            ret = obj.getBoolean("success")
+                            if(action == "stop") {
+                                if (!ret)
+                                    Toast.makeText(this, "사용가능한 ID입니다.", Toast.LENGTH_SHORT).show()
+                                else
+                                    Toast.makeText(this, "이미 사용중인 ID입니다.", Toast.LENGTH_SHORT).show()
+                            }
+                            if(action == "go"){
+                                if (!ret)
+                                    create()
+                                else
+                                    Toast.makeText(this, "ID 중복확인이 필요합니다", Toast.LENGTH_SHORT).show()
+                            }
+
+
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
+                        }
+                    },
+                    object : Response.ErrorListener {
+                        override fun onErrorResponse(volleyError: VolleyError) {
+                            Toast.makeText(applicationContext, volleyError.message, Toast.LENGTH_LONG).show()
+                        }
+                    })
+
+
+            Volley.newRequestQueue(this).add(stringRequest)
+*/
+            return ret
+        }
+
+
+        validateButton.setOnClickListener{
+            val input = user_id.text.toString()
+            id_check(input,"stop")
+        }
+
+        registerButton.setOnClickListener {
+            val input = user_id.text.toString()
+            id_check(input,"go")
+        }
     }
 
 
-    }
+}
 
