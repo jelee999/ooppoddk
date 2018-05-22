@@ -17,9 +17,6 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
     Button cancelButton;
     Button addButton;
 
-    String majorsubjectdata;
-    String minorsubjectdata;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +43,8 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
         final ArrayAdapter majorAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, majorList);
         final Spinner majorSubjectSpinner = (Spinner)findViewById(R.id.majorSubject);
 
-        //세부과목 스피너
+        //Spinner minorSubjectSpinner;
+
         final ArrayAdapter linguisticAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, linguisticList);
         final ArrayAdapter mathAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mathList);
         final ArrayAdapter physicsAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, physicsList);
@@ -60,7 +58,6 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
         final ArrayAdapter chemiengineeringAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, chemicalengineeringList);
         final ArrayAdapter citeAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, citeList);
         final ArrayAdapter etcAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, etcList);
-        final Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
 
         majorSubjectSpinner.setAdapter(majorAdapter);
         majorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -70,45 +67,60 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
 
                 //세부과목 스피너 설정
                 if(majorSubjectSpinner.getSelectedItemPosition() == 0){ //'선택사항없음'
+                    Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(etcAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition()== 1){
+                    Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(linguisticAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 2) { //'수학'
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(mathAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 3) { //물리
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(physicsAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 4) { //화학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(chemistryAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 5) { //생명
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(lifescienceAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 6) { //기계공학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(mechanicAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 7) { //산업경영공학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(imeAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+
                     minorSubjectSpinner.setAdapter(materialAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(electricAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 10) { //컴퓨터공학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(cseAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 11) { //화학공학
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(chemiengineeringAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 12) { //창의IT
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(citeAdapter);
                 }
                 else if(majorSubjectSpinner.getSelectedItemPosition() == 13) { //기타
+                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(etcAdapter);
                 }
             }
@@ -124,9 +136,6 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
 
         addButton = (Button)findViewById(R.id.addButton);
         addButton.setOnClickListener(this);
-
-        majorsubjectdata = majorSubjectSpinner.getSelectedItem().toString(); //주요과목 데이터
-        minorsubjectdata = minorSubjectSpinner.getSelectedItem().toString(); //세부과목 데이터
     }
 
     // 버튼 클릭했을 때
