@@ -47,8 +47,14 @@
             android:theme="@style/AppTheme">
         </activity>
         <activity android:name=".Profile" />
-        <activity android:name=".MailboxActivity" android:theme="@style/Mailbox" />
-        <activity android:name=".NoticeBoardActivity" />
+        <activity
+        android:name=".MailboxActivity"
+        android:theme="@style/Mailbox"
+        android:label="우편함"/>
+        <activity
+            android:name=".NoticeBoardActivity"
+            android:label="공지사항"
+            android:theme="@style/NoticeBoard" />
         <activity android:name=".ManagementActivity" />
         <activity android:name=".DeveloperInfoActivity"></activity>
     </application>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/noticeTitle"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:text="제목"
+        android:textSize="15dp"
+        android:paddingBottom="10dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:textDirection="firstStrongRtl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/noticeTitle"
+        android:paddingRight="7dp"
+        android:paddingTop="7dp"
+        android:layout_alignBottom="@id/noticeTitle"
+        android:layout_alignParentRight="true"
+        android:text="2018-05-19"
+        android:textStyle="bold"
+        android:id="@+id/noticeDate"
+        android:layout_toRightOf="@+id/noticeTitle"/>
+
+    <TextView
+        android:id="@+id/noticeContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="7dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="14dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/noticeTitle"
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.3"
+        android:lines="3"
+        android:text="내용"
+        android:textSize="14dp" />
+</RelativeLayout>
