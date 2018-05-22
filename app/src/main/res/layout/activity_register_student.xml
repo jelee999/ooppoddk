@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterStudentActivity">
+    tools:context="kr.ac.postech.jelee.poddk.RegisterStudentActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -177,4 +177,5 @@
                 android:id="@+id/registerButton"/>
         </LinearLayout>
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
