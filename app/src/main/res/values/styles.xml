@@ -19,7 +19,7 @@
         <item name="android:layout_margin">15dp</item>
         <item name="android:padding">15dp</item>
     </style>
-    <style name="NoticeBoard" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Profile" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -27,11 +27,4 @@
         <item name="windowActionBar">true</item>
     </style>
 
-    <style name="Mailbox" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">true</item>
-    </style>
 </resources>
