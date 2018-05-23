@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="majorList">
+        <item>수학과</item>
+        <item>물리학과</item>
+        <item>화학과</item>
+        <item>생명과학과</item>
+        <item>신소재공학과</item>
+        <item>기계공학과</item>
+        <item>산업경영공학과</item>
+        <item>전자전기공학과</item>
+        <item>컴퓨터공학과</item>
+        <item>화학공학과</item>
+        <item>창의IT융합공학과</item>
+    </string-array>
+
+</resources>

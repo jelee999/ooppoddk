@@ -17,7 +17,7 @@
         <activity android:name=".View_teacher" />
         <activity android:name=".View_student" />
         <activity android:name=".FindUserActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterPostechActivity" />
         <activity android:name=".RegisterStudentActivity" />
@@ -41,7 +41,7 @@
             android:label="학생 등록하기"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme" />
         <activity android:name=".Profile" />

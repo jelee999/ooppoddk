@@ -42,7 +42,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="170dp"
                 android:padding="10dp"
-                android:id="@+id/user_id"
+                android:id="@+id/ID"
                 android:drawableStart="@drawable/ic_person_black_24dp"
                 android:drawableLeft="@drawable/ic_person_black_24dp"/>
             <EditText
@@ -53,7 +53,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:id="@+id/user_pw"
+                android:id="@+id/PW"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"/>
             <Button
@@ -63,7 +63,8 @@
                 android:textStyle="bold"
                 android:hint="로그인"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:id="@+id/Login"/>
 
             <TextView
                 android:layout_width="wrap_content"
