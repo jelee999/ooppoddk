@@ -51,7 +51,7 @@ class RegisterPostechActivity : AppCompatActivity() {
         dateSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.dateList))
 
         val majorSpinner = findViewById(R.id.user_major) as Spinner
-        majorSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.majorList))
+        majorSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.majorList1))
 
         val questionSpinner = findViewById(R.id.user_pw_question) as Spinner
         questionSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,resources.getStringArray(R.array.questionList))

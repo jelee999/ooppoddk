@@ -1,7 +1,9 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +47,8 @@ public class Profile extends Fragment implements View.OnClickListener {
         noticeBoardBtn = (Button) rootView.findViewById(R.id.NoticeBoardButton);
         settingBtn = (ImageButton) rootView.findViewById(R.id.setting);
         settingLayout = (RelativeLayout) rootView.findViewById(R.id.settingLayout);
+
+
 
         mailboxBtn.setOnClickListener(this);
         managementBtn.setOnClickListener(this);
