@@ -1,6 +1,8 @@
 package kr.ac.postech.jelee.poddk;
 
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,13 +19,16 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
     Button cancelButton;
     Button addButton;
 
+    //SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+    //String ID = saved.getString("inputID","0"); //사용자 ID
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_teacher);
         this.setFinishOnTouchOutside(false);
 
-        ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorList)));
+        ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorSubjectList)));
         ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.linguisticList)));
         ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mathList)));
         ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.physicsList)));
@@ -42,8 +47,6 @@ public class Add_teacher extends AppCompatActivity  implements View.OnClickListe
         //주요과목 스피너
         final ArrayAdapter majorAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, majorList);
         final Spinner majorSubjectSpinner = (Spinner)findViewById(R.id.majorSubject);
-
-        //Spinner minorSubjectSpinner;
 
         final ArrayAdapter linguisticAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, linguisticList);
         final ArrayAdapter mathAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mathList);

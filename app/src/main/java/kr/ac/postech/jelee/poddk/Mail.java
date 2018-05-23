@@ -7,41 +7,61 @@ import android.media.Image;
  */
 
 public class Mail {
-    String title;
-    String Content;
-    String Name;
-    String Date;
+    String mailTitle;
+    String mailContent;
+    String senderID;
+    String senderName;
+    String date;
     int ImageID;
 
-    public Mail(String title, String content, String date, int imageID) {
-        this.title = title;
-        Content = content;
-        Date = date;
-        ImageID = imageID;
+    public Mail( String mailTitle, String mailContent, String senderID, String senderName, String date, int ImageID) {
+        this.mailTitle = mailTitle;
+        this.mailContent = mailContent;
+        this.senderID = senderID;
+        this.senderName = senderName;
+        this.date = date;
+        this.ImageID = ImageID;
     }
 
-    public String getTitle() {
-        return title;
+
+    public String getMailTitle() {
+        return mailTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setMailTitle(String mailTitle) {
+        this.mailTitle = mailTitle;
     }
 
-    public String getContent() {
-        return Content;
+    public String getMailContent() {
+        return mailContent;
     }
 
-    public void setContent(String content) {
-        Content = content;
+    public void setMailContent(String mailContent) {
+        this.mailContent = mailContent;
+    }
+
+    public String getSenderID() {
+        return senderID;
+    }
+
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
+        this.date = date;
     }
 
     public int getImageID() {

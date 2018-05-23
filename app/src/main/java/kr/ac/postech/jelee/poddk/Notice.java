@@ -1,5 +1,8 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
 /**
  * Created by ljh45 on 2018-05-20.
  */

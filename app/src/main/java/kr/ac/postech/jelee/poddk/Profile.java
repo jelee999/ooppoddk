@@ -21,40 +21,50 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import static android.content.Intent.getIntent;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 
-public class Profile extends Fragment implements View.OnClickListener {
+public class Profile extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     Button mailboxBtn;
-    Button managementBtn;
+    Button profileEditBtn;
     Button developerInfoBtn;
     Button noticeBoardBtn;
     ImageButton settingBtn;
     RelativeLayout settingLayout;
     int v = 0;
-
     RadioGroup rg;
-    AudioManager am;
+
+    @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            SharedPreferences saved = getActivity().getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        String ID = saved.getString("inputID", "0");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = (RelativeLayout) inflater.inflate(R.layout.activity_profile, container, false);
         mailboxBtn = (Button) rootView.findViewById(R.id.mailboxButton);
-        managementBtn = (Button) rootView.findViewById(R.id.managementButton);
+        profileEditBtn = (Button) rootView.findViewById(R.id.profileEditButton);
         developerInfoBtn = (Button) rootView.findViewById(R.id.developerInfoButton);
         noticeBoardBtn = (Button) rootView.findViewById(R.id.NoticeBoardButton);
         settingBtn = (ImageButton) rootView.findViewById(R.id.setting);
         settingLayout = (RelativeLayout) rootView.findViewById(R.id.settingLayout);
+        rg = (RadioGroup)rootView.findViewById(R.id.settingGroup);
+        /*am = (AudioManager)getContext().getSystemService(getActivity().AUDIO_SERVICE);*/
+
 
 
 
         mailboxBtn.setOnClickListener(this);
-        managementBtn.setOnClickListener(this);
+        profileEditBtn.setOnClickListener(this);
         developerInfoBtn.setOnClickListener(this);
         noticeBoardBtn.setOnClickListener(this);
         settingBtn.setOnClickListener(this);
+        rg.setOnCheckedChangeListener(this);
 
         return rootView;
     }
@@ -65,8 +75,8 @@ public class Profile extends Fragment implements View.OnClickListener {
         if (view == mailboxBtn) {
             Intent intent = new Intent(getActivity(), MailboxActivity.class);
             startActivity(intent);
-        } else if (view == managementBtn) {
-            Intent intent = new Intent(getActivity(), ManagementActivity.class);
+        } else if (view == profileEditBtn) {
+            Intent intent = new Intent(getActivity(), ProfileEditActivity.class);
             startActivity(intent);
         } else if (view == developerInfoBtn) {
             Intent intent = new Intent(getActivity(), DeveloperInfoActivity.class);
@@ -78,12 +88,33 @@ public class Profile extends Fragment implements View.OnClickListener {
             if (v == 0) v++;
             else if (v == 1) v--;
 
-            if (v == 1) {
+            if (v == 1)
+            {
                 settingLayout.setVisibility(VISIBLE);
-            } else {
+            }
+            else
+            {
                 settingLayout.setVisibility(INVISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        if(i==R.id.vibrationRadioButton)
+        {
+            /*am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);*/
+        }
+        else if( i == R.id.soundRadioButton)
+        {
+
+        }
+        else if( i == R.id.muteRadioButton)
+        {
+
+        }
+
+        Toast.makeText(getContext(), "모드가 변경되었습니다.", Toast.LENGTH_SHORT).show();
     }
 }
 

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.ac.postech.jelee.poddk">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -26,7 +25,7 @@
             android:name=".SplashActivity"
             android:label="PODDK"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,18 +43,25 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".Profile" />
         <activity
-        android:name=".MailboxActivity"
-        android:theme="@style/Mailbox"
-        android:label="우편함"/>
+            android:name=".MailboxActivity"
+            android:label="우편함"
+            android:theme="@style/Profile" />
         <activity
             android:name=".NoticeBoardActivity"
             android:label="공지사항"
-            android:theme="@style/NoticeBoard" />
-        <activity android:name=".ManagementActivity" />
-        <activity android:name=".DeveloperInfoActivity"></activity>
+            android:theme="@style/Profile" />
+        <activity android:name=".DeveloperInfoActivity" />
+        <activity
+            android:name=".ProfileEditActivity"
+            android:label="프로필 편집"
+            android:theme="@style/Profile" />
+        <activity android:name=".MailMoreActivity"
+            android:label="우편함"
+            android:theme="@style/Profile"
+            />
     </application>
+
 </manifest>

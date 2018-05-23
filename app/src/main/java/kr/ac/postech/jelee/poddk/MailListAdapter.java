@@ -1,6 +1,10 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -22,7 +34,7 @@ public class MailListAdapter extends BaseAdapter{
     private List<Mail> mailList;
 
     public MailListAdapter(Context context, List<Mail> mailList) {
-        this.context= context;
+        this.context = context;
         this.mailList = mailList;
     }
 
@@ -42,33 +54,68 @@ public class MailListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        View v =View.inflate(context, R.layout.mail, null);
-        ImageView profileImage = (ImageView)v.findViewById(R.id.mailProfile);
-        TextView titleText = (TextView)v.findViewById(R.id.mailTitle);
-        TextView dateText = (TextView)v.findViewById(R.id.mailDate);
-        TextView contentText = (TextView)v.findViewById(R.id.mailContent);
+    public View getView(final int i, View view, ViewGroup viewGroup) {
+        View v = View.inflate(context, R.layout.mail, null);
+        ImageView profileImage = (ImageView) v.findViewById(R.id.mailProfile);
+        TextView titleText = (TextView) v.findViewById(R.id.mailTitle);
+        TextView dateText = (TextView) v.findViewById(R.id.mailDate);
+        final TextView contentText = (TextView) v.findViewById(R.id.mailContent);
 
         profileImage.setImageResource(mailList.get(i).getImageID());
-        titleText.setText(mailList.get(i).getTitle());
+        titleText.setText(mailList.get(i).getMailTitle());
         dateText.setText(mailList.get(i).getDate());
-        contentText.setText(mailList.get(i).getContent());
+        contentText.setText(mailList.get(i).getMailContent());
 
-        v.setTag(mailList.get(i).getTitle());
+        v.setTag(mailList.get(i).getMailTitle());
 
 
-        RelativeLayout mailLayout = (RelativeLayout)v.findViewById(R.id.OneMail);
-        mailLayout.setOnLongClickListener(new View.OnLongClickListener()
-        {
+        final RelativeLayout mailLayout = (RelativeLayout) v.findViewById(R.id.OneMail);
+        mailLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 return false;
             }
         });
+        final Button deleteButton = (Button) v.findViewById(R.id.mailDeleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                AlertDialog dialog = builder.setMessage("메일이 삭제되었습니다.")
+                                        .setPositiveButton("확인", null)
+                                        .create();
+                                dialog.show();
+                                mailList.add(mailList.remove(i));
+                                notifyDataSetChanged();
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                AlertDialog dialog = builder.setMessage("메일 삭제 실패하였습니다.")
+                                        .setNegativeButton("다시 시도", null)
+                                        .create();
+                                dialog.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };/*
+                DeleteRequest deleteRequest = new DeleteRequest(userID, mailList.get(i).getTitle() + "");
+                RequestQueue queue = Volley.newRequestQueue(context);
+                queue.add(deleteRequest);*/
+            }
+        });
+
+
 
         return v;
     }
-
 
 
 }

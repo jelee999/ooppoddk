@@ -1,7 +1,7 @@
 
 <resources>
-    <string-array name="majorList">
-        <item>선택사항없음</item>
+    <string-array name="majorSubjectList">
+        <item>선택해주세요</item>
         <item>언어</item>
         <item>수학</item>
         <item>물리</item>
@@ -16,6 +16,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="linguisticList">
+        <item>선택사항없음</item>
         <item>영어</item>
         <item>중국어</item>
         <item>일본어</item>
@@ -25,6 +26,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="mathList">
+        <item>선택사항없음</item>
         <item>미적분학</item>
         <item>미분방정식</item>
         <item>응용선형대수</item>
@@ -34,6 +36,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="physicsList">
+        <item>선택사항없음</item>
         <item>일반물리</item>
         <item>역학</item>
         <item>전자기학</item>
@@ -42,6 +45,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="chemistryList">
+        <item>선택사항없음</item>
         <item>일반화학</item>
         <item>물리화학</item>
         <item>유기화학</item>
@@ -49,6 +53,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="lifescienceList">
+        <item>선택사항없음</item>
         <item>일반생명과학</item>
         <item>세포생물학</item>
         <item>생태학</item>
@@ -56,6 +61,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="mechanicList">
+        <item>선택사항없음</item>
         <item>전산제도및설계</item>
         <item>고체역학</item>
         <item>열역학</item>
@@ -65,6 +71,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="imeList">
+        <item>선택사항없음</item>
         <item>재무회계</item>
         <item>제품생산공정설계</item>
         <item>경영과학I</item>
@@ -74,6 +81,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="materialList">
+        <item>선택사항없음</item>
         <item>신소재과학</item>
         <item>소재양자론</item>
         <item>소재의결함론</item>
@@ -83,6 +91,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="electricList">
+        <item>선택사항없음</item>
         <item>반도체전자공학I</item>
         <item>회로이론</item>
         <item>전자기학개론</item>
@@ -91,6 +100,7 @@
         <item>기타</item>
     </string-array>
     <string-array name="cseList">
+        <item>선택사항없음</item>
         <item>프로그래밍과문제해결</item>
         <item>객체지향프로그래밍</item>
         <item>데이터구조</item>
@@ -99,17 +109,22 @@
         <item>기타</item>
     </string-array>
     <string-array name="chemicalengineeringList">
+        <item>선택사항없음</item>
         <item>화공물리화학</item>
         <item>화공열역학</item>
         <item>유기화학I</item>
         <item>유기화학II</item>
         <item>화학생명공학</item>
         <item>기타</item>
-</string-array>
+    </string-array>
     <string-array name="citeList">
         <item>기타</item>
     </string-array>
     <string-array name="etcList">
-        <item>선택사항없음</item>
+        <item>기타</item>
     </string-array>
+    <string-array name="nullList">
+        <item></item>
+    </string-array>
+
 </resources>
