@@ -8,15 +8,27 @@ public class Student {
     String Name;
     int Age;
     String Sex;
-    String Subject;
+    String majorSubject;
+    String minorSubject;
+    String learnContents;
+    String studentCapability;
+    String availableTime;
+    String etcData = "";
 
-    public Student(String studentIDData, int imageID, String name, int age, String sex, String subject ) {
+    public Student(String studentIDData, int imageID, String name, int age, String sex, String majorsubject, String minorsubject,
+                   String learncontents, String studentcapability, String availabletime, String etcdata) {
         StudentIDdata = studentIDData;
         ImageID = imageID;
         Name = name;
         Age = age;
         Sex = sex;
-        Subject = subject;
+        majorSubject = majorsubject;
+        minorSubject = minorsubject;
+        learnContents = learncontents;
+        studentCapability = studentcapability;
+        availableTime = availabletime;
+        etcData = etcdata;
+
     }
 
     public String getStudentIDdata() {return StudentIDdata; }
@@ -34,7 +46,22 @@ public class Student {
     public String getSex() {return Sex; }
     public void setSex(String sex) {Sex = sex;}
 
-    public String getSubject() {return Subject; }
-    public void setSubject(String subject) {Subject = subject;}
+    public String getmajorSubject() {return majorSubject; }
+    public void setmajorSubject(String subject) {majorSubject = subject;}
+
+    public String getminorSubject() {return minorSubject; }
+    public void setminorSubject(String contents) {minorSubject = contents;}
+
+    public String getlearnContents() {return learnContents; }
+    public void setlearnContents(String contents) {learnContents = contents;}
+
+    public String getstudentCapability() {return studentCapability; }
+    public void setstudentCapability(String contents) {studentCapability = contents;}
+
+    public String getavailableTime() {return availableTime; }
+    public void setavailableTime(String contents) {availableTime = contents;}
+
+    public String getetcData() {return etcData; }
+    public void setetcData(String contents) {etcData = contents;}
 
 }
