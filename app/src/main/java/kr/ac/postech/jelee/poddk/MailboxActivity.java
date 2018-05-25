@@ -2,7 +2,9 @@ package kr.ac.postech.jelee.poddk;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.provider.CallLog;
 import android.support.v7.app.ActionBar;
@@ -41,25 +43,17 @@ public class MailboxActivity extends AppCompatActivity {
     protected ListView mailListView;
     protected MailListAdapter adapter;
     protected List<Mail> mailList;
+    String ID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mailbox);
 
+        SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        ID = saved.getString("inputID","0");
+
         mailListView = (ListView)findViewById(R.id.mailListView);
         mailList = new ArrayList<Mail>();
-        mailList.add(new Mail("메일 제목1", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목2", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목3", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail("메일 제목4", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목5", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목6", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
         mailList.add(new Mail("메일 제목7", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
         mailList.add(new Mail( "메일 제목8", "메일 내용","송신자ID",
@@ -74,7 +68,7 @@ public class MailboxActivity extends AppCompatActivity {
 
 
 
-/*
+
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {
         String target;
@@ -83,7 +77,7 @@ public class MailboxActivity extends AppCompatActivity {
         protected void onPreExecute() {
 
             try {
-                target = "서버주소/mail.php?userID="+ URLEncoder.encode(,"UTF-8");
+                target = "서버주소/mail.php?userID="+ URLEncoder.encode(ID,"UTF-8");
             }
             catch (Exception e)
             {
@@ -152,5 +146,5 @@ public class MailboxActivity extends AppCompatActivity {
     }
 
 
-*/
+
 }

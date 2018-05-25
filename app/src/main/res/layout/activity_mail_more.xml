@@ -7,7 +7,7 @@
         android:id="@+id/mailTitle_Date_Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F3F3">
+        android:background="#F0F0F0">
 
         <TextView
             android:id="@+id/MailTitle_more"
@@ -20,8 +20,7 @@
             android:layout_alignParentLeft="true"
             android:text="메일 제목 메일 제목 메일 제목 메일  "
             android:textSize="17dp"
-            android:textStyle="bold"
-            android:background="#F8F8F8"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/MailDate_more"
@@ -39,7 +38,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/mailTitle_Date_Layout"
-    android:background="#F8F8F8">
+    android:background="#F0F0F0"
+    android:paddingBottom="10dp">
     <TextView
         android:id="@+id/MailSender_more"
         android:layout_width="wrap_content"
@@ -58,7 +58,6 @@
     <View
         android:id="@+id/mail_line"
         android:layout_below="@id/SenderLayout"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_centerInParent="true"
@@ -71,4 +70,11 @@
         android:layout_alignParentLeft="true"
         android:layout_margin="15dp"
         android:text=" 내용 메일 내용 메일 내용 메일 내용 메일 내용 메일 내용 메일 내용 메일 내용 "/>
+    <View
+        android:layout_below="@id/MailContent_more"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        android:background="#d0d0d0"/>
 </RelativeLayout>

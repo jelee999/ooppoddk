@@ -72,12 +72,6 @@ public class MailListAdapter extends BaseAdapter {
 
 
         final RelativeLayout mailLayout = (RelativeLayout) v.findViewById(R.id.OneMail);
-        mailLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
         final Button deleteButton = (Button) v.findViewById(R.id.mailDeleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
