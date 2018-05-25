@@ -38,9 +38,9 @@ import java.util.List;
 
 public class MailboxActivity extends AppCompatActivity {
 
-    private ListView mailListView;
-    private MailListAdapter adapter;
-    private List<Mail> mailList;
+    protected ListView mailListView;
+    protected MailListAdapter adapter;
+    protected List<Mail> mailList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,23 +48,23 @@ public class MailboxActivity extends AppCompatActivity {
 
         mailListView = (ListView)findViewById(R.id.mailListView);
         mailList = new ArrayList<Mail>();
-        mailList.add(new Mail("메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail("메일 제목1", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목2", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목3", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail("메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail("메일 제목4", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목5", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목6", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail("메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail("메일 제목7", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목8", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목9", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
         adapter = new MailListAdapter(getApplicationContext(), mailList);
 
@@ -73,10 +73,8 @@ public class MailboxActivity extends AppCompatActivity {
 
 
 
-    /*
-    Intent intent = new Intent(getApplicationContext(), MailMoreActivity.class);
-    startActivity(intent);*/
-    /*
+
+/*
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {
         String target;
@@ -151,8 +149,8 @@ public class MailboxActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }*/
+    }
 
 
-
+*/
 }

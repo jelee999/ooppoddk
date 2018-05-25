@@ -28,7 +28,7 @@ import java.util.List;
  * Created by ljh45 on 2018-05-21.
  */
 
-public class MailListAdapter extends BaseAdapter{
+public class MailListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Mail> mailList;
@@ -60,11 +60,13 @@ public class MailListAdapter extends BaseAdapter{
         TextView titleText = (TextView) v.findViewById(R.id.mailTitle);
         TextView dateText = (TextView) v.findViewById(R.id.mailDate);
         final TextView contentText = (TextView) v.findViewById(R.id.mailContent);
+        //mail.xml 파일의 뷰를 각각 초기화
 
         profileImage.setImageResource(mailList.get(i).getImageID());
         titleText.setText(mailList.get(i).getMailTitle());
         dateText.setText(mailList.get(i).getDate());
         contentText.setText(mailList.get(i).getMailContent());
+        // i 번째 메일 내용 지정
 
         v.setTag(mailList.get(i).getMailTitle());
 
@@ -113,6 +115,22 @@ public class MailListAdapter extends BaseAdapter{
         });
 
 
+
+
+        mailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(context, MailMoreActivity.class);
+                intent.putExtra("MailTitle", mailList.get(i).getMailTitle());
+                intent.putExtra("MailContent", mailList.get(i).getMailContent());
+                intent.putExtra("MailDate", mailList.get(i).getDate());
+                intent.putExtra("MailSenderID", mailList.get(i).getSenderID());
+                intent.putExtra("MailSenderName", mailList.get(i).getSenderName());
+                context.startActivity(intent);
+                //메일 터치하는 경우 이벤트 처리. 해당 메일의 정보를 다음 액티비티에 전달.
+            }
+        });
 
         return v;
     }

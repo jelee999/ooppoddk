@@ -35,8 +35,8 @@ public class NoticeBoardActivity extends AppCompatActivity {
         noticeList.add(new Notice("공지사항 제목.", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 ", "2018-05-20"));
         noticeList.add(new Notice("공지사항 제목.공지사항 제목 공지사항 제목 공지사항 제목 공지사항 제목공지사항 제목", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용  ", "2018-05-20"));
 */
-        adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
 
+        adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
         noticeListView.setAdapter(adapter);
 
         new BackgroundTask().execute();
@@ -48,7 +48,7 @@ public class NoticeBoardActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "서버주소/Notice.php";
+            target = "http://ljh453.cafe24.com/podduk_notice.php";
         }
 
         @Override
@@ -90,11 +90,12 @@ public class NoticeBoardActivity extends AppCompatActivity {
                 while(count<jsonArray.length())
                 {
                     JSONObject object = jsonArray.getJSONObject(count);
-                    noticeTitle = object.getString("noticeTitle");
-                    noticeContent = object.getString("noticeContent");
-                    noticeDate = object.getString("noticeDate");
+                    noticeTitle = object.getString("noticename");
+                    noticeContent = object.getString("noticecontent");
+                    noticeDate = object.getString("noticedate");
                     Notice notice = new Notice(noticeTitle, noticeContent, noticeDate);
                     noticeList.add(notice);
+                    adapter.notifyDataSetChanged();
                     count++;
                 }
             }catch (Exception e){
