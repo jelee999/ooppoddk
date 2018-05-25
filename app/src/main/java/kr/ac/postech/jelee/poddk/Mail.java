@@ -10,17 +10,13 @@ public class Mail {
     String mailTitle;//메일 제목
     String mailContent;//메일 내용
     String senderID;//송신자 ID
-    String senderName;//송신자 이름
     String date;//메일 발송일
-    int ImageID;//프로필 이미지
 
-    public Mail( String mailTitle, String mailContent, String senderID, String senderName, String date, int ImageID) {
+    public Mail( String mailTitle, String mailContent, String senderID, String date) {
         this.mailTitle = mailTitle;
         this.mailContent = mailContent;
         this.senderID = senderID;
-        this.senderName = senderName;
         this.date = date;
-        this.ImageID = ImageID;
     }//메일 Constructor
 
 
@@ -48,14 +44,6 @@ public class Mail {
         this.senderID = senderID;
     }
 
-    public String getSenderName() {
-        return senderName;
-    }
-
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
-    }
-
     public String getDate() {
         return date;
     }
@@ -64,11 +52,4 @@ public class Mail {
         this.date = date;
     }
 
-    public int getImageID() {
-        return ImageID;
-    }
-
-    public void setImageID(int imageID) {
-        ImageID = imageID;
-    }
 }

@@ -40,19 +40,13 @@
     android:layout_below="@id/mailTitle_Date_Layout"
     android:background="#F0F0F0"
     android:paddingBottom="10dp">
-    <TextView
-        android:id="@+id/MailSender_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="18dp"
-        android:text="작성자: 이정훈"/>
 
     <TextView
         android:id="@+id/MailSenderID_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="(ID)"
-        android:layout_toRightOf="@id/MailSender_more"/>
+        android:text="ID"
+        android:paddingLeft="18dp"/>
 
 </RelativeLayout>
     <View

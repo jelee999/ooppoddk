@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -38,14 +39,16 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-public class MailboxActivity extends AppCompatActivity {
+public class MailboxActivity extends AppCompatActivity
+{
 
     protected ListView mailListView;
     protected MailListAdapter adapter;
     protected List<Mail> mailList;
-    String ID;
+    String ID ;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mailbox);
 
@@ -54,15 +57,18 @@ public class MailboxActivity extends AppCompatActivity {
 
         mailListView = (ListView)findViewById(R.id.mailListView);
         mailList = new ArrayList<Mail>();
-        mailList.add(new Mail("메일 제목7", "메일 내용","송신자ID",
+        /*
+        mailList.add(new Mail("메일 제목1", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목8", "메일 내용","송신자ID",
+        mailList.add(new Mail( "메일 제목2", "메일 내용","송신자ID",
                 "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목9", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
+        mailList.add(new Mail( "메일 제목3", "메일 내용","송신자ID",
+                "송신자 이름", "2018-05-21", R.drawable.profile ));*/
         adapter = new MailListAdapter(getApplicationContext(), mailList);
 
         mailListView.setAdapter(adapter);
+
+        new BackgroundTask().execute();
     }
 
 
@@ -74,15 +80,15 @@ public class MailboxActivity extends AppCompatActivity {
         String target;
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
 
             try {
-                target = "서버주소/mail.php?userID="+ URLEncoder.encode(ID,"UTF-8");
-            }
-            catch (Exception e)
-            {
+                target = "http://ljh453.cafe24.com/podduk_mail.php?id="+ URLEncoder.encode(ID,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+
         }
 
         @Override
@@ -122,21 +128,19 @@ public class MailboxActivity extends AppCompatActivity {
                 String mailTitle;
                 String mailContent;
                 String senderID;
-                String senderName;
                 String date;
                 int ImageID;
                 int count = 0;
                 while(count<jsonArray.length())
                 {
                     JSONObject object = jsonArray.getJSONObject(count);
-                    mailTitle = object.getString("mailTitle");
-                    mailContent = object.getString("mailContent");
-                    date = object.getString("mailDate");
-                    senderID = object.getString("senderID");
-                    senderName = object.getString("senderName");
-                    ImageID = R.id.profile_image;
-                    Mail mail = new Mail( mailTitle, mailContent, senderID, senderName,date, ImageID );
+                    mailTitle = object.getString("mail_title");
+                    mailContent = object.getString("mail_content");
+                    date = object.getString("receive_date");
+                    senderID = object.getString("send_id");
+                    Mail mail = new Mail( mailTitle, mailContent, senderID, date);
                     mailList.add(mail);
+                    adapter.notifyDataSetChanged();
                     count++;
                 }
             }catch (Exception e){

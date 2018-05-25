@@ -17,13 +17,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoticeBoardActivity extends AppCompatActivity {
+public class NoticeBoardActivity extends AppCompatActivity
+{
 
     private ListView noticeListView;
     private NoticeListAdapter adapter;
     private List<Notice> noticeList;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_board);
 

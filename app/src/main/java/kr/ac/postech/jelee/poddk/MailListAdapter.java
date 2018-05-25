@@ -56,16 +56,18 @@ public class MailListAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context, R.layout.mail, null);
-        ImageView profileImage = (ImageView) v.findViewById(R.id.mailProfile);
+        /*ImageView profileImage = (ImageView) v.findViewById(R.id.mailProfile);*/
         TextView titleText = (TextView) v.findViewById(R.id.mailTitle);
         TextView dateText = (TextView) v.findViewById(R.id.mailDate);
         final TextView contentText = (TextView) v.findViewById(R.id.mailContent);
+        TextView senderIDText = (TextView)v.findViewById(R.id.MailSenderID);
         //mail.xml 파일의 뷰로 각각 초기화
 
-        profileImage.setImageResource(mailList.get(i).getImageID());
         titleText.setText(mailList.get(i).getMailTitle());
         dateText.setText(mailList.get(i).getDate());
         contentText.setText(mailList.get(i).getMailContent());
+        senderIDText.setText(mailList.get(i).getSenderID());
+
         // i 번째 메일 내용 지정
 
         v.setTag(mailList.get(i).getMailTitle());
@@ -101,10 +103,11 @@ public class MailListAdapter extends BaseAdapter {
                             e.printStackTrace();
                         }
                     }
-                };/*
-                DeleteRequest deleteRequest = new DeleteRequest(userID, mailList.get(i).getTitle() + "");
+                };
+                DeleteRequest deleteRequest = new DeleteRequest("jim0307", mailList.get(i).getMailTitle() + "",
+                        mailList.get(i).getMailContent()+"", mailList.get(i).getSenderID()+"",responseListener);
                 RequestQueue queue = Volley.newRequestQueue(context);
-                queue.add(deleteRequest);*/
+                queue.add(deleteRequest);
             }
         });
 
@@ -120,7 +123,6 @@ public class MailListAdapter extends BaseAdapter {
                 intent.putExtra("MailContent", mailList.get(i).getMailContent());
                 intent.putExtra("MailDate", mailList.get(i).getDate());
                 intent.putExtra("MailSenderID", mailList.get(i).getSenderID());
-                intent.putExtra("MailSenderName", mailList.get(i).getSenderName());
                 context.startActivity(intent);
                 //메일 터치하는 경우 이벤트 처리. 해당 메일의 정보를 다음 액티비티에 전달.
             }
