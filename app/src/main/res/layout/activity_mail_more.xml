@@ -31,24 +31,18 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
             android:text="2018-05-23" />
+
     </RelativeLayout>
-    <View
-        android:id="@+id/mail_line"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/MailSender_more"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:background="#d0d0d0"/>
+
 <RelativeLayout
+    android:id="@+id/SenderLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/mailTitle_Date_Layout"
     android:background="#F8F8F8">
-
     <TextView
         android:id="@+id/MailSender_more"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="18dp"
         android:text="작성자: 이정훈"/>
@@ -61,7 +55,14 @@
         android:layout_toRightOf="@id/MailSender_more"/>
 
 </RelativeLayout>
-
+    <View
+        android:id="@+id/mail_line"
+        android:layout_below="@id/SenderLayout"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        android:background="#d0d0d0"/>
     <TextView
         android:id="@+id/MailContent_more"
         android:layout_width="match_parent"
