@@ -1,13 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
+    android:layout_margin="4dp"
     android:id="@+id/OneStudent"
-    android:clickable="true">
+    android:clickable="true"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
 
     <ImageView
-        android:id="@+id/studentProfile"
+        android:id="@+id/Profile"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/profile"
@@ -15,13 +22,13 @@
 
 
     <GridLayout
-        android:id="@+id/studentgrid"
+        android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/studentProfile">
+        android:layout_toRightOf="@id/Profile">
 
         <TextView
-            android:id="@+id/studentName"
+            android:id="@+id/Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름   "
@@ -31,7 +38,7 @@
             android:layout_column="0"/>
 
         <TextView
-            android:id="@+id/studentNameData"
+            android:id="@+id/NameData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ex)김포항"
@@ -40,7 +47,7 @@
             android:layout_column="1" />
 
         <TextView
-            android:id="@+id/studentAge"
+            android:id="@+id/Age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="나이   "
@@ -50,7 +57,7 @@
             android:layout_column="0"/>
 
         <TextView
-            android:id="@+id/studentAgeData"
+            android:id="@+id/AgeData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ex)21"
@@ -59,7 +66,7 @@
             android:layout_column="1" />
 
         <TextView
-            android:id="@+id/studentSex"
+            android:id="@+id/Sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="성별   "
@@ -69,7 +76,7 @@
             android:layout_column="0"/>
 
         <TextView
-            android:id="@+id/studentSexData"
+            android:id="@+id/SexData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ex)여성"
@@ -78,7 +85,7 @@
             android:layout_column="1" />
 
         <TextView
-            android:id="@+id/studentSubject"
+            android:id="@+id/Subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="과목   "
@@ -89,12 +96,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="3">
 
             <TextView
-                android:id="@+id/studentmajorSubjectData"
+                android:id="@+id/majorSubjectData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ex)수학"
@@ -106,17 +113,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="  :  "
-                android:layout_toRightOf="@id/studentmajorSubjectData"/>
+                android:layout_toRightOf="@id/majorSubjectData"/>
 
             <TextView
-                android:id="@+id/studentminorSubjectData"
+                android:id="@+id/minorSubjectData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ex)미분방정식"
                 android:textSize="14dp"
                 android:layout_toRightOf="@id/comma"/>
         </RelativeLayout>
+
     </GridLayout>
 
-
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

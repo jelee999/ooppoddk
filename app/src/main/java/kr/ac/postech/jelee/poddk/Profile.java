@@ -57,6 +57,8 @@ public class Profile extends Fragment implements View.OnClickListener, RadioGrou
         /*am = (AudioManager)getContext().getSystemService(getActivity().AUDIO_SERVICE);*/
 
 
+
+
         mailboxBtn.setOnClickListener(this);
         profileEditBtn.setOnClickListener(this);
         developerInfoBtn.setOnClickListener(this);
