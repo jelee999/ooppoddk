@@ -60,7 +60,7 @@ public class MailListAdapter extends BaseAdapter {
         TextView titleText = (TextView) v.findViewById(R.id.mailTitle);
         TextView dateText = (TextView) v.findViewById(R.id.mailDate);
         final TextView contentText = (TextView) v.findViewById(R.id.mailContent);
-        //mail.xml 파일의 뷰를 각각 초기화
+        //mail.xml 파일의 뷰로 각각 초기화
 
         profileImage.setImageResource(mailList.get(i).getImageID());
         titleText.setText(mailList.get(i).getMailTitle());

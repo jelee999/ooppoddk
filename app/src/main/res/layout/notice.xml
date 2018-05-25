@@ -41,7 +41,8 @@
         android:layout_below="@+id/noticeTitle"
         android:ellipsize="end"
         android:lineSpacingMultiplier="1.2"
-        android:lines="5"
+        android:maxLines="5"
+        android:lines="3"
         android:text="내용"
         android:textSize="14dp" />
 </RelativeLayout>
