@@ -1,148 +1,232 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
-public class Student_main extends Fragment implements View.OnClickListener{
+public class Student_main extends Fragment implements View.OnClickListener {
 
     FloatingActionButton addTeacherButton;
+    TextView clicktosearch;
+    LinearLayout hidesearchlayout;
+    private View rootView;
 
     public Student_main() {
 
     }
 
-    RecyclerView recyclerView;
-    RecyclerView.Adapter myAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    private List<Teacher> teacherList;
+    private RecyclerView mrecyclerView;
+    private TeacherAdapter mAdapter;
+    private RecyclerView.LayoutManager mlayoutManager;
+    private ArrayList<Person> teacherList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.student_main, container, false);
-
-        recyclerView = (RecyclerView)view.findViewById(R.id.teacherRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        teacherList = new ArrayList<Teacher>();
-        teacherList.add(new Teacher("jelee1", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
-                "blank", "blank", "blank", "blank"));
-        teacherList.add(new Teacher("jelee1", R.drawable.profile, "김과학", 16, "여", "컴퓨터공학", "객체지향프로그래밍",
-                "blank", "blank", "blank", "blank"));
-        teacherList.add(new Teacher("jelee1", R.drawable.profile, "이산수", 17, "여", "컴퓨터공학", "데이터구조",
-                "blank", "blank", "blank", "blank"));
+        rootView = view;
 
 
+        createTeacherList();
+        buildRecyclerView();
 
-        layoutManager =  new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        //과목 스피너
+        ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorSubjectList)));
+        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.linguisticList)));
+        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mathList)));
+        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.physicsList)));
+        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemistryList)));
+        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.lifescienceList)));
+        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mechanicList)));
+        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.imeList)));
+        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.materialList)));
+        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.electricList)));
+        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.cseList)));
+        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemicalengineeringList)));
+        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.citeList)));
+        final ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.etcList)));
 
-        myAdapter = new TeacherAdapter(teacherList, getContext());
-        recyclerView.setAdapter(myAdapter);
 
-        myAdapter.notifyDataSetChanged();
+        //주요과목 스피너
+        final ArrayAdapter majorAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, majorList);
+        final Spinner majorSubjectSpinner = (Spinner) view.findViewById(R.id.majorSubjectsearch);
 
-        addTeacherButton = (FloatingActionButton)view.findViewById(R.id.addTeacher);
+        final Spinner minorSubjectSpinner = (Spinner) view.findViewById(R.id.minorSubjectsearch);
+        final ArrayAdapter linguisticAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, linguisticList);
+        final ArrayAdapter mathAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, mathList);
+        final ArrayAdapter physicsAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, physicsList);
+        final ArrayAdapter chemistryAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, chemistryList);
+        final ArrayAdapter lifescienceAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, lifescienceList);
+        final ArrayAdapter mechanicAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, mechanicList);
+        final ArrayAdapter imeAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, imeList);
+        final ArrayAdapter materialAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, materialList);
+        final ArrayAdapter electricAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, electricList);
+        final ArrayAdapter cseAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, cseList);
+        final ArrayAdapter chemicalengineeringAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, chemicalengineeringList);
+        final ArrayAdapter citeAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, citeList);
+        final ArrayAdapter etcAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, etcList);
+
+        majorSubjectSpinner.setAdapter(majorAdapter);
+        majorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                //세부과목 스피너 설정
+                if (majorSubjectSpinner.getSelectedItemPosition() == 0) { //'선택사항없음'
+                    minorSubjectSpinner.setAdapter(etcAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 1) {
+                    minorSubjectSpinner.setAdapter(linguisticAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 2) { //'수학'
+                    minorSubjectSpinner.setAdapter(mathAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 3) { //물리
+                    minorSubjectSpinner.setAdapter(physicsAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 4) { //화학
+                    minorSubjectSpinner.setAdapter(chemistryAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 5) { //생명
+                    minorSubjectSpinner.setAdapter(lifescienceAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 6) { //기계공학
+                    minorSubjectSpinner.setAdapter(mechanicAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 7) { //산업경영공학
+                    minorSubjectSpinner.setAdapter(imeAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
+                    minorSubjectSpinner.setAdapter(materialAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학
+                    minorSubjectSpinner.setAdapter(electricAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 10) { //컴퓨터공학
+                    minorSubjectSpinner.setAdapter(cseAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 11) { //화학공학
+                    minorSubjectSpinner.setAdapter(chemicalengineeringAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 12) { //창의IT
+                    minorSubjectSpinner.setAdapter(citeAdapter);
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 13) { //기타
+                    minorSubjectSpinner.setAdapter(etcAdapter);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+
+
+        addTeacherButton = (FloatingActionButton) view.findViewById(R.id.addTeacher);
         addTeacherButton.setOnClickListener(this);
+
+        clicktosearch = (TextView) view.findViewById(R.id.clickbutton);
+        clicktosearch.setOnClickListener(this);
+
+        hidesearchlayout = (LinearLayout) view.findViewById(R.id.hidesearchBar);
+        hidesearchlayout.setVisibility(View.GONE);
+
 
         return view;
     }
 
-    class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.ItemViewHolder>
-    {
-        private Context context;
-        private List<Teacher> mItems;
-        private int lastPosition = -1;
+    public void insertItem(int position) {
+        teacherList.add(position, new Person("jelee3", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
+                "blank", "blank", "blank", "blank"));
+        mAdapter.notifyItemInserted(position);
+    }
 
+    public void removeItem(int position){
+        teacherList.remove(position);
+        mAdapter.notifyItemRemoved(position);
+    }
 
-        public TeacherAdapter(List<Teacher> items, Context mContext)
-        {
-            mItems = items;
-            context = mContext;
-        }
-
-        //필수로 Generate 되어야 하는 메소드 1 : 새로운 뷰 생성
-        public ItemViewHolder
-        onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.teacher, parent, false);
-            return new ItemViewHolder(v);
-        }
-
-        // 필수로 Generate 되어야 하는 메소드 2 : ListView의 getView 부분을 담당하는 메소드 (View의 내용을 해당 포지션의 데이터로 바꿈)
-        public void onBindViewHolder(ItemViewHolder holder, int position) {
-            holder.teacherProfile.setImageResource(mItems.get(position).getImageID());
-            holder.teacherName.setText(mItems.get(position).getName());
-            holder.teacherAge.setText(String.valueOf(mItems.get(position).getAge()));
-            holder.teacherSex.setText(mItems.get(position).getSex());
-            holder.teachermajorSubject.setText(mItems.get(position).getmajorSubject());
-            holder.teacherminorSubject.setText(mItems.get(position).getminorSubject());
-
-            setAnimation(holder.teacherProfile, position);
-        }
-
-        // 필수로 Generate 되어야 하는 메소드 3 (데이터의 크기를 리턴)
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-
-        public class ItemViewHolder extends RecyclerView.ViewHolder {
-            ImageView teacherProfile;
-            TextView teacherName;
-            TextView teacherAge;
-            TextView teacherSex;
-            TextView teachermajorSubject;
-            TextView teacherminorSubject;
-
-            public ItemViewHolder(View view) {
-                super(view);
-                teacherProfile = (ImageView) view.findViewById(R.id.teacherProfile);
-                teacherName = (TextView) view.findViewById(R.id.teacherNameData);
-                teacherAge = (TextView) view.findViewById(R.id.teacherAgeData);
-                teacherSex = (TextView) view.findViewById(R.id.teacherSexData);
-                teachermajorSubject = (TextView) view.findViewById(R.id.teachermajorSubjectData);
-                teacherminorSubject = (TextView) view.findViewById(R.id.teacherminorSubjectData);
+    //IDdata가 list안에 있으면 그 index를 반환함 & 없으면 -1 반환
+    public int checkPosition(String teacherIDData){
+        for(int i=0;i<teacherList.size();i++){
+            if(teacherList.get(i).getIDdata() == teacherIDData) {
+                return i;
             }
         }
+        return -1;
+    }
 
-        private void setAnimation(View viewToAnimate, int position)
-        {
-            // 새로 보여지는 뷰라면 애니메이션을 해줍니다
-            if (position > lastPosition) {
-                Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-                viewToAnimate.startAnimation(animation);
-                lastPosition = position;
+    public void createTeacherList() {
+        teacherList = new ArrayList<Person>();
+        teacherList.add(new Person("jelee1", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
+                "blank", "blank", "blank", "blank"));
+        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
+                "blank", "blank", "blank", "blank"));
+        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "컴공", "객체지향",
+                "blank", "blank", "blank", "blank"));
+        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "컴공", "양자물리",
+                "blank", "blank", "blank", "blank"));
+        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "과학", "전자기학",
+                "blank", "blank", "blank", "blank"));
+    }
+
+    public void buildRecyclerView() {
+
+        mrecyclerView = rootView.findViewById(R.id.teacherRecyclerView);
+        mrecyclerView.setHasFixedSize(true);
+        mlayoutManager = new LinearLayoutManager(this.getContext());
+        mAdapter = new TeacherAdapter(teacherList);
+
+        mrecyclerView.setLayoutManager(mlayoutManager);
+        mrecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickLIstener(new TeacherAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getActivity(), View_teacher.class);
+                intent.putExtra("teacherInfo", teacherList.get(position));
+                startActivity(intent);
+
             }
-        }
-
+        });
     }
 
     //+ 버튼 클릭했을 때
-    public void onClick(View view){
-        if(view == addTeacherButton){
+    public void onClick(View view) {
+        if (view == addTeacherButton) {
             Intent intent = new Intent(getActivity(), Add_teacher.class);
             startActivity(intent);
+        } else if (view == clicktosearch) {
+            if (hidesearchlayout.getVisibility() == View.GONE) {
+                hidesearchlayout.setVisibility(View.VISIBLE); //searchbar 보이게 함
+
+            } else {
+                hidesearchlayout.setVisibility(View.GONE); //searchbar 사라지게 함
+
+            }
         }
     }
+
 }
+
+
+
