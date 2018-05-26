@@ -6,6 +6,6 @@
     <item
         android:id="@+id/LogoutButton"
         android:orderInCategory="100"
-        android:title="로그아웃"
-        app:showAsAction="never" />
+        android:title="Logout"
+        app:showAsAction="always" />
 </menu>
