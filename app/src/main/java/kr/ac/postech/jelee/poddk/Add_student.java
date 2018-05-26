@@ -62,7 +62,10 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
     String studentAbility;
     String availableTime;
     String etcData;
-
+    EditText learndatatext;
+    EditText studentabilitytext;
+    EditText availabletimetext;
+    EditText etcDatatext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +125,8 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         final ArrayAdapter citeAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, citeList);
         final ArrayAdapter etcAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, etcList);
         final ArrayAdapter nullAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, nullList);
+
+
 
         majorSubjectSpinner.setAdapter(majorAdapter);
         majorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -219,15 +224,15 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         //과목정보 받아오기
         majorSubject = majorSubjectSpinner.getSelectedItem().toString();
 
-        EditText learndatatext = (EditText)findViewById(R.id.learnData);
-        EditText studentabilitytext = (EditText)findViewById(R.id.studentAbility);
-        EditText availabletimetext = (EditText)findViewById(R.id.availableTime);
-        EditText etcDatatext = (EditText)findViewById(R.id.etcData);
-
+        learndatatext = (EditText)findViewById(R.id.learnData);
+        studentabilitytext = (EditText)findViewById(R.id.studentAbility);
+        availabletimetext = (EditText)findViewById(R.id.availableTime);
+        etcDatatext = (EditText)findViewById(R.id.etcData);
         learnContents = learndatatext.getText().toString();
         studentAbility = studentabilitytext.getText().toString();
         availableTime = availabletimetext.getText().toString();
         etcData = etcDatatext.getText().toString();
+
 
     }
 
@@ -243,6 +248,11 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
                     learnContents, studentAbility, availableTime, etcData);
             Intent intent = new Intent();
             intent.putExtra("studenttoAdd", pstudent);
+            learnContents = learndatatext.getText().toString();
+            studentAbility = studentabilitytext.getText().toString();
+            availableTime = availabletimetext.getText().toString();
+            etcData = etcDatatext.getText().toString();
+            Toast.makeText(getApplicationContext(), learnContents, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
