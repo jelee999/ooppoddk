@@ -2,7 +2,9 @@ package kr.ac.postech.jelee.poddk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,11 +18,13 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,15 +64,28 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+
+
+
+
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public  boolean onPrepareOptionsMenu(Menu menu){
+        menu.getItem(0).setEnabled(true);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,12 +95,29 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.LogoutButton) {
+            SharedPreferences auto = getSharedPreferences("auto",Activity.MODE_PRIVATE);
+            SharedPreferences.Editor autoLogin = auto.edit();
+            autoLogin.putString("inputID",null);
+            autoLogin.putString("inputPW",null);
+            autoLogin.commit();
+
+            Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_LONG).show();
+
+
+            Intent nextIntent = new Intent(MainActivity.this, LoginActivity.class);
+            MainActivity.this.startActivity(nextIntent);
+
+            finish();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
 
     //deleted PlaceholderFragment class from here
     /**

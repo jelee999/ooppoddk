@@ -19,8 +19,6 @@
         <activity android:name=".FindUserActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".RegisterPostechActivity" />
-        <activity android:name=".RegisterStudentActivity" />
         <activity
             android:name=".SplashActivity"
             android:label="PODDK"
