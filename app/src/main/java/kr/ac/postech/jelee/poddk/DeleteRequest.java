@@ -14,11 +14,13 @@ public class DeleteRequest extends StringRequest{
     final static private String URL = "주소/.php";
     private Map<String, String> parameters;
 
-    public DeleteRequest(String userID, String mailTitle, Response.Listener<String> listener) {
+    public DeleteRequest(String userID, String mailTitle,String mailContent, String senderID, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
         parameters.put("userID", userID);
         parameters.put("mailTitle", mailTitle);
+        parameters.put("mailContent", mailContent);
+        parameters.put("senderID", senderID);
     }
 
     public Map<String, String> getParameters() {
