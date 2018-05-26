@@ -1,9 +1,13 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
@@ -24,17 +28,46 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.security.auth.Subject;
 
-public class Postechian_main extends Fragment implements View.OnClickListener {
+
+public class Postechian_main extends Fragment implements StudentAdapter.OnItemClickListener, View.OnClickListener {
+    static final int PICK_CONTACT_REQUEST = 1;
+    static final int ADDORDER = 4;
+    static final int DELETEORDER = 5;
+    static final int EDITORDER = 6;
+
+    //SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+    //String ID = saved.getString("inputID","0"); //사용자 ID 가져오기
+    String ID = "jelee"; //임시로 아이디 만들었음
+
 
     FloatingActionButton addStudentButton;
     TextView clicktosearch;
@@ -48,7 +81,11 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
     private RecyclerView mrecyclerView;
     private StudentAdapter mAdapter;
     private RecyclerView.LayoutManager mlayoutManager;
-    private ArrayList<Person> studentList;
+    private RequestQueue mRequestQueue;
+    private ArrayList<Person> studentList; //학생 리스트
+    private ArrayList<Person> currentstudentList = new ArrayList<Person>();
+    SearchView searchview;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,27 +93,24 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.postechian_main, container, false);
         rootView = view;
 
-
-
         createStudentList();
         buildRecyclerView();
 
         //과목 스피너
         ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorSubjectList)));
-        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.linguisticList)));
-        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mathList)));
-        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.physicsList)));
-        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemistryList)));
-        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.lifescienceList)));
-        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mechanicList)));
-        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.imeList)));
-        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.materialList)));
-        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.electricList)));
-        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.cseList)));
-        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemicalengineeringList)));
-        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.citeList)));
-        final ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.etcList)));
-
+        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+        ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
 
         //주요과목 스피너
         final ArrayAdapter majorAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, majorList);
@@ -151,12 +185,16 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
         hidesearchlayout = (LinearLayout) view.findViewById(R.id.hidesearchBar);
         hidesearchlayout.setVisibility(View.GONE);
 
+        searchview = (SearchView)view.findViewById(R.id.searchName);
+
+
 
         return view;
     }
 
+
     public void insertItem(int position) {
-        studentList.add(position, new Person("jelee3", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
+        studentList.add(position, new Person("jelee", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
                 "blank", "blank", "blank", "blank"));
         mAdapter.notifyItemInserted(position);
     }
@@ -166,10 +204,11 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
         mAdapter.notifyItemRemoved(position);
     }
 
+
     //IDdata가 list안에 있으면 그 index를 반환함 & 없으면 -1 반환
-    public int checkPosition(String studentIDData){
+    public int checkPosition(String identification){
         for(int i=0;i<studentList.size();i++){
-            if(studentList.get(i).getIDdata() == studentIDData) {
+            if(studentList.get(i).getIdentification() == identification) {
                 return i;
             }
         }
@@ -178,15 +217,9 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
 
     public void createStudentList() {
         studentList = new ArrayList<Person>();
-        studentList.add(new Person("jelee1", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
+        studentList.add(new Person("jelee", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
                 "blank", "blank", "blank", "blank"));
-        studentList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
-                "blank", "blank", "blank", "blank"));
-        studentList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "컴공", "객체지향",
-                "blank", "blank", "blank", "blank"));
-        studentList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "컴공", "양자물리",
-                "blank", "blank", "blank", "blank"));
-        studentList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "과학", "전자기학",
+        studentList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
                 "blank", "blank", "blank", "blank"));
     }
 
@@ -200,32 +233,401 @@ public class Postechian_main extends Fragment implements View.OnClickListener {
         mrecyclerView.setLayoutManager(mlayoutManager);
         mrecyclerView.setAdapter(mAdapter);
 
+       // currentstudentList = getStudents();
+
+        mRequestQueue = Volley.newRequestQueue(getContext());
+        parseJSON();
+        //new BackgroundTask().execute();
+
+        /*
         mAdapter.setOnItemClickLIstener(new StudentAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), View_student.class);
                 intent.putExtra("studentInfo", studentList.get(position));
                 startActivity(intent);
+                //startActivityForResult(intent, PICK_CONTACT_REQUEST);
 
             }
-        });
+        });*/
     }
 
-        //+ 버튼 클릭했을 때
-        public void onClick(View view) {
-            if (view == addStudentButton) {
-                Intent intent = new Intent(getActivity(), Add_student.class);
-                startActivity(intent);
-            } else if (view == clicktosearch) {
-                if (hidesearchlayout.getVisibility() == View.GONE) {
-                    hidesearchlayout.setVisibility(View.VISIBLE);
-                } else {
-                    hidesearchlayout.setVisibility(View.GONE);
+
+    //JSON에서 정보 받아오기
+    private void parseJSON() {
+        String url = "http://ljh453.cafe24.com/podduk_showstudent_init.php"; //url 연결
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONArray jsonArray = response.getJSONArray("response");
+
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject student = jsonArray.getJSONObject(i);
+
+                                String ID = student.getString("id");
+                                //Int imageID = student.getInt("imageID");
+                                String subjectcode = student.getString("subject");
+                                String content = student.getString("content");
+                                String ability = student.getString("ability");
+                                String time = student.getString("time");
+                                String etc = student.getString("etc");
+                                String Name = student.getString("name");
+                                String tempsex = student.getString("gender");
+                                String Sex;
+                                if(tempsex == "male"){
+                                    Sex = "남";
+                                }
+                                else{
+                                    Sex = "여";
+                                }
+
+                                String majorSubjectCode = subjectcode.substring(0,4); //ex)CSED
+                                String majorsubject="";
+                                String minorsubject="";
+                                String tempminor="";
+
+
+                                if(majorSubjectCode.equals("LING")) {
+                                    majorsubject = "언어";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LINGCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("MATH")) {
+                                    majorsubject = "수학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATHCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("PHYS")) {
+                                    majorsubject = "물리";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYSCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CHEM")) {
+                                    majorsubject = "화학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEMCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("LIFE")) {
+                                    majorsubject = "생명과학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFECode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("MECH")) {
+                                    majorsubject = "기계공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECHCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("IMEN")) {
+                                    majorsubject = "산업경영공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMENCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("AMSE")) {
+                                    majorsubject = "신소재공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSECode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("ELEC")) {
+                                    majorsubject = "전자전기공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELECCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CSED")) {
+                                    majorsubject = "컴퓨터공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSEDCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CHEB")) {
+                                    majorsubject = "화학공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEBCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CITE")) {
+                                    majorsubject = "창의IT";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITECode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("ETCS")) {
+                                    majorsubject = "기타";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCSCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+
+
+
+                                //ID에서 데이터 받아오기!!!!!!!!
+                                int Age = 16;
+
+                                studentList.add(new Person(ID, R.drawable.profile, Name, Age, Sex, majorsubject, minorsubject, content, ability, time, etc));
+                            }
+                            mAdapter = new StudentAdapter(Postechian_main.this.getContext(), studentList);
+                            mrecyclerView.setAdapter(mAdapter);
+                            mAdapter.setOnItemClickLIstener(Postechian_main.this);
+
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mRequestQueue.add(request);
+    }
+
+
+
+
+
+/*
+    class BackgroundTask extends AsyncTask<Void, Void, String>
+    {
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://ljh453.cafe24.com/podduk_showstudent_init.php"; // 연결할 url
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try{
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine())!=null)
+                {
+                    stringBuilder.append(temp+"\n");
                 }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+                int count = 0;
+                while (count < jsonArray.length()) {
+                    JSONObject student = jsonArray.getJSONObject(count);
+                    String ID = student.getString("id");
+                    //Int imageID = student.getInt("imageID");
+                    String subjectcode = student.getString("subject");
+                    String content = student.getString("content");
+                    String ability = student.getString("ability");
+                    String time = student.getString("time");
+                    String etc = student.getString("etc");
+                    String majorsubject = "";
+                    String minorsubject = "";
+
+                    String majorSubjectCode = subjectcode.substring(0, 3); //ex)CSED
+                    String SubjectList = majorSubjectCode + "Code"; //ex)CSEDCode
+                    List<String> majorsubjectList = Arrays.asList(getResources().getStringArray(R.array.majorSubjectList));
+                    List<String> majorsubjectcodeList = Arrays.asList(getResources().getStringArray(R.array.majorSubjectListCode));
+
+
+                    int arryid = getResources().getIdentifier(majorSubjectCode, "array", getActivity().getPackageName());
+                    int arrycodeid = getResources().getIdentifier(SubjectList, "array", getActivity().getPackageName());
+                    List<String> minorsubjectList = Arrays.asList(getResources().getStringArray(arryid)); //minorsubjectlist 불러오기
+                    List<String> minorsubjectcodeList = Arrays.asList(getResources().getStringArray(arrycodeid)); //minorsubjectcodelist 불러오기
+
+
+                    for (int n = 0; n < majorsubjectcodeList.size(); n++) {
+                        if (majorSubjectCode == majorsubjectcodeList.get(n)) {
+                            majorsubject = majorsubjectList.get(n);
+                            for (int m = 0; m < minorsubjectList.size(); m++) {
+                                if (subjectcode == minorsubjectcodeList.get(m)) {
+                                    minorsubject = minorsubjectList.get(m);
+                                }
+                            }
+                        }
+                    }
+
+
+                        //ID에서 데이터 받아오기!!!!!!!!
+                        String Name = "김포항";
+                        int Age = 16;
+                        String Sex = "여";
+
+                        studentList.add(new Person(ID, R.drawable.profile, Name, Age, Sex, majorsubject, minorsubject, content, ability, time, etc));
+
+                    mAdapter.notifyDataSetChanged();
+                    count++;
+                }
+
+
+            }
+            mAdapter = new StudentAdapter(Postechian_main.this.getContext(), studentList);
+            mrecyclerView.setAdapter(mAdapter);
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }*/
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 어떤 request확인
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ADDORDER) {
+            Bundle b = null;
+            b = data.getExtras();
+            if(b!=null) {
+                Person pstudent;
+                pstudent = b.getParcelable("studenttoAdd");
+                //InsertStudent(pstudent);//database에 pstudent 추가하기!!!!
+            }
+        }
+
+        else if(requestCode == DELETEORDER) {
+            Bundle b = data.getExtras();
+            if(b!=null) {
+                Person pstudent = b.getParcelable("studenttoDelete");
+                //DeleteStudent(pstudent);
             }
         }
 
     }
+
+
+        //버튼 클릭했을 때
+        public void onClick(View view) {
+            if (view == addStudentButton) {
+                Intent intent = new Intent(getActivity(), Add_student.class);
+                intent.putExtra("ID", "jelee");
+                intent.putExtra("Name", "김포항"); //ID에서 이름 가져오기
+                intent.putExtra("Age", 23); //ID에서 나이 가져오기
+                intent.putExtra("Sex", "남"); //ID에서 성별 가져오기
+                startActivityForResult(intent, ADDORDER);
+            } else if (view == clicktosearch) {
+                if (hidesearchlayout.getVisibility() == View.GONE) {
+                    hidesearchlayout.setVisibility(View.VISIBLE);
+                    clicktosearch.setText("Click to Hide ▲");
+                } else {
+                    hidesearchlayout.setVisibility(View.GONE);
+                    clicktosearch.setText("Click to Search ▼");
+                }
+            }
+        }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(getActivity(), View_student.class);
+        Person clickedItem = studentList.get(position);
+
+        detailIntent.putExtra("studentInfo", studentList.get(position));
+        startActivity(detailIntent);
+    }
+}
 
 
 

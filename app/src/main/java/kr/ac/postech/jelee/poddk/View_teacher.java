@@ -1,5 +1,6 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +11,9 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
 
     Button contactButton;
     Button cancelButton;
+    Button deleteButton;
+    //Button editButton;
+    Person pteacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +21,7 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.teacher_info);
 
         Bundle bundle = getIntent().getExtras();
-        Person pteacher = bundle.getParcelable("teacherInfo");
+        pteacher = bundle.getParcelable("teacherInfo");
 
         TextView NameData = (TextView) findViewById(R.id.NameData);
         TextView AgeData = (TextView) findViewById(R.id.AgeData);
@@ -59,6 +63,18 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
 
             finish();
         }
+        else if(view == deleteButton){
+            //Postechian_main에 삭제할 학생 정보 전달
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("teacherTodelete", pteacher);
+            setResult(5, resultIntent);
+            finish();
+        }/*
+        else if(view == editButton){
+            //Student_main에 편집할 선생 정보 전달
+            finish();
+        }
+        */
     }
 
 }

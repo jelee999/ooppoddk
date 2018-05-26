@@ -1,5 +1,6 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,15 @@ import java.util.ArrayList;
  */
 
 public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.TeacherViewHolder> {
+    private Context mContext;
     private ArrayList<Person> mTeacherList;
     private OnItemClickListener mListener;
+
+    public TeacherAdapter(Context context, ArrayList<Person> personList) {
+        mContext = context;
+        mTeacherList = personList;
+    }
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -71,7 +79,6 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.TeacherV
     public void onBindViewHolder(TeacherViewHolder holder, int position) {
         Person currentItem = mTeacherList.get(position);
 
-        holder.teacherProfile.setImageResource(currentItem.getImageID());
         holder.teacherProfile.setImageResource(currentItem.getImageID());
         holder.teacherName.setText(currentItem.getName());
         holder.teacherAge.setText(String.valueOf(currentItem.getAge()));

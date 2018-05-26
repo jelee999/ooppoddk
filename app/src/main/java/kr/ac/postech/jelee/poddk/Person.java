@@ -6,13 +6,16 @@ import android.os.Parcelable;
 
 
 public class Person implements Parcelable {
+    private String Identification;
     private String IDdata;
     private int ImageID;
     private String Name;
     private int Age;
     private String Sex;
+
     private String majorSubject;
     private String minorSubject;
+
     private String Contents;
     private String Ability;
     private String availableTime;
@@ -20,6 +23,7 @@ public class Person implements Parcelable {
 
     public Person(String IDData, int imageID, String name, int age, String sex, String majorsubject, String minorsubject,
                   String contents, String ability, String availabletime, String etcdata) {
+        Identification = IDData + minorsubject;
         IDdata = IDData;
         ImageID = imageID;
         Name = name;
@@ -36,6 +40,9 @@ public class Person implements Parcelable {
 
     public String getIDdata() {return IDdata; }
     public void setIDdata(String IDdata) {IDdata = IDdata;}
+
+    public String getIdentification() {return Identification; }
+    public void setIdentification(String id) {Identification = id;}
 
     public String getName() {return Name; }
     public void setName(String name) {Name = name;}
@@ -77,6 +84,7 @@ public class Person implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Identification);
         dest.writeString(IDdata);
         dest.writeInt(ImageID);
         dest.writeString(Name);
@@ -91,6 +99,7 @@ public class Person implements Parcelable {
     }
 
     private void readFromParcel(Parcel in) {
+        Identification = in.readString();
         IDdata = in.readString();
         ImageID = in.readInt();
         Name = in.readString();
