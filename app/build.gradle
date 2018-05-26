@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "kr.ac.postech.jelee.poddk"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 15
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
