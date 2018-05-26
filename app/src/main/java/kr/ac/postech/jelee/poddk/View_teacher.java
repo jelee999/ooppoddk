@@ -11,8 +11,10 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
 
     Button contactButton;
     Button cancelButton;
+    Button deleteButton;
+    //Button editButton;
     Person pteacher;
-    String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,18 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("userID", /*userID*/"hsm9300");
             this.startActivity(intent);
         }
+        else if(view == deleteButton){
+            //Postechian_main에 삭제할 학생 정보 전달
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("teacherTodelete", pteacher);
+            setResult(5, resultIntent);
+            finish();
+        }/*
+        else if(view == editButton){
+            //Student_main에 편집할 선생 정보 전달
+            finish();
+        }
+        */
     }
 
 }

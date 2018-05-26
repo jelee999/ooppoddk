@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.*;
@@ -43,17 +44,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Add_student extends AppCompatActivity implements View.OnClickListener{
-    private String TAG = "poddi_Add_student";
-
-
+    private String TAG = "poddk_Add_student";
 
     Button cancelButton;
     Button addButton;
 
-    //SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-    //String ID = saved.getString("inputID","0"); //사용자 ID
-
     //아이디에서 받아올 데이터
+    String studentID;
     String studentName;
     int studentAge;
     String studentSex;
@@ -72,22 +69,37 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.add_student);
         this.setFinishOnTouchOutside(false);
 
+        //Intent pintent = getIntent();
+
+        Bundle bundle = getIntent().getExtras();
+        studentID = bundle.getString("ID");
+        studentName = bundle.getString("Name");
+        studentAge = bundle.getInt("Age");
+        studentSex = bundle.getString("Sex");
+
+        TextView studentNameview = (TextView)findViewById(R.id.NameData);
+        TextView studentAgeview = (TextView)findViewById(R.id.AgeData);
+        TextView studentSexview = (TextView)findViewById(R.id.SexData);
+        studentNameview.setText(studentName);
+        studentAgeview.setText(String.valueOf(studentAge));
+        studentSexview.setText(studentSex);
+
 
         ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorSubjectList)));
-        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.linguisticList)));
-        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mathList)));
-        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.physicsList)));
-        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemistryList)));
-        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.lifescienceList)));
-        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mechanicList)));
-        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.imeList)));
-        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.materialList)));
-        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.electricList)));
-        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.cseList)));
-        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemicalengineeringList)));
-        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.citeList)));
-        ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.etcList)));
-        ArrayList<String> nullList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.nullList)));
+        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+        ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+        ArrayList<String> nullList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.NULL)));
 
 
         //주요과목 스피너
@@ -208,12 +220,12 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         majorSubject = majorSubjectSpinner.getSelectedItem().toString();
 
         EditText learndatatext = (EditText)findViewById(R.id.learnData);
-        EditText studentcapabilitytext = (EditText)findViewById(R.id.studentCapability);
+        EditText studentabilitytext = (EditText)findViewById(R.id.studentAbility);
         EditText availabletimetext = (EditText)findViewById(R.id.availableTime);
         EditText etcDatatext = (EditText)findViewById(R.id.etcData);
 
         learnContents = learndatatext.getText().toString();
-        studentAbility = studentcapabilitytext.getText().toString();
+        studentAbility = studentabilitytext.getText().toString();
         availableTime = availabletimetext.getText().toString();
         etcData = etcDatatext.getText().toString();
 
@@ -226,9 +238,11 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
             finish(); //화면 종료
         }
         if(view == addButton){
-            //HttpPostData();
-            //학생 데이터 추가하기
-
+            //학생 만들어서 넘겨주기
+            Person pstudent = new Person(studentID, R.drawable.profile, studentName, studentAge, studentSex, majorSubject, minorSubject,
+                    learnContents, studentAbility, availableTime, etcData);
+            Intent intent = new Intent();
+            intent.putExtra("studenttoAdd", pstudent);
             finish();
         }
     }
@@ -256,7 +270,7 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
             buffer.append("majorSubject").append("=").append(majorSubject).append("&"); //php 번수에 값 대입
             buffer.append("minorSubject").append("=").append(minorSubject).append("&"); //php 번수에 값 대입
             buffer.append("learnContents").append("=").append(learnContents).append("&"); //php 번수에 값 대입
-            buffer.append("studentCapability").append("=").append(studentAbility).append("&"); //php 번수에 값 대입
+            buffer.append("studentAbility").append("=").append(studentAbility).append("&"); //php 번수에 값 대입
             buffer.append("availableTime").append("=").append(availableTime).append("&"); //php 번수에 값 대입
             buffer.append("etcData").append("=").append(etcData); //php 번수에 값 대입
 

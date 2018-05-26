@@ -1,5 +1,6 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,10 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
 
     Button contactButton;
     Button cancelButton;
+String userID;
+    Button deleteButton;
+    //Button editButton;
     Person pstudent;
-    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,12 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
         cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(this);
 
+        deleteButton = findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(this);
+
+        //editButton = findViewById(R.id.editButton);
+        //editButton.setOnClickListener(this);
+
 
     }
 
@@ -58,7 +67,7 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
         if(view == cancelButton){
             finish(); //화면 종료
         }
-        else if(view == contactButton){
+        else if(view == contactButton) {
             //HttpPostData();
             //학생에게 연락하기
             Intent intent = new Intent(this, WriteMail.class);
@@ -66,6 +75,18 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("userID", userID);
             this.startActivity(intent);
         }
+        else if(view == deleteButton){
+            //Postechian_main에 삭제할 학생 정보 전달
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("studentTodelete", pstudent);
+            setResult(5, resultIntent);
+            finish();
+        }/*
+        else if(view == editButton){
+            //Postechian_main에 편집할 학생 정보 전달
+            finish();
+        }
+        */
     }
 
 }

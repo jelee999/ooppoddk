@@ -29,12 +29,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class Student_main extends Fragment implements View.OnClickListener {
+public class Student_main extends Fragment implements View.OnClickListener, TeacherAdapter.OnItemClickListener {
 
     FloatingActionButton addTeacherButton;
     TextView clicktosearch;
@@ -49,6 +60,8 @@ public class Student_main extends Fragment implements View.OnClickListener {
     private TeacherAdapter mAdapter;
     private RecyclerView.LayoutManager mlayoutManager;
     private ArrayList<Person> teacherList;
+    private RequestQueue mRequestQueue;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,19 +75,19 @@ public class Student_main extends Fragment implements View.OnClickListener {
 
         //과목 스피너
         ArrayList<String> majorList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.majorSubjectList)));
-        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.linguisticList)));
-        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mathList)));
-        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.physicsList)));
-        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemistryList)));
-        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.lifescienceList)));
-        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.mechanicList)));
-        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.imeList)));
-        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.materialList)));
-        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.electricList)));
-        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.cseList)));
-        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.chemicalengineeringList)));
-        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.citeList)));
-        final ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.etcList)));
+        ArrayList<String> linguisticList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+        ArrayList<String> mathList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+        ArrayList<String> physicsList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+        ArrayList<String> chemistryList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+        ArrayList<String> lifescienceList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+        ArrayList<String> mechanicList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+        ArrayList<String> imeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+        ArrayList<String> materialList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+        ArrayList<String> electricList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+        ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+        ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+        ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+        final ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
 
 
         //주요과목 스피너
@@ -155,7 +168,7 @@ public class Student_main extends Fragment implements View.OnClickListener {
     }
 
     public void insertItem(int position) {
-        teacherList.add(position, new Person("jelee3", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
+        teacherList.add(position, new Person("jelee", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
                 "blank", "blank", "blank", "blank"));
         mAdapter.notifyItemInserted(position);
     }
@@ -177,15 +190,13 @@ public class Student_main extends Fragment implements View.OnClickListener {
 
     public void createTeacherList() {
         teacherList = new ArrayList<Person>();
-        teacherList.add(new Person("jelee1", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
+        teacherList.add(new Person("jelee", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
                 "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
+        teacherList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
                 "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "컴공", "객체지향",
+        teacherList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "컴공", "객체지향",
                 "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "컴공", "양자물리",
-                "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee2", R.drawable.profile, "김과학", 25, "여", "과학", "전자기학",
+        teacherList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "컴공", "양자물리",
                 "blank", "blank", "blank", "blank"));
     }
 
@@ -199,6 +210,11 @@ public class Student_main extends Fragment implements View.OnClickListener {
         mrecyclerView.setLayoutManager(mlayoutManager);
         mrecyclerView.setAdapter(mAdapter);
 
+        mRequestQueue = Volley.newRequestQueue(getContext());
+        parseJSON();
+
+        /*
+
         mAdapter.setOnItemClickLIstener(new TeacherAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -207,8 +223,221 @@ public class Student_main extends Fragment implements View.OnClickListener {
                 startActivity(intent);
 
             }
-        });
+        });*/
     }
+
+
+
+
+    //JSON에서 정보 받아오기
+    private void parseJSON() {
+        String url = "http://ljh453.cafe24.com/podduk_showteacher_init.php"; //url 연결
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONArray jsonArray = response.getJSONArray("response");
+
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject student = jsonArray.getJSONObject(i);
+
+                                String ID = student.getString("id");
+                                //Int imageID = student.getInt("imageID");
+                                String subjectcode = student.getString("subject");
+                                String content = student.getString("content");
+                                String ability = student.getString("ability");
+                                String time = student.getString("time");
+                                String etc = student.getString("etc");
+                                String Name = student.getString("name");
+                                String tempsex = student.getString("gender");
+                                String Sex;
+                                if(tempsex == "male"){
+                                    Sex = "남";
+                                }
+                                else{
+                                    Sex = "여";
+                                }
+
+                                String majorSubjectCode = subjectcode.substring(0,4); //ex)CSED
+                                String majorsubject="";
+                                String minorsubject="";
+                                String tempminor="";
+
+
+                                if(majorSubjectCode.equals("LING")) {
+                                    majorsubject = "언어";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LINGCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("MATH")) {
+                                    majorsubject = "수학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATHCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("PHYS")) {
+                                    majorsubject = "물리";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYSCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CHEM")) {
+                                    majorsubject = "화학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEMCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("LIFE")) {
+                                    majorsubject = "생명과학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFECode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("MECH")) {
+                                    majorsubject = "기계공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECHCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("IMEN")) {
+                                    majorsubject = "산업경영공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMENCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("AMSE")) {
+                                    majorsubject = "신소재공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSECode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("ELEC")) {
+                                    majorsubject = "전자전기공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELECCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CSED")) {
+                                    majorsubject = "컴퓨터공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSEDCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CHEB")) {
+                                    majorsubject = "화학공학";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEBCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("CITE")) {
+                                    majorsubject = "창의IT";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITECode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+                                else if(majorSubjectCode.equals("ETCS")) {
+                                    majorsubject = "기타";
+                                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+                                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCSCode)));
+                                    for(int m=0;m<minorsubjectList.size();m++){
+                                        tempminor = minorsubjectcodeList.get(m);
+                                        if(subjectcode.equals(tempminor)){
+                                            minorsubject = minorsubjectList.get(m);
+                                        }
+                                    }
+                                }
+
+
+
+                                //ID에서 데이터 받아오기!!!!!!!!
+                                int Age = 24;
+
+                                teacherList.add(new Person(ID, R.drawable.profile, Name, Age, Sex, majorsubject, minorsubject, content, ability, time, etc));
+                            }
+                            mAdapter = new TeacherAdapter(Student_main.this.getContext(), teacherList);
+                            mrecyclerView.setAdapter(mAdapter);
+                            mAdapter.setOnItemClickLIstener(Student_main.this);
+
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mRequestQueue.add(request);
+    }
+
 
     //+ 버튼 클릭했을 때
     public void onClick(View view) {
@@ -226,6 +455,14 @@ public class Student_main extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(getActivity(), View_teacher.class);
+        Person clickedItem = teacherList.get(position);
+
+        detailIntent.putExtra("teacherInfo", teacherList.get(position));
+        startActivity(detailIntent);
+    }
 }
 
 

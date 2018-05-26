@@ -13,9 +13,26 @@
         <item>전자전기공학</item>
         <item>컴퓨터공학</item>
         <item>화학공학</item>
+        <item>창의IT</item>
         <item>기타</item>
     </string-array>
-    <string-array name="linguisticList">
+    <string-array name="majorSubjectListCode">
+        <item></item>
+        <item>LING</item>
+        <item>MATH</item>
+        <item>PHYS</item>
+        <item>CHEM</item>
+        <item>LIFE</item>
+        <item>MECH</item>
+        <item>IMEN</item>
+        <item>AMSE</item>
+        <item>ELEC</item>
+        <item>CSED</item>
+        <item>CHEB</item>
+        <item>CITE</item>
+        <item>ETCS</item>
+    </string-array>
+    <string-array name="LING">
         <item>선택사항없음</item>
         <item>영어</item>
         <item>중국어</item>
@@ -25,9 +42,20 @@
         <item>프랑스어</item>
         <item>기타</item>
     </string-array>
-    <string-array name="mathList">
+    <string-array name="LINGCode">
+        <item>NULL</item>
+        <item>LING001</item>
+        <item>LING002</item>
+        <item>LING003</item>
+        <item>LING004</item>
+        <item>LING005</item>
+        <item>LING006</item>
+        <item>LING000</item>
+    </string-array>
+    <string-array name="MATH">
         <item>선택사항없음</item>
-        <item>미적분학</item>
+        <item>미적분학I</item>
+        <item>미적분학II</item>
         <item>미분방정식</item>
         <item>응용선형대수</item>
         <item>응용복소함수론</item>
@@ -35,24 +63,56 @@
         <item>이산수학</item>
         <item>기타</item>
     </string-array>
-    <string-array name="physicsList">
+    <string-array name="MATHCode">
+        <item>NULL</item>
+        <item>MATH101</item>
+        <item>MATH102</item>
+        <item>MATH200</item>
+        <item>MATH203</item>
+        <item>MATH230</item>
+        <item>MATH261</item>
+        <item>MATH200</item>
+        <item>MATH000</item>
+    </string-array>
+    <string-array name="PHYS">
         <item>선택사항없음</item>
-        <item>일반물리</item>
+        <item>일반물리I</item>
+        <item>일반물리II</item>
         <item>역학</item>
         <item>전자기학</item>
         <item>수리물리</item>
         <item>양자물리</item>
         <item>기타</item>
     </string-array>
-    <string-array name="chemistryList">
+    <string-array name="PHYSCode">
+        <item>NULL</item>
+        <item>PHYS101</item>
+        <item>PHYS102</item>
+        <item>PHYS203</item>
+        <item>PHYS206</item>
+        <item>PHYS209</item>
+        <item>PHYS301</item>
+        <item>PHYS000</item>
+    </string-array>
+    <string-array name="CHEM">
         <item>선택사항없음</item>
         <item>일반화학</item>
+        <item>일반화학II</item>
         <item>물리화학</item>
         <item>유기화학</item>
         <item>화학분석</item>
         <item>기타</item>
     </string-array>
-    <string-array name="lifescienceList">
+    <string-array name="CHEMCode">
+        <item>NULL</item>
+        <item>CHEM101</item>
+        <item>CHEM103</item>
+        <item>CHEM211</item>
+        <item>CHEM221</item>
+        <item>CHEM243</item>
+        <item>CHEM000</item>
+    </string-array>
+    <string-array name="LIFE">
         <item>선택사항없음</item>
         <item>일반생명과학</item>
         <item>세포생물학</item>
@@ -60,17 +120,37 @@
         <item>생명과학의원리</item>
         <item>기타</item>
     </string-array>
-    <string-array name="mechanicList">
+    <string-array name="LIFECode">
+        <item>NULL</item>
+        <item>LIFE103</item>
+        <item>LIFE217</item>
+        <item>LIFE204</item>
+        <item>LIFE218</item>
+        <item>LIFE000</item>
+    </string-array>
+    <string-array name="MECH">
         <item>선택사항없음</item>
         <item>전산제도및설계</item>
-        <item>고체역학</item>
+        <item>고체역학I</item>
+        <item>고체역학II</item>
         <item>열역학</item>
         <item>동역학</item>
         <item>기계재료학</item>
         <item>센서및측정</item>
         <item>기타</item>
     </string-array>
-    <string-array name="imeList">
+    <string-array name="MECHCode">
+        <item>NULL</item>
+        <item>MECH202</item>
+        <item>MECH240</item>
+        <item>MECH245</item>
+        <item>MECH250</item>
+        <item>MECH211</item>
+        <item>MECH244</item>
+        <item>MECH280</item>
+        <item>MECH000</item>
+    </string-array>
+    <string-array name="IMEN">
         <item>선택사항없음</item>
         <item>재무회계</item>
         <item>제품생산공정설계</item>
@@ -78,19 +158,37 @@
         <item>경영과학II</item>
         <item>실험계획개론</item>
         <item>최적화개론</item>
+        <item>공학기초통계</item>
         <item>기타</item>
     </string-array>
-    <string-array name="materialList">
+    <string-array name="IMENCode">
+        <item>NULL</item>
+        <item>IMEN203</item>
+        <item>IMEN230</item>
+        <item>IMEN260</item>
+        <item>IMEN266</item>
+        <item>IMEN242</item>
+        <item>IMEN261</item>
+        <item>IMEN272</item>
+        <item>IMEN000</item>
+    </string-array>
+    <string-array name="AMSE">
         <item>선택사항없음</item>
         <item>신소재과학</item>
-        <item>소재양자론</item>
-        <item>소재의결함론</item>
         <item>소재구조론</item>
-        <item>열역학</item>
-        <item>소재미세조직발현</item>
+        <item>소재의결함론</item>
+        <item>소재화학</item>
         <item>기타</item>
     </string-array>
-    <string-array name="electricList">
+    <string-array name="AMSECode">
+        <item>NULL</item>
+        <item>AMSE201</item>
+        <item>AMSE208</item>
+        <item>AMSE204</item>
+        <item>AMSE207</item>
+        <item>AMSE000</item>
+    </string-array>
+    <string-array name="ELEC">
         <item>선택사항없음</item>
         <item>반도체전자공학I</item>
         <item>회로이론</item>
@@ -99,7 +197,16 @@
         <item>디지털시스템설계</item>
         <item>기타</item>
     </string-array>
-    <string-array name="cseList">
+    <string-array name="ELECCode">
+        <item>NULL</item>
+        <item>EECE211</item>
+        <item>EECE231</item>
+        <item>EECE261</item>
+        <item>EECE233</item>
+        <item>EECE273</item>
+        <item>EECE000</item>
+    </string-array>
+    <string-array name="CSED">
         <item>선택사항없음</item>
         <item>프로그래밍과문제해결</item>
         <item>객체지향프로그래밍</item>
@@ -108,23 +215,52 @@
         <item>컴퓨터SW시스템개론</item>
         <item>기타</item>
     </string-array>
-    <string-array name="chemicalengineeringList">
+    <string-array name="CSEDCode">
+        <item>NULL</item>
+        <item>CSED101</item>
+        <item>CSED232</item>
+        <item>CSED233</item>
+        <item>CSED261</item>
+        <item>CSED211</item>
+        <item>CSED000</item>
+    </string-array>
+    <string-array name="CHEB">
         <item>선택사항없음</item>
-        <item>화공물리화학</item>
+        <item>화공물리화학I</item>
+        <item>화공물리화학II</item>
         <item>화공열역학</item>
         <item>유기화학I</item>
         <item>유기화학II</item>
         <item>화학생명공학</item>
         <item>기타</item>
     </string-array>
-    <string-array name="citeList">
+    <string-array name="CHEBCode">
+        <item>NULL</item>
+        <item>CHEB201</item>
+        <item>CHEB202</item>
+        <item>CHEB204</item>
+        <item>CHEB206</item>
+        <item>CHEB207</item>
+        <item>CHEB208</item>
+        <item>CHEB000</item>
+    </string-array>
+    <string-array name="CITE">
         <item>기타</item>
     </string-array>
-    <string-array name="etcList">
+    <string-array name="CITECode">
+        <item>CITE000</item>
+    </string-array>
+    <string-array name="ETCS">
         <item>기타</item>
     </string-array>
-    <string-array name="nullList">
-        <item></item>
+    <string-array name="ETCSCode">
+        <item>ETCS000</item>
+    </string-array>
+    <string-array name="NULL">
+        <item>NULL</item>
+    </string-array>
+    <string-array name="NULLCode">
+        <item>NULL000</item>
     </string-array>
 
 </resources>
