@@ -39,31 +39,23 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-public class MailboxActivity extends AppCompatActivity
-{
+public class MailboxActivity extends AppCompatActivity {
 
     protected ListView mailListView;
     protected MailListAdapter adapter;
     protected List<Mail> mailList;
-    String ID ;
+    String ID;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mailbox);
-
+/*
         SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        ID = saved.getString("inputID","0");
-
-        mailListView = (ListView)findViewById(R.id.mailListView);
+        ID = saved.getString("inputID","0");*/
+        ID = "jim0307";
+        mailListView = (ListView) findViewById(R.id.mailListView);
         mailList = new ArrayList<Mail>();
-        /*
-        mailList.add(new Mail("메일 제목1", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목2", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));
-        mailList.add(new Mail( "메일 제목3", "메일 내용","송신자ID",
-                "송신자 이름", "2018-05-21", R.drawable.profile ));*/
         adapter = new MailListAdapter(getApplicationContext(), mailList);
 
         mailListView.setAdapter(adapter);
@@ -72,19 +64,14 @@ public class MailboxActivity extends AppCompatActivity
     }
 
 
-
-
-
-    class BackgroundTask extends AsyncTask<Void, Void, String>
-    {
+    class BackgroundTask extends AsyncTask<Void, Void, String> {
         String target;
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
 
             try {
-                target = "http://ljh453.cafe24.com/podduk_mail.php?id="+ URLEncoder.encode(ID,"UTF-8");
+                target = "http://ljh453.cafe24.com/podduk_mailread.php?receive_id=" + URLEncoder.encode(ID, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -93,23 +80,21 @@ public class MailboxActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(Void... voids) {
-            try{
+            try {
                 URL url = new URL(target);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
-                while((temp = bufferedReader.readLine())!=null)
-                {
-                    stringBuilder.append(temp+"\n");
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
                 }
                 bufferedReader.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
                 return stringBuilder.toString().trim();
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -122,33 +107,33 @@ public class MailboxActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(String result) {
-            try{
+            try {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
                 String mailTitle;
                 String mailContent;
                 String senderID;
                 String date;
-                int ImageID;
+                String senderName;
                 int count = 0;
-                while(count<jsonArray.length())
-                {
+                while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
                     mailTitle = object.getString("mail_title");
                     mailContent = object.getString("mail_content");
                     date = object.getString("receive_date");
                     senderID = object.getString("send_id");
-                    Mail mail = new Mail( mailTitle, mailContent, senderID, date);
+                    senderName = object.getString("sender_name");
+
+                    Mail mail = new Mail(mailTitle, mailContent, senderID, date, senderName);
                     mailList.add(mail);
                     adapter.notifyDataSetChanged();
                     count++;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
 
 
 }

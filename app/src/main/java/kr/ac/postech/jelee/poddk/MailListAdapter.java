@@ -1,5 +1,6 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -56,17 +57,18 @@ public class MailListAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context, R.layout.mail, null);
-        /*ImageView profileImage = (ImageView) v.findViewById(R.id.mailProfile);*/
         TextView titleText = (TextView) v.findViewById(R.id.mailTitle);
         TextView dateText = (TextView) v.findViewById(R.id.mailDate);
         final TextView contentText = (TextView) v.findViewById(R.id.mailContent);
         TextView senderIDText = (TextView)v.findViewById(R.id.MailSenderID);
+        /*TextView senderNameText = (TextView)v.findViewById(R.id.MailSenderName_more);*/
         //mail.xml 파일의 뷰로 각각 초기화
 
         titleText.setText(mailList.get(i).getMailTitle());
         dateText.setText(mailList.get(i).getDate());
         contentText.setText(mailList.get(i).getMailContent());
         senderIDText.setText(mailList.get(i).getSenderID());
+        /*senderNameText.setText(mailList.get(i).getSenderName());*/
 
         // i 번째 메일 내용 지정
 
@@ -90,7 +92,7 @@ public class MailListAdapter extends BaseAdapter {
                                         .setPositiveButton("확인", null)
                                         .create();
                                 dialog.show();
-                                mailList.add(mailList.remove(i));
+                                mailList.remove(mailList.remove(i));
                                 notifyDataSetChanged();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -105,7 +107,7 @@ public class MailListAdapter extends BaseAdapter {
                     }
                 };
                 DeleteRequest deleteRequest = new DeleteRequest("jim0307", mailList.get(i).getMailTitle() + "",
-                        mailList.get(i).getMailContent()+"", mailList.get(i).getSenderID()+"",responseListener);
+                        mailList.get(i).getMailContent()+"", mailList.get(i).getSenderID()+""/*mailList.get(i).getSenderName()*/,responseListener);
                 RequestQueue queue = Volley.newRequestQueue(context);
                 queue.add(deleteRequest);
             }
@@ -123,6 +125,7 @@ public class MailListAdapter extends BaseAdapter {
                 intent.putExtra("MailContent", mailList.get(i).getMailContent());
                 intent.putExtra("MailDate", mailList.get(i).getDate());
                 intent.putExtra("MailSenderID", mailList.get(i).getSenderID());
+                intent.putExtra("MailSenderName", mailList.get(i).getSenderName());
                 context.startActivity(intent);
                 //메일 터치하는 경우 이벤트 처리. 해당 메일의 정보를 다음 액티비티에 전달.
             }

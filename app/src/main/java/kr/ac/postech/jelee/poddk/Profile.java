@@ -35,12 +35,14 @@ public class Profile extends Fragment implements View.OnClickListener, RadioGrou
     RelativeLayout settingLayout;
     int v = 0;
     RadioGroup rg;
-
+    String ID;
     @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            ID = "hsm9300";
+            /*
             SharedPreferences saved = getActivity().getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        String ID = saved.getString("inputID", "0");
+        String ID = saved.getString("inputID", "0");*/
     }
 
     @Override

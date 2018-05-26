@@ -31,13 +31,6 @@ public class NoticeBoardActivity extends AppCompatActivity
 
         noticeListView = (ListView)findViewById(R.id.noticeListView);
         noticeList = new ArrayList<Notice>();
-        /*noticeList.add(new Notice("공지사항 제목.", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용  ", "2018-05-20"));
-        noticeList.add(new Notice("공지사항 제목.", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용  ", "2018-05-20"));
-        noticeList.add(new Notice("공지사항 제목.", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 ", "2018-05-20"));
-        noticeList.add(new Notice("공지사항 제목.", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 ", "2018-05-20"));
-        noticeList.add(new Notice("공지사항 제목.공지사항 제목 공지사항 제목 공지사항 제목 공지사항 제목공지사항 제목", "공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용 공지사항 내용  ", "2018-05-20"));
-*/
-
         adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
         noticeListView.setAdapter(adapter);
 

@@ -20,6 +20,7 @@ public class MailMoreActivity extends MailboxActivity
         TextView mailDate = (TextView)findViewById(R.id.MailDate_more);
         TextView mailContent = (TextView)findViewById(R.id.MailContent_more);
         TextView mailSenderID = (TextView)findViewById(R.id.MailSenderID_more);
+        TextView mailSenderName = (TextView)findViewById(R.id.MailSenderName_more);
 
         Intent intent = getIntent();
 
@@ -27,18 +28,19 @@ public class MailMoreActivity extends MailboxActivity
         String strMailDate;
         String strMailContent;
         String strMailSenderID;
+        String strMailSenderName;
 
         strMailTitle =  intent.getExtras().getString("MailTitle");
         strMailDate =  intent.getExtras().getString("MailDate");
         strMailContent =  intent.getExtras().getString("MailContent");
         strMailSenderID =  intent.getExtras().getString("MailSenderID");
+        strMailSenderName = intent.getExtras().getString("MailSenderName");
         //MailListAdapter 클래스라는 클래스에서 전달받은 데이터를
-        //strMailTitle, strMailDate, strMailContent에 저장
-
+        //strMailTitle, strMailDate, strMailContent, strMailSenderID, strMailSenderName 에 저장
         mailTitle.setText(strMailTitle);
         mailDate.setText(strMailDate);
         mailContent.setText(strMailContent);
         mailSenderID.setText(strMailSenderID);
-
+        mailSenderName.setText(strMailSenderName);
     }
 }

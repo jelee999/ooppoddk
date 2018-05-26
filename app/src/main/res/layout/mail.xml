@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/OneMail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:id="@+id/OneMail">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/mailProfile"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/profile"
-        android:layout_marginRight="3dp"/>
+        android:layout_marginRight="3dp"
+        android:src="@drawable/profile" />
 
 
     <TextView
         android:id="@+id/mailTitle"
-        android:lines="1"
-        android:ellipsize="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text = "제목"
-        android:textStyle="bold"
-        android:paddingRight="10dp"
-        android:layout_toLeftOf="@id/mailDate"
         android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/mailProfile"/>
+        android:layout_toLeftOf="@id/mailDate"
+        android:layout_toRightOf="@id/mailProfile"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingRight="10dp"
+        android:text="제목"
+        android:textSize="15dp"
+        android:textStyle="bold" />
 
 
     <TextView
@@ -34,38 +34,38 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/mailTitle"
         android:layout_below="@+id/mailTitle"
-        android:text="내용"
-        android:paddingRight="10dp"
         android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/mailDeleteButton"
+        android:ellipsize="end"
         android:lineSpacingMultiplier="1.1"
         android:lines="2"
-        android:ellipsize="end"
-        android:textSize="14dp"
-        android:layout_toLeftOf="@id/mailDeleteButton"/>
+        android:paddingRight="10dp"
+        android:text="내용"
+        android:textSize="14dp" />
 
     <TextView
+        android:id="@+id/mailDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:id="@+id/mailDate"
-        android:textSize="14dp"
+        android:layout_alignTop="@id/mailTitle"
         android:layout_marginRight="3dp"
         android:text="2018-05-19"
-        android:layout_alignTop="@id/mailTitle"/>
+        android:textSize="14dp" />
 
     <Button
         android:id="@+id/mailDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="삭제"
-        android:layout_below="@id/mailDate"
         android:layout_alignLeft="@id/mailDate"
+        android:layout_below="@id/mailDate"
         android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"/>
+        android:layout_marginTop="2dp"
+        android:text="삭제" />
 
-<TextView
-    android:id="@+id/MailSenderID"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:text="senderID"/>
+    <TextView
+        android:id="@+id/MailSenderID"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="senderID" />
 </RelativeLayout>

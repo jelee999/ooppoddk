@@ -7,16 +7,18 @@ import android.media.Image;
  */
 
 public class Mail {
-    String mailTitle;//메일 제목
-    String mailContent;//메일 내용
-    String senderID;//송신자 ID
-    String date;//메일 발송일
+    private String mailTitle;//메일 제목
+    private String mailContent;//메일 내용
+    private String senderID;//송신자 ID
+    private String date;//메일 발송일
+    private String senderName;
 
-    public Mail( String mailTitle, String mailContent, String senderID, String date) {
+    Mail(String mailTitle, String mailContent, String senderID, String date, String senderName) {
         this.mailTitle = mailTitle;
         this.mailContent = mailContent;
         this.senderID = senderID;
         this.date = date;
+        this.senderName = senderName;
     }//메일 Constructor
 
 
@@ -52,4 +54,11 @@ public class Mail {
         this.date = date;
     }
 
+    public String getSenderName(){
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
 }

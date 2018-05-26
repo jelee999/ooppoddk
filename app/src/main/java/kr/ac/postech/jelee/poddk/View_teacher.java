@@ -1,5 +1,6 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,14 +11,15 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
 
     Button contactButton;
     Button cancelButton;
-
+    Person pteacher;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_info);
 
         Bundle bundle = getIntent().getExtras();
-        Person pteacher = bundle.getParcelable("teacherInfo");
+        pteacher = bundle.getParcelable("teacherInfo");
 
         TextView NameData = (TextView) findViewById(R.id.NameData);
         TextView AgeData = (TextView) findViewById(R.id.AgeData);
@@ -57,7 +59,10 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
             //HttpPostData();
             //선생에게 연락하기
 
-            finish();
+            Intent intent = new Intent(this, WriteMail.class);
+            intent.putExtra("receiverID", "abcd"/*pteacher.getIDdata()*/);
+            intent.putExtra("userID", /*userID*/"hsm9300");
+            this.startActivity(intent);
         }
     }
 
