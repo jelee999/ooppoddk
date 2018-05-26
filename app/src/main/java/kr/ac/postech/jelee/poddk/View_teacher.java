@@ -61,7 +61,10 @@ public class View_teacher extends AppCompatActivity implements View.OnClickListe
             //HttpPostData();
             //선생에게 연락하기
 
-            finish();
+            Intent intent = new Intent(this, WriteMail.class);
+            intent.putExtra("receiverID", "abcd"/*pteacher.getIDdata()*/);
+            intent.putExtra("userID", /*userID*/"hsm9300");
+            this.startActivity(intent);
         }
         else if(view == deleteButton){
             //Postechian_main에 삭제할 학생 정보 전달

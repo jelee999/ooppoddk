@@ -12,6 +12,7 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
 
     Button contactButton;
     Button cancelButton;
+String userID;
     Button deleteButton;
     //Button editButton;
     Person pstudent;
@@ -24,6 +25,8 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
         Bundle bundle = getIntent().getExtras();
         pstudent = bundle.getParcelable("studentInfo");
 
+        pstudent.setIDdata("Abc");
+        userID ="userid";
         TextView NameData = (TextView) findViewById(R.id.studentNameData);
         TextView AgeData = (TextView) findViewById(R.id.studentAgeData);
         TextView SexData = (TextView) findViewById(R.id.studentSexData);
@@ -67,8 +70,10 @@ public class View_student extends AppCompatActivity implements View.OnClickListe
         else if(view == contactButton) {
             //HttpPostData();
             //학생에게 연락하기
-
-            finish();
+            Intent intent = new Intent(this, WriteMail.class);
+            intent.putExtra("receiverID", pstudent.getIDdata());
+            intent.putExtra("userID", userID);
+            this.startActivity(intent);
         }
         else if(view == deleteButton){
             //Postechian_main에 삭제할 학생 정보 전달

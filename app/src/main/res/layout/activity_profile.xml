@@ -41,16 +41,6 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/possible_time"
-        android:text="가능시간 :"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/name_info"
-        android:layout_below="@id/name_info"
-        android:paddingLeft="20dp"/>
 
     <Button
         android:id="@+id/developerInfoButton"

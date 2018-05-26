@@ -62,10 +62,11 @@
             android:name=".ProfileEditActivity"
             android:label="프로필 편집"
             android:theme="@style/Profile" />
-        <activity android:name=".MailMoreActivity"
+        <activity
+            android:name=".MailMoreActivity"
             android:label="우편함"
-            android:theme="@style/Profile"
-            />
+            android:theme="@style/Profile" />
+        <activity android:name=".WriteMail"></activity>
     </application>
 
 </manifest>

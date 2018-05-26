@@ -5,7 +5,7 @@
     tools:context="kr.ac.postech.jelee.poddk.MainActivity">
     <item
         android:id="@+id/LogoutButton"
+        android:orderInCategory="100"
         android:title="로그아웃"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom"></item>
 </menu>
