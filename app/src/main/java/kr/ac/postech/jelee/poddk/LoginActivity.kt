@@ -101,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
                             val name:String = jsonResponse.getString("name")
                             val gender:String = jsonResponse.getString("gender")
                             val year:String = jsonResponse.getString("birth_year")
+
                             if (success) {
                                 Toast.makeText(this, name + "님 환영합니다", Toast.LENGTH_LONG).show()
 
@@ -119,7 +120,8 @@ class LoginActivity : AppCompatActivity() {
 
                                 finish()
 
-                            } else {
+                            }
+                            else {
                                 Toast.makeText(applicationContext, "ID 또는 비밀번호가 틀립니다", Toast.LENGTH_LONG).show()
                             }
                         } catch (e: JSONException) {
@@ -147,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         finduserButton.setOnClickListener{
-            val nextIntent = Intent(this,FindUserActivity:: class.java)
+            val nextIntent = Intent(this,FindUserActivity_java:: class.java)
             startActivity(nextIntent)
         }
 
