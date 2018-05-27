@@ -11,22 +11,71 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-/**
- * Created by LG on 2018-05-25.
- */
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
     private Context mContext;
     private ArrayList<Person> mStudentList;
-    private ArrayList<Person> currentStudentList;
+    private ArrayList<Person> currentStudentList=null;
+
+    private ArrayList<Person> tempnamelist=null;
+    private ArrayList<Person> tempsubjectlist=null;
     private OnItemClickListener mListener;
 
     public StudentAdapter(Context context, ArrayList<Person> personList) {
         mContext = context;
-        mStudentList = personList;
+        this.currentStudentList = personList;
+        this.tempsubjectlist = personList;
+        this.tempnamelist = personList;
+        mStudentList = new ArrayList<Person>();
+        mStudentList.addAll(personList);
     }
 
+    public void filter(String charText){
+        charText = charText.toLowerCase(Locale.getDefault());
+        currentStudentList.clear();
+        if(charText.length() == 0) {
+            currentStudentList.addAll(mStudentList);
+        }else{
+            for(Person person : mStudentList) {
+                String name = person.getName();
+                if(name.toLowerCase().contains(charText)) {
+                    currentStudentList.add(person);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+/*
+    public void filtermajorsubject(String majorsubject, String minorsubject ){
+        currentStudentList.clear();
+        if(majorsubject !=null)
+            majorsubject = majorsubject.toLowerCase(Locale.getDefault());
+        if(minorsubject !=null)
+            minorsubject = minorsubject.toLowerCase(Locale.getDefault());
+        if(majorsubject == null) {
+           currentStudentList.addAll(mStudentList);
+        }else{
+            if(minorsubject == null){
+                for(Person person : mStudentList) {
+                    String major = person.getmajorSubject();
+                    if(major.toLowerCase().equals(majorsubject)) {
+                        currentStudentList.add(person);
+                    }
+                }
+            }else{
+                for (Person person :mStudentList) {
+                    String minor = person.getminorSubject();
+                    if(minor.toLowerCase().equals(minorsubject)) {
+                        currentStudentList.add(person);
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+*/
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -68,7 +117,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     }
 
     public StudentAdapter(ArrayList<Person> studentList) {
-        mStudentList = studentList;
+        currentStudentList = studentList;
     }
 
     @Override
@@ -82,7 +131,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     @Override
     public void onBindViewHolder(StudentViewHolder holder, int position) {
-        Person currentItem = mStudentList.get(position);
+        Person currentItem = currentStudentList.get(position);
 
         holder.studentProfile.setImageResource(currentItem.getImageID());
         holder.studentName.setText(currentItem.getName());
@@ -94,7 +143,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     }
 
     @Override
-    public int getItemCount() {return mStudentList.size();
+    public int getItemCount() {return currentStudentList.size();
     }
 
 

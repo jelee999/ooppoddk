@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
 
-
-
-
-
     }
 
 
@@ -170,4 +166,5 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+
 }

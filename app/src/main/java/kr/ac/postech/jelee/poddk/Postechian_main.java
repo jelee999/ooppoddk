@@ -1,7 +1,9 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +19,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,6 +67,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -71,12 +78,13 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     static final int PICK_CONTACT_REQUEST = 1;
     static final int ADDORDER = 4;
     static final int DELETEORDER = 5;
-    static final int EDITORDER = 6;
 
-    //SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-    //String ID = saved.getString("inputID","0"); //사용자 ID 가져오기
-    String ID = "jelee"; //임시로 아이디 만들었음
+    String savedID;
+    String savedname;
+    String savedgender;
+    String savedyear;
 
+    String majortext=null;
 
     FloatingActionButton addStudentButton;
     TextView clicktosearch;
@@ -84,7 +92,6 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     private View rootView;
 
     public Postechian_main() {
-
     }
 
     private RecyclerView mrecyclerView;
@@ -92,8 +99,8 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     private RecyclerView.LayoutManager mlayoutManager;
     private RequestQueue mRequestQueue;
     private ArrayList<Person> studentList; //학생 리스트
-    private ArrayList<Person> currentstudentList = new ArrayList<Person>();
-    SearchView searchview;
+    private ArrayList<Person> currentstudentList;
+    EditText namesearch;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +108,20 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
 
         View view = inflater.inflate(R.layout.postechian_main, container, false);
         rootView = view;
+
+        SharedPreferences auto = Postechian_main.this.getContext().getSharedPreferences("auto",Postechian_main.this.getContext().MODE_PRIVATE);
+        savedID = auto.getString("inputID",null);
+        savedgender = auto.getString("inputgender",null);
+        savedname = auto.getString("inputname",null);
+        savedyear = auto.getString("inputyear",null);
+
+        if(savedgender=="female"){
+            savedgender = "여";
+        }
+        else{
+            savedgender = "남";
+        }
+
 
         createStudentList();
         buildRecyclerView();
@@ -148,32 +169,60 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 //세부과목 스피너 설정
                 if (majorSubjectSpinner.getSelectedItemPosition() == 0) { //'선택사항없음'
                     minorSubjectSpinner.setAdapter(etcAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(null, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 1) {
                     minorSubjectSpinner.setAdapter(linguisticAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 2) { //'수학'
                     minorSubjectSpinner.setAdapter(mathAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 3) { //물리
                     minorSubjectSpinner.setAdapter(physicsAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 4) { //화학
                     minorSubjectSpinner.setAdapter(chemistryAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 5) { //생명
                     minorSubjectSpinner.setAdapter(lifescienceAdapter);
+                   //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 6) { //기계공학
                     minorSubjectSpinner.setAdapter(mechanicAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 7) { //산업경영공학
                     minorSubjectSpinner.setAdapter(imeAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
                     minorSubjectSpinner.setAdapter(materialAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학
                     minorSubjectSpinner.setAdapter(electricAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 10) { //컴퓨터공학
                     minorSubjectSpinner.setAdapter(cseAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 11) { //화학공학
                     minorSubjectSpinner.setAdapter(chemicalengineeringAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 12) { //창의IT
                     minorSubjectSpinner.setAdapter(citeAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 13) { //기타
                     minorSubjectSpinner.setAdapter(etcAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 }
             }
 
@@ -185,6 +234,24 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         });
 
 
+        /*
+        minorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(minorSubjectSpinner.getSelectedItemPosition() == 0){
+                    mAdapter.filtermajorsubject(majortext, null);
+                }else {
+                    String minortext = minorSubjectSpinner.getSelectedItem().toString();
+                    mAdapter.filtermajorsubject(majortext, minortext);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });*/
+
         addStudentButton = (FloatingActionButton) view.findViewById(R.id.addStudent);
         addStudentButton.setOnClickListener(this);
 
@@ -194,7 +261,24 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         hidesearchlayout = (LinearLayout) view.findViewById(R.id.hidesearchBar);
         hidesearchlayout.setVisibility(View.GONE);
 
-        searchview = (SearchView)view.findViewById(R.id.searchName);
+        namesearch = (EditText) view.findViewById(R.id.searchName);
+        namesearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = namesearch.getText().toString().toLowerCase(Locale.getDefault());
+                mAdapter.filter(text);
+            }
+        });
 
 
 
@@ -202,34 +286,9 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     }
 
 
-    public void insertItem(int position) {
-        studentList.add(position, new Person("jelee", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
-                "blank", "blank", "blank", "blank"));
-        mAdapter.notifyItemInserted(position);
-    }
-
-    public void removeItem(int position){
-        studentList.remove(position);
-        mAdapter.notifyItemRemoved(position);
-    }
-
-
-    //IDdata가 list안에 있으면 그 index를 반환함 & 없으면 -1 반환
-    public int checkPosition(String identification){
-        for(int i=0;i<studentList.size();i++){
-            if(studentList.get(i).getIdentification() == identification) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public void createStudentList() {
         studentList = new ArrayList<Person>();
-        studentList.add(new Person("jelee", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
-                "blank", "blank", "blank", "blank"));
-        studentList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
-                "blank", "blank", "blank", "blank"));
+
     }
 
     public void buildRecyclerView() {
@@ -242,23 +301,9 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         mrecyclerView.setLayoutManager(mlayoutManager);
         mrecyclerView.setAdapter(mAdapter);
 
-       // currentstudentList = getStudents();
-
         mRequestQueue = Volley.newRequestQueue(getContext());
         parseJSON();
-        //new BackgroundTask().execute();
 
-        /*
-        mAdapter.setOnItemClickLIstener(new StudentAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), View_student.class);
-                intent.putExtra("studentInfo", studentList.get(position));
-                startActivity(intent);
-                //startActivityForResult(intent, PICK_CONTACT_REQUEST);
-
-            }
-        });*/
     }
 
 
@@ -472,115 +517,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     }
 
 
-
-
-
-/*
-    class BackgroundTask extends AsyncTask<Void, Void, String>
-    {
-        String target;
-
-        @Override
-        protected void onPreExecute() {
-            target = "http://ljh453.cafe24.com/podduk_showstudent_init.php"; // 연결할 url
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try{
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while((temp = bufferedReader.readLine())!=null)
-                {
-                    stringBuilder.append(temp+"\n");
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("response");
-
-                int count = 0;
-                while (count < jsonArray.length()) {
-                    JSONObject student = jsonArray.getJSONObject(count);
-                    String ID = student.getString("id");
-                    //Int imageID = student.getInt("imageID");
-                    String subjectcode = student.getString("subject");
-                    String content = student.getString("content");
-                    String ability = student.getString("ability");
-                    String time = student.getString("time");
-                    String etc = student.getString("etc");
-                    String majorsubject = "";
-                    String minorsubject = "";
-
-                    String majorSubjectCode = subjectcode.substring(0, 3); //ex)CSED
-                    String SubjectList = majorSubjectCode + "Code"; //ex)CSEDCode
-                    List<String> majorsubjectList = Arrays.asList(getResources().getStringArray(R.array.majorSubjectList));
-                    List<String> majorsubjectcodeList = Arrays.asList(getResources().getStringArray(R.array.majorSubjectListCode));
-
-
-                    int arryid = getResources().getIdentifier(majorSubjectCode, "array", getActivity().getPackageName());
-                    int arrycodeid = getResources().getIdentifier(SubjectList, "array", getActivity().getPackageName());
-                    List<String> minorsubjectList = Arrays.asList(getResources().getStringArray(arryid)); //minorsubjectlist 불러오기
-                    List<String> minorsubjectcodeList = Arrays.asList(getResources().getStringArray(arrycodeid)); //minorsubjectcodelist 불러오기
-
-
-                    for (int n = 0; n < majorsubjectcodeList.size(); n++) {
-                        if (majorSubjectCode == majorsubjectcodeList.get(n)) {
-                            majorsubject = majorsubjectList.get(n);
-                            for (int m = 0; m < minorsubjectList.size(); m++) {
-                                if (subjectcode == minorsubjectcodeList.get(m)) {
-                                    minorsubject = minorsubjectList.get(m);
-                                }
-                            }
-                        }
-                    }
-
-
-                        //ID에서 데이터 받아오기!!!!!!!!
-                        String Name = "김포항";
-                        int Age = 16;
-                        String Sex = "여";
-
-                        studentList.add(new Person(ID, R.drawable.profile, Name, Age, Sex, majorsubject, minorsubject, content, ability, time, etc));
-
-                    mAdapter.notifyDataSetChanged();
-                    count++;
-                }
-
-
-            }
-            mAdapter = new StudentAdapter(Postechian_main.this.getContext(), studentList);
-            mrecyclerView.setAdapter(mAdapter);
-
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }*/
-
-
+    //학생 등록
     class InsertData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
 
@@ -674,90 +611,105 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     }
 
 
+    //학생 삭제
+    class DeleteData extends AsyncTask<String, Void, String>{
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(Postechian_main.this.getContext(),
+                    "Please Wait", null, true, true);
+        }
 
 
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            //Log.d(TAG, "POST response  - " + result);
+        }
 
 
+        @Override
+        protected String doInBackground(String... params) {
 
-/*
-    public String performPostCall(String requestURL, HashMap<String, String> postDataParams){
-        URL url;
-        String response = "";
-        try{
-            url = new URL(requestURL);
+            //String id = (String)params[0];
+            String id = "jim0307";
+            String subject = (String)params[1];
+            String address = (String)params[2];
 
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
+            String postParameters = "id=" + id + "&subject=" + subject;
 
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
+            try {
 
-            writer.flush();
-            writer.close();
-            os.close();
-            int responseCode = conn.getResponseCode();
+                URL url = new URL("http://ljh453.cafe24.com/podduk_deletestudent.php");
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-            if(responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line = br.readLine()) != null) {
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
 
-                    response+=line;
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                //Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
                 }
-            }
-            else {
-                response ="";
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
 
-        return response;
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString();
+
+
+            } catch (Exception e) {
+
+                //Log.d(TAG, "InsertData: Error ", e);
+
+                return new String("Error: " + e.getMessage());
+            }
+
+        }
     }
 
-    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()) {
-            if(first)
-                first=false;
-            else
-                result.append("&");
 
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
 
-        }
-        return result.toString();
-    }
 
-*/
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 어떤 request확인
         if(requestCode == ADDORDER) {
             if(resultCode == -1){
-                /*
-                Bundle b = data.getExtras();
-                Person pstudent;
-                pstudent = b.getParcelable("studenttoAdd");
-
-                //String id = pstudent.getIDdata();
-                String id = "jim0307";
-                String subject = pstudent.getminorSubject();
-                String content = pstudent.getContents();
-                String ability = pstudent.getAbility();
-                String time = pstudent.getavailableTime();
-                String etc = pstudent.getetcData();*/
-
-
 
                 Bundle b = data.getExtras();
                 String id = b.getString("ID");
@@ -768,11 +720,6 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 String ability = b.getString("ability");
                 String time = b.getString("time");
                 String etc = b.getString("etc");
-
-                /*
-                String tempdata = id+" + "+subject+" + "+content+" + "+ability+" + "+time+" + "+etc;
-                Toast toast = Toast.makeText(Postechian_main.this.getContext(), tempdata, Toast.LENGTH_LONG);
-                toast.show();*/
 
                 String tempminor;
 
@@ -909,14 +856,161 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
 
                 InsertData task = new InsertData();
                 task.execute(id, subject, content, ability, time, etc);
+                //페이지 새로고침
+                RecyclerView.Adapter adapter = mrecyclerView.getAdapter();
+                adapter.notifyDataSetChanged();
+                mrecyclerView.setAdapter(adapter);
+
+                //Intent refresh = new Intent(this.getActivity(), MainActivity.class);
+                //startActivity(refresh);
+                //this.getActivity().finish();
             }
         }
 
-        else if(requestCode == DELETEORDER) {
+        else if(requestCode == DELETEORDER) { //delete 명령과 함께 액티비티가 끝나면...
             Bundle b = data.getExtras();
-            if(b!=null) {
-                Person pstudent = b.getParcelable("studenttoDelete");
-                //DeleteStudent(pstudent);
+            if(resultCode == -1) {
+                Bundle b2 = data.getExtras();
+                String id = b2.getString("ID");
+                String majorsubject = b2.getString("majorsubject");
+                String subject = b2.getString("minorsubject");
+
+                String tempminor;
+
+                if(majorsubject.equals("언어")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LINGCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("수학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("물리")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEMCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("생명과학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기계공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("산업경영공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMENCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("신소재공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("전자전기공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELECCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("컴퓨터공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSEDCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEBCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("창의IT")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기타")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                DeleteData task = new DeleteData();
+                task.execute(id, subject);
+
+                //fragment 새로고침
             }
         }
 
@@ -927,10 +1021,13 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         public void onClick(View view) {
             if (view == addStudentButton) {
                 Intent intent = new Intent(getActivity(), Add_student.class);
-                intent.putExtra("ID", "jim0307");
-                intent.putExtra("Name", "김포항"); //ID에서 이름 가져오기
-                intent.putExtra("Age", 23); //ID에서 나이 가져오기
-                intent.putExtra("Sex", "남"); //ID에서 성별 가져오기
+                Toast.makeText(this.getContext(), savedgender, Toast.LENGTH_SHORT).show();
+
+                intent.putExtra("ID", savedID);
+                intent.putExtra("Name", savedname); //ID에서 이름 가져오기
+                intent.putExtra("Age", savedyear); //ID에서 나이 가져오기
+                intent.putExtra("Sex", savedgender); //ID에서 성별 가져오기
+
                 startActivityForResult(intent, ADDORDER);
             } else if (view == clicktosearch) {
                 if (hidesearchlayout.getVisibility() == View.GONE) {
