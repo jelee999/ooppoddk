@@ -65,7 +65,10 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
     String studentAbility;
     String availableTime;
     String etcData;
-
+    EditText learndatatext;
+    EditText studentabilitytext;
+    EditText availabletimetext;
+    EditText etcDatatext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +127,7 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         final ArrayAdapter citeAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, citeList);
         final ArrayAdapter etcAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, etcList);
         final ArrayAdapter nullAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, nullList);
+
 
         final Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
 
@@ -220,6 +224,7 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         addButton = (Button) findViewById(R.id.addButton);
         addButton.setOnClickListener(this);
 
+
         EditText learndatatext = (EditText) findViewById(R.id.learnData);
         EditText studentabilitytext = (EditText) findViewById(R.id.studentAbility);
         EditText availabletimetext = (EditText) findViewById(R.id.availableTime);
@@ -230,6 +235,7 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         availableTime = availabletimetext.getText().toString();
         etcData = etcDatatext.getText().toString();
 
+
     }
 
 
@@ -238,6 +244,7 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         if (view == cancelButton) {
             setResult(RESULT_CANCELED);
             finish(); //화면 종료
+
         } else if (view == addButton) {
             if(majorSubject.equals("선택해주세요") || minorSubject.equals("선택사항없음"))
             {

@@ -22,9 +22,9 @@
             android:name=".View_student"
             android:label="학생 정보보기"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
-        <activity android:name=".FindUserActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".FindUserActivity_java" />
         <activity
             android:name=".SplashActivity"
             android:label="PODDK"

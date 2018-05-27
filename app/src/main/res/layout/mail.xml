@@ -21,6 +21,7 @@
         android:layout_toLeftOf="@id/mailDate"
         android:layout_toRightOf="@id/mailProfile"
         android:ellipsize="end"
+        android:textColor="#808080"
         android:lines="1"
         android:paddingRight="10dp"
         android:text="제목"
@@ -40,6 +41,7 @@
         android:lineSpacingMultiplier="1.1"
         android:lines="2"
         android:paddingRight="10dp"
+        android:textColor="#808080"
         android:text="내용"
         android:textSize="14dp" />
 
@@ -50,6 +52,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/mailTitle"
         android:layout_marginRight="3dp"
+        android:textColor="#808080"
         android:text="2018-05-19"
         android:textSize="14dp" />
 
@@ -57,15 +60,23 @@
         android:id="@+id/mailDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:textColor="#808080"
+        android:background="#F0F0F0"
         android:layout_alignLeft="@id/mailDate"
         android:layout_below="@id/mailDate"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:text="삭제" />
-
+    <TextView
+        android:id="@+id/MailSenderName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="senderName"
+        android:textColor="#808080"/>
     <TextView
         android:id="@+id/MailSenderID"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:textColor="#808080"
         android:text="senderID" />
 </RelativeLayout>

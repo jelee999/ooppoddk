@@ -56,19 +56,20 @@ public class MailListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
+
         View v = View.inflate(context, R.layout.mail, null);
         TextView titleText = (TextView) v.findViewById(R.id.mailTitle);
         TextView dateText = (TextView) v.findViewById(R.id.mailDate);
-        final TextView contentText = (TextView) v.findViewById(R.id.mailContent);
-        TextView senderIDText = (TextView)v.findViewById(R.id.MailSenderID);
-        /*TextView senderNameText = (TextView)v.findViewById(R.id.MailSenderName_more);*/
+        TextView contentText = (TextView) v.findViewById(R.id.mailContent);
+        TextView senderIDText = (TextView) v.findViewById(R.id.MailSenderID);
+        TextView senderNameText = (TextView) v.findViewById(R.id.MailSenderName);
         //mail.xml 파일의 뷰로 각각 초기화
 
         titleText.setText(mailList.get(i).getMailTitle());
         dateText.setText(mailList.get(i).getDate());
         contentText.setText(mailList.get(i).getMailContent());
         senderIDText.setText(mailList.get(i).getSenderID());
-        /*senderNameText.setText(mailList.get(i).getSenderName());*/
+        senderNameText.setText(mailList.get(i).getSenderName());
 
         // i 번째 메일 내용 지정
 
@@ -87,39 +88,32 @@ public class MailListAdapter extends BaseAdapter {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                AlertDialog dialog = builder.setMessage("메일이 삭제되었습니다.")
-                                        .setPositiveButton("확인", null)
-                                        .create();
-                                dialog.show();
+                                Toast.makeText(context, "메일이 삭제되었습니다", Toast.LENGTH_SHORT).show();
                                 mailList.remove(mailList.remove(i));
                                 notifyDataSetChanged();
                             } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                AlertDialog dialog = builder.setMessage("메일 삭제 실패하였습니다.")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create();
-                                dialog.show();
+                                Toast.makeText(context, "메일이 삭제 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (JSONException e) {
+                        }
+                        catch (JSONException e)
+                        {
+                            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
                 };
+
                 DeleteRequest deleteRequest = new DeleteRequest("jim0307", mailList.get(i).getMailTitle() + "",
-                        mailList.get(i).getMailContent()+"", mailList.get(i).getSenderID()+""/*mailList.get(i).getSenderName()*/,responseListener);
+                        mailList.get(i).getMailContent() + "", mailList.get(i).getSenderID() + "", responseListener);
                 RequestQueue queue = Volley.newRequestQueue(context);
                 queue.add(deleteRequest);
             }
         });
 
 
-
-
         mailLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent intent = new Intent(context, MailMoreActivity.class);
                 intent.putExtra("MailTitle", mailList.get(i).getMailTitle());
                 intent.putExtra("MailContent", mailList.get(i).getMailContent());

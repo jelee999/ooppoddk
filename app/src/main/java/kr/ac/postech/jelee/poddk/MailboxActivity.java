@@ -22,6 +22,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -44,6 +45,7 @@ public class MailboxActivity extends AppCompatActivity {
     protected ListView mailListView;
     protected MailListAdapter adapter;
     protected List<Mail> mailList;
+    protected TextView mailEmpty;
     String ID;
 
     @Override
@@ -57,9 +59,9 @@ public class MailboxActivity extends AppCompatActivity {
         mailListView = (ListView) findViewById(R.id.mailListView);
         mailList = new ArrayList<Mail>();
         adapter = new MailListAdapter(getApplicationContext(), mailList);
-
+        mailEmpty = (TextView)findViewById(R.id.EmptyMailTxt);
         mailListView.setAdapter(adapter);
-
+        mailListView.setEmptyView(mailEmpty);
         new BackgroundTask().execute();
     }
 
@@ -69,12 +71,13 @@ public class MailboxActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            target = "http://ljh453.cafe24.com/podduk_mailread.php?receive_id=jim0307";
 
-            try {
-                target = "http://ljh453.cafe24.com/podduk_mailread.php?receive_id=" + URLEncoder.encode(ID, "UTF-8");
+            /*try {
+                target = "http://ljh453.cafe24.com/podduk_mailread.php?receive_id"+URLEncoder.encode(ID, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 
@@ -118,11 +121,12 @@ public class MailboxActivity extends AppCompatActivity {
                 int count = 0;
                 while (count < jsonArray.length()) {
                     JSONObject object = jsonArray.getJSONObject(count);
+
                     mailTitle = object.getString("mail_title");
                     mailContent = object.getString("mail_content");
                     date = object.getString("receive_date");
                     senderID = object.getString("send_id");
-                    senderName = object.getString("sender_name");
+                    senderName = object.getString("send_name");
 
                     Mail mail = new Mail(mailTitle, mailContent, senderID, date, senderName);
                     mailList.add(mail);

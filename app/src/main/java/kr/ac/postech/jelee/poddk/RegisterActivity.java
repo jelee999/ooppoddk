@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -71,24 +72,26 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText phoneText = (EditText) findViewById(R.id.user_phone);
         final EditText ansText = (EditText) findViewById(R.id.user_pw_answer);
 
-/*
+
         RadioGroup genderGroup = (RadioGroup) findViewById(R.id.user_sex);
-        int genderGroupID = genderGroup.getCheckedRadioButtonId();
-        gender = ((RadioButton) findViewById(genderGroupID)).getText().toString();
         genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton genderButton = (RadioButton) findViewById(i);
-                gender = genderButton.getText().toString();
+
+            if(i == R.id.user_woman)
+               gender = "female";
+            else if(i==R.id.user_man)
+                gender = "male";
             }
+
         });
-*/
-        RadioButton womanButton = (RadioButton) findViewById(R.id.user_woman);
+
+        /*RadioButton womanButton = (RadioButton) findViewById(R.id.user_woman);
         if(womanButton.isChecked())
             gender = "female";
         else
             gender = "male";
-
+*/
 
         final Button registerButton = (Button) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {

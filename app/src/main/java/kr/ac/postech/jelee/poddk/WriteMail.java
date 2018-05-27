@@ -55,6 +55,7 @@ public class WriteMail extends AppCompatActivity implements View.OnClickListener
             currentTime = simpleDateFormat.format(date);
             StrMailTitle = EditMailTitle.getText().toString();
             StrMailContent = EditMailContent.getText().toString();
+
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -62,19 +63,23 @@ public class WriteMail extends AppCompatActivity implements View.OnClickListener
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success");
                         if (success) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                            Toast.makeText(getApplicationContext(), "메일이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                           /* AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
                             AlertDialog dialog = builder.setMessage("메일이 전송되었습니다.")
                                     .setPositiveButton("확인", null)
                                     .create();
-                            dialog.show();
+                            dialog.show();*/
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         } else {
+
+                            Toast.makeText(getApplicationContext(), "메일이 전송 실패하였습니다.", Toast.LENGTH_SHORT).show();
+/*
                             AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
                             AlertDialog dialog = builder.setMessage("메일 전송 실패하였습니다.")
                                     .setNegativeButton("다시 시도", null)
                                     .create();
-                            dialog.show();
+                            dialog.show();*/
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -83,7 +88,7 @@ public class WriteMail extends AppCompatActivity implements View.OnClickListener
             };
             sendMailRequest sendmailRequest = new sendMailRequest("jim0307", StrMailTitle + "",
                     StrMailContent + "",senderID + "",currentTime + "", responseListener);
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(sendmailRequest);
         }
     }
