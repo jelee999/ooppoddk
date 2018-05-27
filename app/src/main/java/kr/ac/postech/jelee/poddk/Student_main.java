@@ -1,9 +1,16 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
@@ -12,6 +19,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +28,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +52,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.security.auth.Subject;
 
 
-public class Student_main extends Fragment implements View.OnClickListener, TeacherAdapter.OnItemClickListener {
+public class Student_main extends Fragment implements TeacherAdapter.OnItemClickListener, View.OnClickListener {
+    static final int PICK_CONTACT_REQUEST = 1;
+    static final int ADDORDER = 4;
+    static final int DELETEORDER = 5;
+
+    String savedID;
+    String savedname;
+    String savedgender;
+    String savedyear;
+    int savedage;
+
+    String majortext=null;
 
     FloatingActionButton addTeacherButton;
     TextView clicktosearch;
@@ -53,14 +93,15 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
     private View rootView;
 
     public Student_main() {
-
     }
 
     private RecyclerView mrecyclerView;
     private TeacherAdapter mAdapter;
     private RecyclerView.LayoutManager mlayoutManager;
-    private ArrayList<Person> teacherList;
     private RequestQueue mRequestQueue;
+    private ArrayList<Person> teacherList; //학생 리스트
+    private ArrayList<Person> currentteacherList;
+    EditText namesearch;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +109,20 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
 
         View view = inflater.inflate(R.layout.student_main, container, false);
         rootView = view;
+
+        SharedPreferences auto = Student_main.this.getContext().getSharedPreferences("auto",Student_main.this.getContext().MODE_PRIVATE);
+        savedID = auto.getString("inputID",null);
+        savedgender = auto.getString("inputgender",null);
+        savedname = auto.getString("inputname",null);
+        savedyear = auto.getString("inputyear",null);
+        savedage = 2019-Integer.valueOf(savedyear);
+
+        if(savedgender=="female"){
+            savedgender = "여";
+        }
+        else{
+            savedgender = "남";
+        }
 
 
         createTeacherList();
@@ -87,8 +142,7 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
         ArrayList<String> cseList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
         ArrayList<String> chemicalengineeringList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
         ArrayList<String> citeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
-        final ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
-
+        ArrayList<String> etcList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
 
         //주요과목 스피너
         final ArrayAdapter majorAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, majorList);
@@ -117,32 +171,60 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
                 //세부과목 스피너 설정
                 if (majorSubjectSpinner.getSelectedItemPosition() == 0) { //'선택사항없음'
                     minorSubjectSpinner.setAdapter(etcAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(null, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 1) {
                     minorSubjectSpinner.setAdapter(linguisticAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 2) { //'수학'
                     minorSubjectSpinner.setAdapter(mathAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 3) { //물리
                     minorSubjectSpinner.setAdapter(physicsAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 4) { //화학
                     minorSubjectSpinner.setAdapter(chemistryAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 5) { //생명
                     minorSubjectSpinner.setAdapter(lifescienceAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 6) { //기계공학
                     minorSubjectSpinner.setAdapter(mechanicAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 7) { //산업경영공학
                     minorSubjectSpinner.setAdapter(imeAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
                     minorSubjectSpinner.setAdapter(materialAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학
                     minorSubjectSpinner.setAdapter(electricAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 10) { //컴퓨터공학
                     minorSubjectSpinner.setAdapter(cseAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 11) { //화학공학
                     minorSubjectSpinner.setAdapter(chemicalengineeringAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 12) { //창의IT
                     minorSubjectSpinner.setAdapter(citeAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 } else if (majorSubjectSpinner.getSelectedItemPosition() == 13) { //기타
                     minorSubjectSpinner.setAdapter(etcAdapter);
+                    //majortext = majorSubjectSpinner.getSelectedItem().toString();
+                    //mAdapter.filtermajorsubject(majortext, null);
                 }
             }
 
@@ -154,6 +236,24 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
         });
 
 
+        /*
+        minorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(minorSubjectSpinner.getSelectedItemPosition() == 0){
+                    mAdapter.filtermajorsubject(majortext, null);
+                }else {
+                    String minortext = minorSubjectSpinner.getSelectedItem().toString();
+                    mAdapter.filtermajorsubject(majortext, minortext);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });*/
+
         addTeacherButton = (FloatingActionButton) view.findViewById(R.id.addTeacher);
         addTeacherButton.setOnClickListener(this);
 
@@ -163,41 +263,32 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
         hidesearchlayout = (LinearLayout) view.findViewById(R.id.hidesearchBar);
         hidesearchlayout.setVisibility(View.GONE);
 
+        namesearch = (EditText) view.findViewById(R.id.searchName);
+        namesearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = namesearch.getText().toString().toLowerCase(Locale.getDefault());
+                mAdapter.filter(text);
+            }
+        });
 
         return view;
     }
 
-    public void insertItem(int position) {
-        teacherList.add(position, new Person("jelee", R.drawable.profile, " 김이름", 23, "여", "수학", "선형대수학",
-                "blank", "blank", "blank", "blank"));
-        mAdapter.notifyItemInserted(position);
-    }
-
-    public void removeItem(int position){
-        teacherList.remove(position);
-        mAdapter.notifyItemRemoved(position);
-    }
-
-    //IDdata가 list안에 있으면 그 index를 반환함 & 없으면 -1 반환
-    public int checkPosition(String teacherIDData){
-        for(int i=0;i<teacherList.size();i++){
-            if(teacherList.get(i).getIDdata() == teacherIDData) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     public void createTeacherList() {
         teacherList = new ArrayList<Person>();
-        teacherList.add(new Person("jelee", R.drawable.profile, "김수학", 17, "여", "수학", "미분방정식",
-                "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "물리", "양자물리",
-                "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "컴공", "객체지향",
-                "blank", "blank", "blank", "blank"));
-        teacherList.add(new Person("jelee", R.drawable.profile, "김과학", 25, "여", "컴공", "양자물리",
-                "blank", "blank", "blank", "blank"));
+
     }
 
     public void buildRecyclerView() {
@@ -213,20 +304,7 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
         mRequestQueue = Volley.newRequestQueue(getContext());
         parseJSON();
 
-        /*
-
-        mAdapter.setOnItemClickLIstener(new TeacherAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), View_teacher.class);
-                intent.putExtra("teacherInfo", teacherList.get(position));
-                startActivity(intent);
-
-            }
-        });*/
     }
-
-
 
 
     //JSON에서 정보 받아오기
@@ -241,17 +319,18 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
                             JSONArray jsonArray = response.getJSONArray("response");
 
                             for(int i=0;i<jsonArray.length();i++){
-                                JSONObject student = jsonArray.getJSONObject(i);
+                                JSONObject teacher = jsonArray.getJSONObject(i);
 
-                                String ID = student.getString("id");
+                                String ID = teacher.getString("id");
                                 //Int imageID = student.getInt("imageID");
-                                String subjectcode = student.getString("subject");
-                                String content = student.getString("content");
-                                String ability = student.getString("ability");
-                                String time = student.getString("time");
-                                String etc = student.getString("etc");
-                                String Name = student.getString("name");
-                                String tempsex = student.getString("gender");
+                                String subjectcode = teacher.getString("subject");
+                                String content = teacher.getString("content");
+                                String ability = teacher.getString("ability");
+                                String time = teacher.getString("time");
+                                String etc = teacher.getString("etc");
+                                String Name = teacher.getString("name");
+                                String tempsex = teacher.getString("gender");
+                                int Age = 2019-Integer.valueOf(teacher.getString("birth_year"));
                                 String Sex;
                                 if(tempsex == "male"){
                                     Sex = "남";
@@ -413,7 +492,6 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
 
 
                                 //ID에서 데이터 받아오기!!!!!!!!
-                                int Age = 24;
 
                                 teacherList.add(new Person(ID, R.drawable.profile, Name, Age, Sex, majorsubject, minorsubject, content, ability, time, etc));
                             }
@@ -439,18 +517,514 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
     }
 
 
-    //+ 버튼 클릭했을 때
+    //학생 등록
+    class InsertData extends AsyncTask<String, Void, String>{
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(Student_main.this.getContext(),
+                    "Please Wait", null, true, true);
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            //Log.d(TAG, "POST response  - " + result);
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String id = savedID;
+            String subject = (String)params[1];
+            String content = (String)params[2];
+            String ability = (String)params[3];
+            String time = (String)params[4];
+            String etc = (String)params[5];
+
+            String serverURL = "http://ljh453.cafe24.com/podduk_registerteacher.php";
+            String postParameters = "id=" + id + "&subject=" + subject+ "&content=" + content+ "&ability=" + ability+ "&time=" + time+ "&etc=" + etc;
+
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                //Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString();
+
+
+            } catch (Exception e) {
+
+                //Log.d(TAG, "InsertData: Error ", e);
+
+                return new String("Error: " + e.getMessage());
+            }
+
+        }
+    }
+
+
+    //학생 삭제
+    class DeleteData extends AsyncTask<String, Void, String>{
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(Student_main.this.getContext(),
+                    "Please Wait", null, true, true);
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            //Log.d(TAG, "POST response  - " + result);
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String id = (String)params[0];
+            String subject = (String)params[1];
+
+            String postParameters = "id=" + id + "&subject=" + subject;
+
+            try {
+
+                URL url = new URL("http://ljh453.cafe24.com/podduk_deleteteacher.php");
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                //Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString();
+
+
+            } catch (Exception e) {
+
+                //Log.d(TAG, "InsertData: Error ", e);
+
+                return new String("Error: " + e.getMessage());
+            }
+
+        }
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 어떤 request확인
+        if(requestCode == ADDORDER) {
+            if(resultCode == -1){
+
+                Bundle b = data.getExtras();
+                String id = b.getString("ID");
+                String majorsubject = b.getString("majorsubject");
+                String subject = b.getString("minorsubject");
+
+                String content = b.getString("contents");
+                String ability = b.getString("ability");
+                String time = b.getString("time");
+                String etc = b.getString("etc");
+
+                String tempminor;
+
+                if(majorsubject.equals("언어")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LINGCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("수학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("물리")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEMCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("생명과학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기계공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("산업경영공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMENCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("신소재공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("전자전기공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELECCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("컴퓨터공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSEDCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEBCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("창의IT")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기타")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+
+                InsertData task = new InsertData();
+                task.execute(id, subject, content, ability, time, etc);
+                mAdapter.notifyDataSetChanged();
+                //페이지 새로고침
+
+            }
+        }
+
+        else if(requestCode == DELETEORDER) { //delete 명령과 함께 액티비티가 끝나면...
+            if(resultCode == -1) { //성공
+                Bundle b2 = data.getExtras();
+                String id = b2.getString("ID");
+                String majorsubject = b2.getString("majorsubject");
+                String subject = b2.getString("minorsubject");
+
+                String tempminor;
+
+                if(majorsubject.equals("언어")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LINGCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("수학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("물리")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEMCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("생명과학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기계공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("산업경영공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMENCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("신소재공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("전자전기공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELECCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("컴퓨터공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSEDCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEBCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("창의IT")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기타")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                DeleteData task = new DeleteData();
+                task.execute(id, subject);
+
+                //fragment 새로고침
+                refresh();
+            }
+        }
+    }
+
+    private void refresh(){
+
+    }
+
+
+    //버튼 클릭했을 때
     public void onClick(View view) {
         if (view == addTeacherButton) {
             Intent intent = new Intent(getActivity(), Add_teacher.class);
-            startActivity(intent);
+            intent.putExtra("ID", savedID);
+            intent.putExtra("Name", savedname); //ID에서 이름 가져오기
+            intent.putExtra("Age", savedage); //ID에서 나이 가져오기
+            intent.putExtra("Sex", savedgender); //ID에서 성별 가져오기
+
+            startActivityForResult(intent, ADDORDER);
         } else if (view == clicktosearch) {
             if (hidesearchlayout.getVisibility() == View.GONE) {
-                hidesearchlayout.setVisibility(View.VISIBLE); //searchbar 보이게 함
-
+                hidesearchlayout.setVisibility(View.VISIBLE);
+                clicktosearch.setText("Click to Hide ▲");
             } else {
-                hidesearchlayout.setVisibility(View.GONE); //searchbar 사라지게 함
-
+                hidesearchlayout.setVisibility(View.GONE);
+                clicktosearch.setText("Click to Search ▼");
             }
         }
     }
@@ -461,7 +1035,7 @@ public class Student_main extends Fragment implements View.OnClickListener, Teac
         Person clickedItem = teacherList.get(position);
 
         detailIntent.putExtra("teacherInfo", teacherList.get(position));
-        startActivity(detailIntent);
+        startActivityForResult(detailIntent, DELETEORDER);
     }
 }
 

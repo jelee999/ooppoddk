@@ -6,20 +6,20 @@ import android.os.Parcelable;
 
 
 public class Person implements Parcelable {
-    private String Identification;
-    private String IDdata;
-    private int ImageID;
-    private String Name;
-    private int Age;
-    private String Sex;
+    private String Identification; // 사람정보
+    private String IDdata; //ID 정보
+    private int ImageID; //사진
+    private String Name; //이름
+    private int Age; //나이
+    private String Sex; //성별
 
-    private String majorSubject;
-    private String minorSubject;
+    private String majorSubject; //주요과목
+    private String minorSubject; //세부과목
 
-    private String Contents;
-    private String Ability;
-    private String availableTime;
-    private String etcData = "";
+    private String Contents; //가르칠/배울내용
+    private String Ability; //능력,수준
+    private String availableTime; //가능시간
+    private String etcData; //기타 정보
 
     public Person(String IDData, int imageID, String name, int age, String sex, String majorsubject, String minorsubject,
                   String contents, String ability, String availabletime, String etcdata) {
