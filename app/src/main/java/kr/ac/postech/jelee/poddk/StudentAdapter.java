@@ -19,15 +19,16 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     private ArrayList<Person> mStudentList;
     private ArrayList<Person> currentStudentList=null;
 
-    private ArrayList<Person> tempnamelist=null;
-    private ArrayList<Person> tempsubjectlist=null;
+    //private ArrayList<Person> tempnamelist=null;
+    //private ArrayList<Person> tempsubjectlist=null;
     private OnItemClickListener mListener;
 
     public StudentAdapter(Context context, ArrayList<Person> personList) {
         mContext = context;
-        this.currentStudentList = personList;
-        this.tempsubjectlist = personList;
-        this.tempnamelist = personList;
+        this.currentStudentList = new ArrayList<Person>();
+        currentStudentList.addAll(personList);
+        //this.tempsubjectlist = personList;
+        //this.tempnamelist = personList;
         mStudentList = new ArrayList<Person>();
         mStudentList.addAll(personList);
     }

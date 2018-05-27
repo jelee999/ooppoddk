@@ -116,13 +116,13 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         savedname = auto.getString("inputname",null);
         savedyear = auto.getString("inputyear",null);
         savedage = 2019-Integer.valueOf(savedyear);
-/*
+
         if(savedgender=="female"){
             savedgender = "여";
         }
         else{
             savedgender = "남";
-        }*/
+        }
 
 
         createStudentList();
@@ -281,8 +281,6 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 mAdapter.filter(text);
             }
         });
-
-
 
         return view;
     }
@@ -853,13 +851,9 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 InsertData task = new InsertData();
                 task.execute(id, subject, content, ability, time, etc);
                 //페이지 새로고침
-                RecyclerView.Adapter adapter = mrecyclerView.getAdapter();
-                adapter.notifyDataSetChanged();
-                mrecyclerView.setAdapter(adapter);
+                //refresh();
+                getFragmentManager().beginTransaction().detach(this).attach(this).commit();
 
-                //Intent refresh = new Intent(this.getActivity(), MainActivity.class);
-                //startActivity(refresh);
-                //this.getActivity().finish();
             }
         }
 
@@ -1006,9 +1000,15 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 task.execute(id, subject);
 
                 //fragment 새로고침
+                refresh();
             }
         }
 
+    }
+
+    private void refresh(){
+        android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this).attach(this).commit();
     }
 
 
