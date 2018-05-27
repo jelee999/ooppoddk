@@ -88,21 +88,10 @@ public class MailListAdapter extends BaseAdapter {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
-                                /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                AlertDialog dialog = builder.setMessage("메일이 삭제되었습니다.")
-                                        .setPositiveButton("확인", null)
-                                        .create();
-                                dialog.show();*/
                                 Toast.makeText(context, "메일이 삭제되었습니다", Toast.LENGTH_SHORT).show();
                                 mailList.remove(mailList.remove(i));
                                 notifyDataSetChanged();
                             } else {
-                                /*AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                AlertDialog dialog = builder.setMessage("메일 삭제 실패하였습니다.")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create();
-                                dialog.show();
-                                */
                                 Toast.makeText(context, "메일이 삭제 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -113,6 +102,7 @@ public class MailListAdapter extends BaseAdapter {
                         }
                     }
                 };
+
                 DeleteRequest deleteRequest = new DeleteRequest("jim0307", mailList.get(i).getMailTitle() + "",
                         mailList.get(i).getMailContent() + "", mailList.get(i).getSenderID() + "", responseListener);
                 RequestQueue queue = Volley.newRequestQueue(context);

@@ -71,6 +71,7 @@ public class FindUserActivity_java extends AppCompatActivity{
                                 }
                             }
                             catch (JSONException e){
+                                Toast.makeText(getApplicationContext(), "e", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         }
