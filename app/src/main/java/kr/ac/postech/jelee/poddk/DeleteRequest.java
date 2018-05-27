@@ -1,5 +1,8 @@
 package kr.ac.postech.jelee.poddk;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -17,10 +20,10 @@ public class DeleteRequest extends StringRequest{
     public DeleteRequest(String userID, String mailTitle,String mailContent, String senderID, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
-        parameters.put("userID", userID);
-        parameters.put("mailTitle", mailTitle);
-        parameters.put("mailContent", mailContent);
-        parameters.put("senderID", senderID);
+        parameters.put("send_id", senderID);
+        parameters.put("receive_id", userID);
+        parameters.put("mail_title", mailTitle);
+        parameters.put("mail_content", mailContent);
     }
 
     public Map<String, String> getParameters() {

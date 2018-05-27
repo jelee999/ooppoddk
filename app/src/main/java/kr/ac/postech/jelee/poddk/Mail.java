@@ -7,11 +7,11 @@ import android.media.Image;
  */
 
 public class Mail {
-    private String mailTitle;//메일 제목
-    private String mailContent;//메일 내용
-    private String senderID;//송신자 ID
-    private String date;//메일 발송일
-    private String senderName;
+    String mailTitle;//메일 제목
+    String mailContent;//메일 내용
+    String senderID;//송신자 ID
+    String date;//메일 발송일
+    String senderName;//발송자
 
     Mail(String mailTitle, String mailContent, String senderID, String date, String senderName) {
         this.mailTitle = mailTitle;

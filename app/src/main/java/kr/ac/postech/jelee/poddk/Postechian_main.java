@@ -2,6 +2,7 @@ package kr.ac.postech.jelee.poddk;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,15 +47,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.security.auth.Subject;
 
 
@@ -572,19 +581,334 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     }*/
 
 
+    class InsertData extends AsyncTask<String, Void, String>{
+        ProgressDialog progressDialog;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(Postechian_main.this.getContext(),
+                    "Please Wait", null, true, true);
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            //Log.d(TAG, "POST response  - " + result);
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            //String id = (String)params[0];
+            String id = "jim0307";
+            String subject = (String)params[1];
+            String content = (String)params[2];
+            String ability = (String)params[3];
+            String time = (String)params[4];
+            String etc = (String)params[5];
+
+            String serverURL = "http://ljh453.cafe24.com/podduk_registerstudent.php";
+            String postParameters = "id=" + id + "&subject=" + subject+ "&content=" + content+ "&ability=" + ability+ "&time=" + time+ "&etc=" + etc;
+
+            try {
+
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                //Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString();
+
+
+            } catch (Exception e) {
+
+                //Log.d(TAG, "InsertData: Error ", e);
+
+                return new String("Error: " + e.getMessage());
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+/*
+    public String performPostCall(String requestURL, HashMap<String, String> postDataParams){
+        URL url;
+        String response = "";
+        try{
+            url = new URL(requestURL);
+
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(getPostDataString(postDataParams));
+
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode = conn.getResponseCode();
+
+            if(responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line = br.readLine()) != null) {
+
+                    response+=line;
+                }
+            }
+            else {
+                response ="";
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for(Map.Entry<String, String> entry : params.entrySet()) {
+            if(first)
+                first=false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+
+        }
+        return result.toString();
+    }
+
+*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 어떤 request확인
-        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ADDORDER) {
-            Bundle b = null;
-            b = data.getExtras();
-            if(b!=null) {
+            if(resultCode == -1){
+                /*
+                Bundle b = data.getExtras();
                 Person pstudent;
                 pstudent = b.getParcelable("studenttoAdd");
-                //InsertStudent(pstudent);//database에 pstudent 추가하기!!!!
+
+                //String id = pstudent.getIDdata();
+                String id = "jim0307";
+                String subject = pstudent.getminorSubject();
+                String content = pstudent.getContents();
+                String ability = pstudent.getAbility();
+                String time = pstudent.getavailableTime();
+                String etc = pstudent.getetcData();*/
+
+
+
+                Bundle b = data.getExtras();
+                String id = b.getString("ID");
+                String majorsubject = b.getString("majorsubject");
+                String subject = b.getString("minorsubject");
+
+                String content = b.getString("contents");
+                String ability = b.getString("ability");
+                String time = b.getString("time");
+                String etc = b.getString("etc");
+
+                /*
+                String tempdata = id+" + "+subject+" + "+content+" + "+ability+" + "+time+" + "+etc;
+                Toast toast = Toast.makeText(Postechian_main.this.getContext(), tempdata, Toast.LENGTH_LONG);
+                toast.show();*/
+
+                String tempminor;
+
+                if(majorsubject.equals("언어")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LING)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LINGCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("수학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MATHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("물리")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.PHYSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEM)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEMCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("생명과학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.LIFECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기계공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECH)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.MECHCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("산업경영공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMEN)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.IMENCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("신소재공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.AMSECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("전자전기공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELEC)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ELECCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("컴퓨터공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSED)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CSEDCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("화학공학")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEB)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CHEBCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("창의IT")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITE)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.CITECode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+                else if(majorsubject.equals("기타")) {
+                    ArrayList<String> minorsubjectList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCS)));
+                    ArrayList<String> minorsubjectcodeList = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.ETCSCode)));
+                    for(int m=0;m<minorsubjectList.size();m++){
+                        tempminor = minorsubjectList.get(m);
+                        if(subject.equals(tempminor)){
+                            subject = minorsubjectcodeList.get(m);
+                        }
+                    }
+                }
+
+                InsertData task = new InsertData();
+                task.execute(id, subject, content, ability, time, etc);
             }
         }
 
@@ -603,7 +927,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         public void onClick(View view) {
             if (view == addStudentButton) {
                 Intent intent = new Intent(getActivity(), Add_student.class);
-                intent.putExtra("ID", "jelee");
+                intent.putExtra("ID", "jim0307");
                 intent.putExtra("Name", "김포항"); //ID에서 이름 가져오기
                 intent.putExtra("Age", 23); //ID에서 나이 가져오기
                 intent.putExtra("Sex", "남"); //ID에서 성별 가져오기

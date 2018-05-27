@@ -11,4 +11,12 @@
         android:id="@+id/mailListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/EmptyMailTxt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="메일함이 비었습니다."
+        android:textSize="30dp"
+        android:visibility="gone"/>
 </RelativeLayout>

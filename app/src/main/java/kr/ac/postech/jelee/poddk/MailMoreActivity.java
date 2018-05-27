@@ -40,7 +40,7 @@ public class MailMoreActivity extends MailboxActivity
         mailTitle.setText(strMailTitle);
         mailDate.setText(strMailDate);
         mailContent.setText(strMailContent);
-        mailSenderID.setText(strMailSenderID);
+        mailSenderID.setText("("+strMailSenderID+")");
         mailSenderName.setText(strMailSenderName);
     }
 }
