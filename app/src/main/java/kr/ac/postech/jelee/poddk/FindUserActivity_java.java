@@ -65,7 +65,7 @@ public class FindUserActivity_java extends AppCompatActivity{
                                 if(success){
                                     Toast.makeText(getApplicationContext(),"아이디는 "+id,Toast.LENGTH_LONG).show();
                                 }
-                                else{
+                                else {
                                     Toast.makeText(getApplicationContext(), "해당 계정이 존재하지 않습니다", Toast.LENGTH_LONG).show();
 
                                 }
