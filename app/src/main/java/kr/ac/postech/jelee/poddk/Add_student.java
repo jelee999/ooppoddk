@@ -246,9 +246,10 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
             finish(); //화면 종료
 
         } else if (view == addButton) {
-            if(majorSubject == "선택사항없음" || minorSubject == "선택사항없음")
+            if(majorSubject.equals("선택해주세요") || minorSubject.equals("선택사항없음"))
             {
                 Toast.makeText(this, "과목을 선택해주세요", Toast.LENGTH_SHORT).show();
+                return;
             }
             else {
                 EditText learndatatext = (EditText) findViewById(R.id.learnData);
@@ -273,7 +274,6 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
                 setResult(RESULT_OK, pintent);
                 finish();
             }
-
         }
     }
 
