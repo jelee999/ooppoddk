@@ -257,7 +257,7 @@
         <item>ETCS000</item>
     </string-array>
     <string-array name="NULL">
-        <item>NULL</item>
+        <item></item>
     </string-array>
     <string-array name="NULLCode">
         <item>NULL000</item>
