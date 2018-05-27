@@ -44,6 +44,7 @@ public class NoticeBoardActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             target = "http://ljh453.cafe24.com/podduk_notice.php";
+            //공지사항 주소로 연결하기 위해서 target을 다음과 같이 설정
         }
 
         @Override
@@ -69,6 +70,7 @@ public class NoticeBoardActivity extends AppCompatActivity
             }
             return null;
         }
+        //MailBoxActivity의 doInBackground와 동일한 기능
 
         @Override
         protected void onProgressUpdate(Void... values) {

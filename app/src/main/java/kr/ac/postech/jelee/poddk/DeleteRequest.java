@@ -20,10 +20,10 @@ public class DeleteRequest extends StringRequest{
     public DeleteRequest(String userID, String mailTitle,String mailContent, String senderID, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
-        parameters.put("send_id", senderID);
-        parameters.put("receive_id", userID);
-        parameters.put("mail_title", mailTitle);
-        parameters.put("mail_content", mailContent);
+        parameters.put("send_id", senderID);//메일 발송인 ID
+        parameters.put("receive_id", userID);//메일 송신인 ID(user ID)
+        parameters.put("mail_title", mailTitle);//메일 제목
+        parameters.put("mail_content", mailContent);//메일 내용
     }
 
     public Map<String, String> getParameters() {

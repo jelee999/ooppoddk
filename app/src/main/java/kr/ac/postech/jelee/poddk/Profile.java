@@ -39,10 +39,8 @@ public class Profile extends Fragment implements View.OnClickListener, RadioGrou
     @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            ID = "hsm9300";
-            /*
             SharedPreferences saved = getActivity().getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        String ID = saved.getString("inputID", "0");*/
+        ID = saved.getString("inputID", "0");
     }
 
     @Override
@@ -56,7 +54,6 @@ public class Profile extends Fragment implements View.OnClickListener, RadioGrou
         settingBtn = (ImageButton) rootView.findViewById(R.id.setting);
         settingLayout = (RelativeLayout) rootView.findViewById(R.id.settingLayout);
         rg = (RadioGroup)rootView.findViewById(R.id.settingGroup);
-        /*am = (AudioManager)getContext().getSystemService(getActivity().AUDIO_SERVICE);*/
 
 
 

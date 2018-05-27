@@ -8,15 +8,15 @@ import android.content.SharedPreferences;
  */
 
 public class Notice {
-    String title;
-    String Content;
-    String date;
+    String title;//공지사항 제목
+    String Content;//공지사항 내용
+    String date;//공지 날짜
 
     public Notice(String title, String content, String date) {
         this.title = title;
         Content = content;
         this.date = date;
-    }
+    }//공지사항에 대한 생성자
 
 
     public String getTitle() {
