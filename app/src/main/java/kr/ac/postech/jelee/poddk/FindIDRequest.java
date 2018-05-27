@@ -6,11 +6,11 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FindID extends StringRequest {
+public class FindIDRequest extends StringRequest {
     final static private String URL = "http://ljh453.cafe24.com/podduk_findid.php";
     private Map<String,String> params;
 
-    public FindID(String id, String email, Response.Listener<String> listener){
+    public FindIDRequest(String id, String email, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
         params = new HashMap<>();
         params.put("id", id);
