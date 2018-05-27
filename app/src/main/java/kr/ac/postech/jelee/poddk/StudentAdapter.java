@@ -25,8 +25,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     public StudentAdapter(Context context, ArrayList<Person> personList) {
         mContext = context;
-        this.currentStudentList = new ArrayList<Person>();
-        currentStudentList.addAll(personList);
+        currentStudentList = personList;
         //this.tempsubjectlist = personList;
         //this.tempnamelist = personList;
         mStudentList = new ArrayList<Person>();

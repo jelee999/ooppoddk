@@ -851,9 +851,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 InsertData task = new InsertData();
                 task.execute(id, subject, content, ability, time, etc);
                 //페이지 새로고침
-                //refresh();
-                getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-
+                refresh();
             }
         }
 
@@ -1007,8 +1005,8 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     }
 
     private void refresh(){
-        android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.detach(this).attach(this).commit();
+        Postechian_main rSum = new Postechian_main();
+
     }
 
 

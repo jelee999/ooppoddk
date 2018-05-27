@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-/*
-        SharedPreferences saved = getSharedPreferences("auto", Activity.MODE_PRIVATE);
-        ID = saved.getString("inputID","0");*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,11 +100,6 @@ public class MainActivity extends AppCompatActivity {
             autoLogin.commit();
 
 
-
-
-
-
-
             Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_LONG).show();
 
 
@@ -120,10 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 
     //deleted PlaceholderFragment class from here
     /**
@@ -164,11 +152,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "H선생님 찾기";
+                    return "선생님 찾기";
                 case 1:
-                    return "H학생 찾기";
+                    return "학생 찾기";
                 case 2:
-                    return "H마이페이지";
+                    return "마이페이지";
             }
             return null;
         }
