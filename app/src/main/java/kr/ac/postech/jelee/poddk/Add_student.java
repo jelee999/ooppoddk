@@ -78,20 +78,10 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         studentAge = bundle.getInt("Age");
         studentSex = bundle.getString("Sex");
 
-        SharedPreferences auto = getSharedPreferences("auto", this.MODE_PRIVATE);
-        String savedID = auto.getString("inputID", null);
-        String savedgender = auto.getString("inputgender", null);
-        String savedname = auto.getString("inputgender", null);
-        String savedyear = auto.getString("inputyear", null);
-        studentID = savedID;
-        studentName = savedname;
-        studentAge = 23;
-        studentSex = savedgender;
-
-
         TextView studentNameview = (TextView) findViewById(R.id.NameData);
         TextView studentAgeview = (TextView) findViewById(R.id.AgeData);
         TextView studentSexview = (TextView) findViewById(R.id.SexData);
+
         studentNameview.setText(studentName);
         studentAgeview.setText(String.valueOf(studentAge));
         studentSexview.setText(studentSex);
@@ -249,28 +239,34 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
             setResult(RESULT_CANCELED);
             finish(); //화면 종료
         } else if (view == addButton) {
-            EditText learndatatext = (EditText) findViewById(R.id.learnData);
-            EditText studentabilitytext = (EditText) findViewById(R.id.studentAbility);
-            EditText availabletimetext = (EditText) findViewById(R.id.availableTime);
-            EditText etcDatatext = (EditText) findViewById(R.id.etcData);
+            if(majorSubject == "선택사항없음")
+            {
+                Toast.makeText(this, "과목을 선택해주세요", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                EditText learndatatext = (EditText) findViewById(R.id.learnData);
+                EditText studentabilitytext = (EditText) findViewById(R.id.studentAbility);
+                EditText availabletimetext = (EditText) findViewById(R.id.availableTime);
+                EditText etcDatatext = (EditText) findViewById(R.id.etcData);
 
-            learnContents = learndatatext.getText().toString();
-            studentAbility = studentabilitytext.getText().toString();
-            availableTime = availabletimetext.getText().toString();
-            etcData = etcDatatext.getText().toString();
+                learnContents = learndatatext.getText().toString();
+                studentAbility = studentabilitytext.getText().toString();
+                availableTime = availabletimetext.getText().toString();
+                etcData = etcDatatext.getText().toString();
 
+                Intent pintent = new Intent();
+                pintent.putExtra("ID", studentID);
+                pintent.putExtra("majorsubject", majorSubject);
+                pintent.putExtra("minorsubject", minorSubject);
+                pintent.putExtra("contents", learnContents);
+                pintent.putExtra("ability", studentAbility);
+                pintent.putExtra("time", availableTime);
+                pintent.putExtra("etc", etcData);
 
-            Intent pintent = new Intent();
-            pintent.putExtra("ID", studentID);
-            pintent.putExtra("majorsubject", majorSubject);
-            pintent.putExtra("minorsubject", minorSubject);
-            pintent.putExtra("contents", learnContents);
-            pintent.putExtra("ability", studentAbility);
-            pintent.putExtra("time", availableTime);
-            pintent.putExtra("etc", etcData);
-            setResult(RESULT_OK, pintent);
+                setResult(RESULT_OK, pintent);
+                finish();
+            }
 
-            finish();
         }
     }
 

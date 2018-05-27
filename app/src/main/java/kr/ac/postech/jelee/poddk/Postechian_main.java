@@ -83,6 +83,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
     String savedname;
     String savedgender;
     String savedyear;
+    int savedage;
 
     String majortext=null;
 
@@ -114,13 +115,14 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         savedgender = auto.getString("inputgender",null);
         savedname = auto.getString("inputname",null);
         savedyear = auto.getString("inputyear",null);
-
+        savedage = 2019-Integer.valueOf(savedyear);
+/*
         if(savedgender=="female"){
             savedgender = "여";
         }
         else{
             savedgender = "남";
-        }
+        }*/
 
 
         createStudentList();
@@ -330,6 +332,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                                 String etc = student.getString("etc");
                                 String Name = student.getString("name");
                                 String tempsex = student.getString("gender");
+                                int Age = 2019-Integer.valueOf(student.getString("birth_year"));
                                 String Sex;
                                 if(tempsex == "male"){
                                     Sex = "남";
@@ -491,7 +494,6 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
 
 
                                 //ID에서 데이터 받아오기!!!!!!!!
-                                int Age = 16;
 
                                 studentList.add(new Person(ID, R.drawable.profile, Name, Age, Sex, majorsubject, minorsubject, content, ability, time, etc));
                             }
@@ -543,8 +545,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         @Override
         protected String doInBackground(String... params) {
 
-            //String id = (String)params[0];
-            String id = "jim0307";
+            String id = savedID;
             String subject = (String)params[1];
             String content = (String)params[2];
             String ability = (String)params[3];
@@ -637,10 +638,8 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         @Override
         protected String doInBackground(String... params) {
 
-            //String id = (String)params[0];
-            String id = "jim0307";
+            String id = (String)params[0];
             String subject = (String)params[1];
-            String address = (String)params[2];
 
             String postParameters = "id=" + id + "&subject=" + subject;
 
@@ -699,9 +698,6 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
 
         }
     }
-
-
-
 
 
 
@@ -868,8 +864,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         }
 
         else if(requestCode == DELETEORDER) { //delete 명령과 함께 액티비티가 끝나면...
-            Bundle b = data.getExtras();
-            if(resultCode == -1) {
+            if(resultCode == -1) { //성공
                 Bundle b2 = data.getExtras();
                 String id = b2.getString("ID");
                 String majorsubject = b2.getString("majorsubject");
@@ -1021,11 +1016,9 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         public void onClick(View view) {
             if (view == addStudentButton) {
                 Intent intent = new Intent(getActivity(), Add_student.class);
-                Toast.makeText(this.getContext(), savedgender, Toast.LENGTH_SHORT).show();
-
                 intent.putExtra("ID", savedID);
                 intent.putExtra("Name", savedname); //ID에서 이름 가져오기
-                intent.putExtra("Age", savedyear); //ID에서 나이 가져오기
+                intent.putExtra("Age", savedage); //ID에서 나이 가져오기
                 intent.putExtra("Sex", savedgender); //ID에서 성별 가져오기
 
                 startActivityForResult(intent, ADDORDER);
@@ -1046,7 +1039,7 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
         Person clickedItem = studentList.get(position);
 
         detailIntent.putExtra("studentInfo", studentList.get(position));
-        startActivity(detailIntent);
+        startActivityForResult(detailIntent, DELETEORDER);
     }
 }
 
