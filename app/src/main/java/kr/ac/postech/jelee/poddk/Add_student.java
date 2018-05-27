@@ -18,6 +18,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -44,11 +45,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Add_student extends AppCompatActivity implements View.OnClickListener{
+public class Add_student extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "poddk_Add_student";
 
     Button cancelButton;
     Button addButton;
+
 
     //아이디에서 받아올 데이터
     String studentID;
@@ -70,17 +72,16 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.add_student);
         this.setFinishOnTouchOutside(false);
 
-        //Intent pintent = getIntent();
-
         Bundle bundle = getIntent().getExtras();
         studentID = bundle.getString("ID");
         studentName = bundle.getString("Name");
         studentAge = bundle.getInt("Age");
         studentSex = bundle.getString("Sex");
 
-        TextView studentNameview = (TextView)findViewById(R.id.NameData);
-        TextView studentAgeview = (TextView)findViewById(R.id.AgeData);
-        TextView studentSexview = (TextView)findViewById(R.id.SexData);
+        TextView studentNameview = (TextView) findViewById(R.id.NameData);
+        TextView studentAgeview = (TextView) findViewById(R.id.AgeData);
+        TextView studentSexview = (TextView) findViewById(R.id.SexData);
+
         studentNameview.setText(studentName);
         studentAgeview.setText(String.valueOf(studentAge));
         studentSexview.setText(studentSex);
@@ -105,7 +106,7 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
 
         //주요과목 스피너
         final ArrayAdapter majorAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, majorList);
-        final Spinner majorSubjectSpinner = (Spinner)findViewById(R.id.majorSubject);
+        final Spinner majorSubjectSpinner = (Spinner) findViewById(R.id.majorSubject);
 
         //Spinner minorSubjectSpinner;
 
@@ -124,97 +125,74 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
         final ArrayAdapter etcAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, etcList);
         final ArrayAdapter nullAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, nullList);
 
+        final Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+
+
         majorSubjectSpinner.setAdapter(majorAdapter);
         majorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //세부과목 스피너 설정
-                if(majorSubjectSpinner.getSelectedItemPosition() == 0){ //'선택사항없음'
+                if (majorSubjectSpinner.getSelectedItemPosition() == 0) { //'선택사항없음'
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(nullAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition()== 1){
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 1) {
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner)findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(linguisticAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 2) { //'수학'
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 2) { //'수학'
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(mathAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 3) { //물리
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 3) { //물리
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(physicsAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 4) { //화학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 4) { //화학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(chemistryAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 5) { //생명
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 5) { //생명
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(lifescienceAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 6) { //기계공학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 6) { //기계공학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(mechanicAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 7) { //산업경영공학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 7) { //산업경영공학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(imeAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 8) { //신소재공학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(materialAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 9) { //전자전기공학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(electricAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 10) { //컴퓨터공학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 10) { //컴퓨터공학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(cseAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 11) { //화학공학
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 11) { //화학공학
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(chemiengineeringAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 12) { //창의IT
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 12) { //창의IT
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(citeAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
-                }
-                else if(majorSubjectSpinner.getSelectedItemPosition() == 13) { //기타
+                } else if (majorSubjectSpinner.getSelectedItemPosition() == 13) { //기타
                     majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-                    Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
+                    //Spinner minorSubjectSpinner = (Spinner) findViewById(R.id.minorSubject);
                     minorSubjectSpinner.setAdapter(etcAdapter);
-                    minorSubject = minorSubjectSpinner.getSelectedItem().toString();
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -224,20 +202,28 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
 
         });
 
-        cancelButton = (Button)findViewById(R.id.cancelButton);
+        minorSubjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                minorSubject = minorSubjectSpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        cancelButton = (Button) findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(this);
 
-        addButton = (Button)findViewById(R.id.addButton);
+        addButton = (Button) findViewById(R.id.addButton);
         addButton.setOnClickListener(this);
 
-        //학생정보 값 받아오기
-        //과목정보 받아오기
-        //majorSubject = majorSubjectSpinner.getSelectedItem().toString();
-
-        EditText learndatatext = (EditText)findViewById(R.id.learnData);
-        EditText studentabilitytext = (EditText)findViewById(R.id.studentAbility);
-        EditText availabletimetext = (EditText)findViewById(R.id.availableTime);
-        EditText etcDatatext = (EditText)findViewById(R.id.etcData);
+        EditText learndatatext = (EditText) findViewById(R.id.learnData);
+        EditText studentabilitytext = (EditText) findViewById(R.id.studentAbility);
+        EditText availabletimetext = (EditText) findViewById(R.id.availableTime);
+        EditText etcDatatext = (EditText) findViewById(R.id.etcData);
 
         learnContents = learndatatext.getText().toString();
         studentAbility = studentabilitytext.getText().toString();
@@ -248,188 +234,40 @@ public class Add_student extends AppCompatActivity implements View.OnClickListen
 
 
     // 버튼 클릭했을 때
-    public void onClick(View view){
-        if(view == cancelButton){
+    public void onClick(View view) {
+        if (view == cancelButton) {
+            setResult(RESULT_CANCELED);
             finish(); //화면 종료
-        }
-        else if(view == addButton){
-            //InsertData task = new InsertData();
-            //task.execute(studentID, "CSED101", learnContents, studentAbility, availableTime, etcData);
-            //HttpPostData();
-            //학생 만들어서 넘겨주기
+        } else if (view == addButton) {
+            if(majorSubject == "선택사항없음" || minorSubject == "선택사항없음")
+            {
+                Toast.makeText(this, "과목을 선택해주세요", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                EditText learndatatext = (EditText) findViewById(R.id.learnData);
+                EditText studentabilitytext = (EditText) findViewById(R.id.studentAbility);
+                EditText availabletimetext = (EditText) findViewById(R.id.availableTime);
+                EditText etcDatatext = (EditText) findViewById(R.id.etcData);
 
-            String tempdata = "";
-            Toast toast = Toast.makeText(this, availableTime, Toast.LENGTH_LONG);
-            toast.show();
+                learnContents = learndatatext.getText().toString();
+                studentAbility = studentabilitytext.getText().toString();
+                availableTime = availabletimetext.getText().toString();
+                etcData = etcDatatext.getText().toString();
 
-            Intent pintent = new Intent();
-            pintent.putExtra("ID", studentID);
-            pintent.putExtra("majorsubject", majorSubject);
-            pintent.putExtra("minorsubject", minorSubject);
-            pintent.putExtra("contents", learnContents);
-            pintent.putExtra("ability", studentAbility);
-            pintent.putExtra("time", availableTime);
-            pintent.putExtra("etc", etcData);
-            setResult(RESULT_OK, pintent);
+                Intent pintent = new Intent();
+                pintent.putExtra("ID", studentID);
+                pintent.putExtra("majorsubject", majorSubject);
+                pintent.putExtra("minorsubject", minorSubject);
+                pintent.putExtra("contents", learnContents);
+                pintent.putExtra("ability", studentAbility);
+                pintent.putExtra("time", availableTime);
+                pintent.putExtra("etc", etcData);
 
-            /*
-            Person pstudent = new Person(studentID, R.drawable.profile, studentName, studentAge, studentSex, majorSubject, minorSubject,
-                    learnContents, studentAbility, availableTime, etcData);
-            Bundle stuData = new Bundle();
-            stuData.putParcelable("studenttoAdd", pstudent);
-            Intent intent = new Intent();
-            intent.putExtras(stuData);
-            setResult(RESULT_OK, intent);
-            */
-            finish();
-        }
-    }
-
-    class InsertData extends AsyncTask<String, Void, String>{
-        ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(Add_student.this,
-                    "잠시만 기다려주세요", null, true, true);
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            progressDialog.dismiss();
-            //mTextViewResult.setText(result);
-            //Log.d(TAG, "POST response  - " + result);
-        }
-
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            //String id = (String)params[0];
-            String id = "jim0307";
-            String subject = (String)params[1];
-            String content = (String)params[2];
-            String ability = (String)params[3];
-            String time = (String)params[4];
-            String etc = (String)params[5];
-
-            String serverURL = "http://ljh453.cafe24.com/podduk_registerstudent.php";
-            String postParameters = "id=" + id + "&subject=" + subject+ "&content=" + content+ "&ability=" + ability+ "&time=" + time+ "&etc=" + etc;
-
-            try {
-
-                URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.connect();
-
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                //Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-
-                bufferedReader.close();
-
-
-                return sb.toString();
-
-
-            } catch (Exception e) {
-
-                //Log.d(TAG, "InsertData: Error ", e);
-
-                return new String("Error: " + e.getMessage());
+                setResult(RESULT_OK, pintent);
+                finish();
             }
 
         }
     }
 
-
-
-
-
-
-
-    //HTTP Post로 주고 받기
-    public void HttpPostData() {
-        try {
-            //URL 설정하고 접속하기
-            URL url = new URL("http://ljh453.cafe24.com/podduk_registerstudent.php"); //괄호 안에 URL 입력하기
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-
-            //전송모드 설정(기본설정)
-            http.setDefaultUseCaches(false);
-            http.setDoInput(true); // 서버에서 읽기 모드 지정
-            http.setDoOutput(true); //서버에서 쓰기 모드 지정
-            http.setRequestMethod("POST"); // 전송 방식은 POST
-
-            http.setRequestProperty("content-type", "application/x-www-form-urlencoded"); // 서버에세 웹에서 <Form>으로 값이 넘어온 것과 같은 방식으로 처리하라는 것을 알려줌
-
-            //서버로 값 전송
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("id").append("=").append(studentID).append("&"); //php 번수에 값 대입
-            buffer.append("subject").append("=").append(studentAge).append("&"); //php 번수에 값 대입
-            buffer.append("content").append("=").append(studentSex).append("&"); //php 번수에 값 대입
-            buffer.append("ability").append("=").append(majorSubject).append("&"); //php 번수에 값 대입
-            buffer.append("etc").append("=").append(minorSubject);
-
-            OutputStreamWriter outStream = new OutputStreamWriter(http.getOutputStream(), "UTF-8");
-            PrintWriter writer = new PrintWriter(outStream);
-            writer.write(buffer.toString());
-            writer.flush();
-
-/*
-            //서버에서 전송받기
-            InputStreamReader tmp = new InputStreamReader(http.getInputStream(), "EUC-KR");
-            BufferedReader reader = new BufferedReader(tmp);
-            StringBuilder builder = new StringBuilder();
-            String str;
-            while ((str = reader.readLine()) != null) { //서버에서 라인 단위로 보내줄 것이므로 라인단위로 읽는다.
-
-                builder.append(str+"\n"); //Viewㅔ 표시하기 위해 라인 구분자 추가
-            }
-
-            //myResult = builder.toString();
-            //((TextView)(findViewById(R.id.text_result))).setText(myResult);
-            //Toast.makeText(Add_student.this, "전송 후 결과 받음", 0).show(); */
-
-        }catch(MalformedURLException e){
-            //
-        }catch(IOException e){
-            //
-        }//try
-    }//HttpPostData
-} //Activity
+}
