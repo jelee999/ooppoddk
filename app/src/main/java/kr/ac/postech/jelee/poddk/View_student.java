@@ -2,19 +2,21 @@ package kr.ac.postech.jelee.poddk;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class View_student extends AppCompatActivity implements View.OnClickListener {
 
     Button contactButton;
     Button cancelButton;
-String userID;
+    String userID;
     Button deleteButton;
-    //Button editButton;
     Person pstudent;
 
     @Override
@@ -25,8 +27,6 @@ String userID;
         Bundle bundle = getIntent().getExtras();
         pstudent = bundle.getParcelable("studentInfo");
 
-        pstudent.setIDdata("Abc");
-        userID ="userid";
         TextView NameData = (TextView) findViewById(R.id.studentNameData);
         TextView AgeData = (TextView) findViewById(R.id.studentAgeData);
         TextView SexData = (TextView) findViewById(R.id.studentSexData);
@@ -56,8 +56,17 @@ String userID;
         deleteButton = findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(this);
 
-        //editButton = findViewById(R.id.editButton);
-        //editButton.setOnClickListener(this);
+        SharedPreferences auto = this.getSharedPreferences("auto",this.MODE_PRIVATE);
+        String savedID = auto.getString("inputID",null);
+
+
+        //사용자가 등록한 정보이면 삭제 버튼을 누를 수 있도록 함.
+        if(pstudent.getIDdata().equals(savedID)){
+            deleteButton.setVisibility(View.VISIBLE);
+        } else{
+            deleteButton.setVisibility(View.GONE);
+        }
+
 
 
     }
@@ -65,10 +74,10 @@ String userID;
     // 버튼 클릭했을 때
     public void onClick(View view){
         if(view == cancelButton){
+            setResult(RESULT_CANCELED);
             finish(); //화면 종료
         }
         else if(view == contactButton) {
-            //HttpPostData();
             //학생에게 연락하기
             Intent intent = new Intent(this, WriteMail.class);
             intent.putExtra("receiverID", pstudent.getIDdata());
@@ -77,16 +86,16 @@ String userID;
         }
         else if(view == deleteButton){
             //Postechian_main에 삭제할 학생 정보 전달
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("studentTodelete", pstudent);
-            setResult(5, resultIntent);
-            finish();
-        }/*
-        else if(view == editButton){
-            //Postechian_main에 편집할 학생 정보 전달
+            Intent pintent = new Intent();
+            pintent.putExtra("ID", pstudent.getIDdata());
+            pintent.putExtra("majorsubject", pstudent.getmajorSubject());
+            pintent.putExtra("minorsubject", pstudent.getminorSubject());
+            setResult(RESULT_OK, pintent);
+
             finish();
         }
-        */
     }
+
+
 
 }

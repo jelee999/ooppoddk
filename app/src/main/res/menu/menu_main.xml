@@ -7,5 +7,5 @@
         android:id="@+id/LogoutButton"
         android:orderInCategory="100"
         android:title="로그아웃"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"></item>
 </menu>

@@ -44,6 +44,8 @@
                 android:drawableLeft="@drawable/ic_person_black_24dp"
                 android:drawableStart="@drawable/ic_person_black_24dp"
                 android:hint=" 아이디"
+                android:singleLine="true"
+                android:lines="1"
                 android:padding="10dp" />
 
             <EditText
@@ -55,6 +57,8 @@
                 android:drawableLeft="@drawable/ic_lock_black_24dp"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:hint=" 비밀번호"
+                android:singleLine="true"
+                android:lines="1"
                 android:inputType="textPassword"
                 android:padding="10dp" />
 
