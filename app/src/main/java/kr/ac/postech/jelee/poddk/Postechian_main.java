@@ -850,8 +850,9 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
 
                 InsertData task = new InsertData();
                 task.execute(id, subject, content, ability, time, etc);
+                mAdapter.notifyDataSetChanged();
                 //페이지 새로고침
-                refresh();
+
             }
         }
 
@@ -1001,11 +1002,9 @@ public class Postechian_main extends Fragment implements StudentAdapter.OnItemCl
                 refresh();
             }
         }
-
     }
 
     private void refresh(){
-        Postechian_main rSum = new Postechian_main();
 
     }
 
