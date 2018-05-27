@@ -45,6 +45,8 @@
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:id="@+id/user_name"
+                android:singleLine="true"
+                android:lines="1"
                 android:drawableStart="@drawable/ic_person_black_24dp"
                 android:drawableLeft="@drawable/ic_person_black_24dp"/>
             <LinearLayout
@@ -58,6 +60,8 @@
                     android:hint=" 아이디"
                     android:padding="10dp"
                     android:id="@+id/user_id"
+                    android:singleLine="true"
+                    android:lines="1"
                     android:drawableStart="@drawable/ic_perm_identity_black_24dp"
                     android:drawableLeft="@drawable/ic_perm_identity_black_24dp"/>
                 <Button
@@ -76,6 +80,8 @@
                 android:layout_marginTop="0dp"
                 android:padding="10dp"
                 android:id="@+id/user_pw"
+                android:singleLine="true"
+                android:lines="1"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"/>
             <EditText
@@ -87,6 +93,8 @@
                 android:layout_marginTop="0dp"
                 android:padding="10dp"
                 android:id="@+id/user_pw_check"
+                android:singleLine="true"
+                android:lines="1"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:drawableLeft="@drawable/ic_lock_black_24dp"/>
             <EditText
@@ -97,6 +105,8 @@
                 android:layout_marginTop="0dp"
                 android:padding="10dp"
                 android:id="@+id/user_email"
+                android:singleLine="true"
+                android:lines="1"
                 android:drawableStart="@drawable/ic_mail_outline_black_24dp"
                 android:drawableLeft="@drawable/ic_mail_outline_black_24dp"/>
             <EditText
@@ -107,6 +117,8 @@
                 android:layout_marginTop="0dp"
                 android:padding="10dp"
                 android:id="@+id/user_phone"
+                android:singleLine="true"
+                android:lines="1"
                 android:drawableStart="@drawable/ic_phone_android_black_24dp"
                 android:drawableLeft="@drawable/ic_phone_android_black_24dp"/>
             <RadioGroup
@@ -169,6 +181,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="0dp"
                 android:padding="10dp"
+                android:singleLine="true"
+                android:lines="1"
                 android:id="@+id/user_pw_answer"
                 />
             <Button

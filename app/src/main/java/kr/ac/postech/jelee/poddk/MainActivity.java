@@ -2,6 +2,7 @@ package kr.ac.postech.jelee.poddk;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -104,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
             autoLogin.putString("inputID",null);
             autoLogin.putString("inputPW",null);
             autoLogin.commit();
+
+
+
+
+
+
 
             Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_LONG).show();
 
